@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">PortalEkampus</string>
+    <string-array name="daftar_page">
+        <item>Super Admin</item>
+        <item>Manajemen</item>
+        <item>PMB</item>
+        <item>Keuangan</item>
+        <item>Operator Nilai</item>
+        <item>Dosen</item>
+        <item>Dosen Wali</item>
+        <item>Mahasiswa</item>
+        <item>Mahasiswa Baru</item>
+        <item>Alumni</item>
+        <item>Alumni</item>
+        <item>Orang Tua Wali</item>
+    </string-array>
+</resources>
