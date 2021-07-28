@@ -1,49 +1,85 @@
 <template>
   <FrontLayout>
-    <b-card title="Login">
-      <b-form @submit.stop.prevent="login">
-        <b-form-group
-          id="input-group-username"
-          label="Username:"
-          label-for="input-username"
-          description="Masukan username, khusus mahasiswa gunakan NIM"
-        >
-          <b-form-input
-            id="input-username"
-            v-model="$v.formdata.username.$model"
-            type="text"
-            placeholder="Username"
-            class="mb-2"
-            :state="validateState('username')"
-            aria-describedby="input-username-live-feedback"
-          />
-          <b-form-invalid-feedback id="input-username-live-feedback">
-            Mohon isi username.
+    <b-form @submit.stop.prevent="login">
+      <b-card title="Login">
+        <b-card-text>        
+          <b-form-group
+            id="input-group-username"
+            label-cols-sm="4"
+            label-cols-lg="3"
+            content-cols-sm
+            content-cols-lg="7"
+            label="Username:"
+            label-for="input-username"
+            description="Masukan username, khusus mahasiswa gunakan NIM"
+          >
+            <b-form-input
+              id="input-username"
+              v-model="$v.formdata.username.$model"
+              type="text"
+              placeholder="Username"
+              class="mb-2"
+              :state="validateState('username')"
+              aria-describedby="input-username-live-feedback"
+            />
+            <b-form-invalid-feedback id="input-username-live-feedback">
+              Mohon isi username.
+            </b-form-invalid-feedback>
+          </b-form-group>        
+          <b-form-group
+            id="input-group-password"
+            label-cols-sm="4"
+            label-cols-lg="3"
+            content-cols-sm
+            content-cols-lg="7"
+            label="Password:"
+            label-for="input-password"
+            description="Masukan password"
+          >
+            <b-form-input
+              id="input-password"            
+              v-model="$v.formdata.password.$model"
+              type="password"
+              :state="validateState('password')"
+              placeholder="Password"
+              aria-describedby="input-password-live-feedback"
+            />
+            <b-form-invalid-feedback id="input-pasword-live-feedback">
+              Mohon isi password.
+            </b-form-invalid-feedback>
+          </b-form-group>
+          <b-form-group
+            id="input-group-page"
+            label-cols-sm="4"
+            label-cols-lg="3"
+            content-cols-sm
+            content-cols-lg="7"
+            label="Role:"
+            label-for="select-page"
+            aria-describedby="select-page-live-feedback"
+          >
+            <b-form-select
+              id="select-page"
+              v-model="$v.formdata.page.$model"
+              class="mb-3"
+              :state="validateState('page')"
+            >
+              <b-form-select-option :value="null">Pilih Role</b-form-select-option>
+              <b-form-select-option value="d">DOSEN</b-form-select-option>
+            </b-form-select>
+            <b-form-invalid-feedback id="select-page-live-feedback">
+              Mohon role untuk dipilih.
+            </b-form-invalid-feedback>
+          </b-form-group>
+          <b-form-invalid-feedback :state="ajaxMessage">
+            {{ ajaxMessage }}
           </b-form-invalid-feedback>
-        </b-form-group>        
-        <b-form-group
-          id="input-group-password"
-          label="Password:"
-          label-for="input-password"
-          description="Masukan password"
-        >
-          <b-form-input
-            id="input-password"            
-            v-model="$v.formdata.password.$model"
-            type="password"
-            :state="validateState('password')"
-            placeholder="Password"
-            aria-describedby="input-password-live-feedback"
-          />
-          <b-form-invalid-feedback id="input-pasword-live-feedback">
-            Mohon isi password.
-          </b-form-invalid-feedback>
-        </b-form-group>
-        <b-button type="submit" variant="primary">
+        </b-card-text>
+        <b-button type="submit" variant="primary" :disabled="btnLoading">
           Login
-        </b-button>
-      </b-form>
-    </b-card>
+        </b-button>      
+      </b-card>
+    </b-form>
   </FrontLayout>
 </template>
 <script>
@@ -55,10 +91,14 @@ export default {
   name: "Home",
   mixins: [validationMixin],
   data: () => ({
+    btnLoading: false,
+    //form
     formdata: {
       username: null,
       password: null,
+      page: null,
     },
+    ajaxMessage: null,
   }),
   validations: {
     formdata: {
@@ -68,6 +108,9 @@ export default {
       password: {
         required,
       },
+      page: {
+        required,
+      },
     },
   },
   methods: {
@@ -75,13 +118,40 @@ export default {
       const { $dirty, $error } = this.$v.formdata[name];
       return $dirty ? !$error : null;
     },
-    login() {
+    async login() {
       this.$v.formdata.$touch();
       if (this.$v.formdata.$anyError) {
         return;
       }
-      console.log(this.formdata.username);
-      console.log(this.formdata.password);
+      this.ajaxMessage = null;
+      this.btnLoading = true;
+      await this.$ajax
+        .post("/auth/login", {
+          username: this.formdata.username,
+          password: this.formdata.password,
+          page: this.formdata.page,
+        })
+        .then(({ data }) => {
+          this.$ajax
+            .get("/auth/me", {
+              headers: {
+                Authorization: data.token_type + " " + data.access_token,
+              },
+            })
+            .then(response => {
+              var data_user = {
+                token: data,
+                user: response.data,
+              };
+              this.$store.dispatch("auth/afterLoginSuccess", data_user);
+            });
+          this.btnLoading = false;
+          this.$router.push("/dashboard/" + data.access_token);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.btnLoading = false;
+        });
     },
   },
   components: {
