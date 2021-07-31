@@ -98,6 +98,13 @@ import { required } from "vuelidate/lib/validators";
 export default {
   name: "Home",
   mixins: [validationMixin],
+  created() {
+    if (this.$store.getters["auth/Authenticated"]) {
+      this.$router.push(
+        "/dashboard/" + this.$store.getters["auth/AccessToken"]
+      );
+    }
+  },
   data: () => ({
     btnLoading: false,
     //form
@@ -156,8 +163,7 @@ export default {
           this.btnLoading = false;
           this.$router.push("/dashboard/" + data.access_token);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {          
           this.btnLoading = false;
         });
     },

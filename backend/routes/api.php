@@ -16,4 +16,6 @@ $router->group(['prefix'=>'v2','middleware'=>'auth:api'], function () use ($rout
     $router->get('/auth/refresh',['uses'=>'AuthController@refresh','as'=>'auth.refresh']);
     $router->get('/auth/me',['uses'=>'AuthController@me','as'=>'auth.me']);
 
+    //ui admin
+	$router->get('/system/setting/uiadmin',['uses'=>'System\UIController@admin','as'=>'ui.admin']);
 });
