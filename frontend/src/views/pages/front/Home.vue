@@ -64,8 +64,16 @@
               class="mb-3"
               :state="validateState('page')"
             >
-              <b-form-select-option :value="null">Pilih Role</b-form-select-option>
-              <b-form-select-option value="d">DOSEN</b-form-select-option>
+              <b-form-select-option :value="null">PILIH ROLE</b-form-select-option>
+              <b-form-select-option value="sa">SUPER ADMIN</b-form-select-option>
+              <b-form-select-option value="m">MANAJEMEN</b-form-select-option>
+              <b-form-select-option value="pmb">PMB</b-form-select-option>
+              <b-form-select-option value="k">KEUANGAN</b-form-select-option>
+              <b-form-select-option value="dw">DOSEN WALI</b-form-select-option>
+              <b-form-select-option value="mh">MAHASISWA</b-form-select-option>
+              <b-form-select-option value="mb">MAHASISWA BARU</b-form-select-option>
+              <b-form-select-option value="al">ALUMNI</b-form-select-option>
+              <b-form-select-option value="ot">ORANG TUA WALI</b-form-select-option>
             </b-form-select>
             <b-form-invalid-feedback id="select-page-live-feedback">
               Mohon role untuk dipilih.

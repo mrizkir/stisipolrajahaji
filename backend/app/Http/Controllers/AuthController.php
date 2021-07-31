@@ -33,7 +33,11 @@ class AuthController extends Controller
 			{
 				throw new Exception ('Gagal. Silahkan masukan username dan password dengan benar.');
 			}
-			switch ($page) {
+			if ($result->page != $page)
+			{
+				throw new Exception ('Gagal. Silahkan masukan username dan password dengan benar.');
+			}
+			switch ($result->page) {
 				case 'mh':
 					$pass = md5($password);
 					if ($result->k_status == 'A' || $result->k_status == 'C' || $result->k_status == 'N') {                                        			
