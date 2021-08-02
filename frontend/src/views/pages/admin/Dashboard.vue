@@ -30,11 +30,10 @@ export default {
           this.dashboard = data.page;          
           this.$store.dispatch("uiadmin/changeDashboard", this.dashboard);
         })
-        .catch(() => {
-          // console.log(error);
-          // if (error.response.status == 401) {
-          //   this.$router.push("/");
-          // }
+        .catch((error) => {          
+          if (error.status == 401) {
+            this.$router.push("/");
+          }
         }); 
 			this.$store.dispatch("uiadmin/init");
     },

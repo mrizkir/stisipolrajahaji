@@ -71,7 +71,10 @@ export default {
             break;          
         }
         this.setLoading(false);
-        return Promise.reject(error);
+        return Promise.reject({
+          error: error,
+          status: status,
+        });
       }
     );
   },
