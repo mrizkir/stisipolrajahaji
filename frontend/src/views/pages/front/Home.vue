@@ -69,6 +69,7 @@
               <b-form-select-option value="m">MANAJEMEN</b-form-select-option>
               <b-form-select-option value="pmb">PMB</b-form-select-option>
               <b-form-select-option value="k">KEUANGAN</b-form-select-option>
+              <b-form-select-option value="d">DOSEN</b-form-select-option>
               <b-form-select-option value="dw">DOSEN WALI</b-form-select-option>
               <b-form-select-option value="mh">MAHASISWA</b-form-select-option>
               <b-form-select-option value="mb">MAHASISWA BARU</b-form-select-option>
