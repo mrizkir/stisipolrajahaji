@@ -104,16 +104,7 @@ class AuthController extends Controller
 	 */
 	public function me()
 	{
-		$user = $this->guard()->user()->toArray();
-		// if ($this->hasRole('mahasiswabaru'))
-		// {
-		//     $formulir = \App\Models\SPMB\FormulirPendaftaranModel::find($user['id']);
-		//     $user['idsmt'] = $formulir->idsmt;
-		// }
-		// $user['role'] = $this->getRoleNames();
-		// $user['issuperadmin'] = $this->hasRole('superadmin');
-		// $user['isdw'] = $this->hasRole('dosenwali');
-		// $user['permissions'] = $this->guard()->user()->permissions->pluck('id','name')->toArray();
+		$user = $this->guard()->user()->toArray();		
 		return response()->json($user);
 	}
 	/**
@@ -123,16 +114,7 @@ class AuthController extends Controller
 	 */
 	public function logout(Request $request)
 	{
-		//log user logout
-		// \App\Models\System\ActivityLog::log($request,[
-		//     'object' => $this->guard()->user(),             
-		//     'object_id' => $this->getUserid(), 
-		//     'user_id' => $this->getUserid(), 
-		//     'message' => 'user '.$this->guard()->user()->username.' berhasil logout'
-		// ],1);
-
 		$this->guard()->logout();
-
 		return response()->json(['message' => 'Successfully logged out'],200);
 	}
 	/**

@@ -16,7 +16,7 @@
               <em>User</em>
             </template>
             <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+            <b-dropdown-item href="#" @click.prevent="logout">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -57,6 +57,31 @@ export default {
         }); 
 			this.$store.dispatch("uiadmin/init");
     },
+    logout() {
+				this.loginTime = 0;
+				this.$ajax
+					.post(
+						"/auth/logout",
+						{},
+						{
+							headers: {
+								Authorization: this.TOKEN,
+							},
+						}
+					)
+					.then(() => {
+						this.$store.dispatch("auth/logout");
+						this.$store.dispatch("uifront/reinit");
+						this.$store.dispatch("uiadmin/reinit");
+						this.$router.push("/");
+					})
+					.catch(() => {
+						this.$store.dispatch("auth/logout");
+						this.$store.dispatch("uifront/reinit");
+						this.$store.dispatch("uiadmin/reinit");
+						this.$router.push("/");
+					});
+			},
   },
   components: {
     "sa-dashboard": SADashboard,    

@@ -20,6 +20,14 @@ const routes = [
 		},
 		component: () => import("../views/pages/admin/Dashboard.vue"),
 	},
+  {
+		path: "/kemahasiswaan/aktivitasmahasiswa",
+		name: "AktivitasMahasiswa",
+		meta: {
+			title: "AKTIVITAS MAHASISWA",
+		},
+		component: () => import("../views/pages/admin/kemahasiswaan/AktivitasMahasiswa.vue"),
+	},
 ];
 
 const router = new VueRouter({
