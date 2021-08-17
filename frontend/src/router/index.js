@@ -1,43 +1,29 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Home from '../views/Home.vue'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/",
-    name: "FrontDashboard",
-    meta: {
-      title: "DASHBOARD",
-    },
-    component: () => import("../views/pages/front/Home.vue"),
+    path: '/',
+    name: 'Home',
+    component: Home
   },
   {
-		path: "/dashboard/:token",
-		name: "AdminDashboard",
-		meta: {
-			title: "DASHBOARD",
-		},
-		component: () => import("../views/pages/admin/Dashboard.vue"),
-	},
-  {
-		path: "/kemahasiswaan/aktivitasmahasiswa",
-		name: "AktivitasMahasiswa",
-		meta: {
-			title: "AKTIVITAS MAHASISWA",
-		},
-		component: () => import("../views/pages/admin/kemahasiswaan/AktivitasMahasiswa.vue"),
-	},
-];
+    path: '/about',
+    name: 'About',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  }
+]
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
-  routes,
-});
+  routes
+})
 
-router.beforeEach((to, from, next) => {
-  document.title = to.meta.title;
-  next();
-});
-export default router;
+export default router
