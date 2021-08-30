@@ -70,27 +70,12 @@
               <v-card flat>
                 <v-card-text>
                   <p class="text-2xl font-weight-semibold text--primary mb-2">
-                    Welcome to Materio! 👋🏻
+                    Selamat Datang !!! 👋🏻
                   </p>
                   <p class="mb-2">
-                    Please sign-in to your account and start the adventure
+                    Silahkan login ke dalam akun Anda
                   </p>
-                </v-card-text>
-
-                <v-card-text>
-                  <v-alert
-                    text
-                    color="primary"
-                  >
-                    <small class="d-block mb-1">
-                      Admin Email: <strong>admin@materio.com</strong> / Pass: <strong>admin</strong>
-                    </small>
-                    <small>
-                      Client Email: <strong>client@materio.com</strong> / Pass: <strong>client</strong>
-                    </small>
-                  </v-alert>
-                </v-card-text>
-
+                </v-card-text>                
                 <!-- login form -->
                 <v-card-text>
                   <v-form
@@ -159,27 +144,6 @@
                     Create an account
                   </router-link>
                 </v-card-text>
-
-                <!-- divider -->
-                <v-card-text class="d-flex align-center mt-2">
-                  <v-divider></v-divider>
-                  <span class="mx-5">or</span>
-                  <v-divider></v-divider>
-                </v-card-text>
-
-                <!-- socail links -->
-                <v-card-actions class="d-flex justify-center">
-                  <v-btn
-                    v-for="link in socialLink"
-                    :key="link.icon"
-                    icon
-                    class="ms-1"
-                  >
-                    <v-icon :color="$vuetify.theme.dark ? link.colorInDark:link.color">
-                      {{ link.icon }}
-                    </v-icon>
-                  </v-btn>
-                </v-card-actions>
               </v-card>
             </v-col>
           </v-row>
