@@ -1,4 +1,3 @@
-.vscode
 .DS_Store
 node_modules
 /dist
@@ -16,14 +15,9 @@ pnpm-debug.log*
 
 # Editor directories and files
 .idea
-.vscode/*
-!.vscode/*.code-snippets
-!.vscode/*.code-workspace
-!.vscode/extensions.json
-!.vscode/settings.json
+.vscode
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-yarn.lock

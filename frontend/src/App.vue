@@ -1,61 +1,55 @@
 <template>
-  <component
-    :is="resolveLayoutVariant"
-    :class="`skin-variant--${appSkinVariant}`"
-  >
-    <transition
-      :name="appRouteTransition"
-      mode="out-in"
-      appear
+  <v-app>
+    <v-app-bar
+      app
+      color="primary"
+      dark
     >
-      <router-view></router-view>
-    </transition>
-  </component>
+      <div class="d-flex align-center">
+        <v-img
+          alt="Vuetify Logo"
+          class="shrink mr-2"
+          contain
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          transition="scale-transition"
+          width="40"
+        />
+
+        <v-img
+          alt="Vuetify Name"
+          class="shrink mt-1 hidden-sm-and-down"
+          contain
+          min-width="100"
+          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
+          width="100"
+        />
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn
+        href="https://github.com/vuetifyjs/vuetify/releases/latest"
+        target="_blank"
+        text
+      >
+        <span class="mr-2">Latest Release</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <router-view/>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-// eslint-disable-next-line object-curly-newline
-import { computed } from '@vue/composition-api'
-// eslint-disable-next-line import/no-unresolved
-import useAppConfig from '@core/@app-config/useAppConfig'
-import { useRouter } from '@core/utils'
-import { useLayout } from '@core/layouts/composable/useLayout'
-
-// Layouts
-import LayoutContentVerticalNav from '@/layouts/variants/content/vertical-nav/LayoutContentVerticalNav.vue'
-import LayoutContentHorizontalNav from '@/layouts/variants/content/horizontal-nav/LayoutContentHorizontalNav.vue'
-import LayoutBlank from '@/layouts/variants/blank/LayoutBlank.vue'
-
-// Dynamic vh
-import useDynamicVh from '@core/utils/useDynamicVh'
 
 export default {
-  components: {
-    LayoutContentVerticalNav,
-    LayoutContentHorizontalNav,
-    LayoutBlank,
-  },
-  setup() {
-    const { route } = useRouter()
-    const { appContentLayoutNav, appSkinVariant, appRouteTransition } = useAppConfig()
+  name: 'App',
 
-    const { handleBreakpointLayoutSwitch } = useLayout()
-    handleBreakpointLayoutSwitch()
-
-    const resolveLayoutVariant = computed(() => {
-      if (route.value.meta.layout === 'blank') return 'layout-blank'
-      if (route.value.meta.layout === 'content') return `layout-content-${appContentLayoutNav.value}-nav`
-
-      return null
-    })
-
-    useDynamicVh()
-
-    return {
-      resolveLayoutVariant,
-      appSkinVariant,
-      appRouteTransition,
-    }
-  },
-}
+  data: () => ({
+    //
+  }),
+};
 </script>
