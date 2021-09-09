@@ -1,17 +1,32 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue"
+import VueRouter from "vue-router"
 
 Vue.use(VueRouter)
 
-const routes = [  
+const routes = [
   {
-    path: '*',
-    redirect: 'error-404',
+		path: "/",
+		name: "FrontDashboard",
+		meta: {
+			title: "DASHBOARD",
+		},
+		component: () => import("../views/pages/front/Home.vue"),
+	},
+  {
+		path: "/login",
+		name: "FrontLogin",
+		meta: {
+			title: "LOGIN",
+		},
+		component: () => import("../views/pages/front/Login.vue"),
+	},
+  {
+    path: "*",
+    redirect: "error-404",
   },
-]
-
+];
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes,
   scrollBehavior() {
