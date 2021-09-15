@@ -95,8 +95,16 @@
 											:rules="rule_password"
 											outlined									
 											hide-details="auto"
-											class="mb-2"
+											class="mb-5"
 										/>
+										<v-select
+											:items="$store.getters['auth/DaftarRoles']"
+											outlined
+											label="Login Sebagai"
+											hide-details="auto"
+											class="mb-2"
+										>											
+										</v-select>
 										<v-btn
 											block
 											color="primary"											
