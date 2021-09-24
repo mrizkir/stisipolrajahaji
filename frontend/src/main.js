@@ -5,7 +5,10 @@ import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
 import router from "./router";
 import store from "./store";
+import api from "./plugins/api"
 
+Vue.use(api);
+import "@/plugins/Dayjs";
 Vue.config.productionTip = false;
 
 new Vue({

@@ -99,6 +99,7 @@
 										/>
 										<v-select
 											:items="$store.getters['auth/DaftarRoles']"
+											v-model="formlogin.page"
 											outlined
 											label="Login Sebagai"
 											hide-details="auto"
@@ -116,6 +117,17 @@
 										</v-btn>
 									</v-form>
 								</v-card-text>
+								<v-card-text>
+									<v-alert
+										text
+										type="error"
+										:value="form_error"
+									>
+										<small class="d-block mb-1">
+											Username atau Password tidak dikenal.
+										</small>										
+									</v-alert>
+								</v-card-text>
 							</v-card>
 						</v-col>
 					</v-row>
@@ -127,6 +139,13 @@
 <script>
 	export default {
 		name: "Login",
+		created() {
+			if (this.$store.getters["auth/Authenticated"]) {
+				this.$router.push(
+					"/dashboard/" + this.$store.getters["auth/AccessToken"]
+				);
+			}
+		},
 		data:() => ({
 			btnLoading: false,
 			//form
@@ -134,6 +153,7 @@
 			formlogin: {
 				username: "",
 				password: "",
+				page: null,
 			},
 			rule_username: [
 				value => !!value || "Kolom Username mohon untuk diisi !!!",
@@ -145,7 +165,35 @@
 		methods: {
 			async doLogin() {
 				if (this.$refs.frmlogin.validate()) {
-					console.log("atest");
+					this.btnLoading = true;
+					await this.$ajax
+						.post("/auth/login", {
+							username: this.formlogin.username,
+							password: this.formlogin.password,
+							page: this.formlogin.page,
+						})
+						.then(({ data }) => {
+							this.$ajax
+								.get("/auth/me", {
+									headers: {
+										Authorization: data.token_type + " " + data.access_token,
+									},
+								})
+								.then(response => {
+									var data_user = {
+										token: data,
+										user: response.data,
+									};
+									this.$store.dispatch("auth/afterLoginSuccess", data_user);
+								});
+							this.btnLoading = false;
+							this.form_error = false;
+							this.$router.push("/dashboard/" + data.access_token);
+						})
+						.catch(() => {
+							this.form_error = true;
+							this.btnLoading = false;
+						});
 				}
 			}
 		},
