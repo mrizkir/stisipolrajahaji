@@ -6,9 +6,13 @@ import vuetify from "./plugins/vuetify";
 import router from "./router";
 import store from "./store";
 import api from "./plugins/api"
+import "@/plugins/Dayjs";
+import { abilitiesPlugin } from '@casl/vue';
+import { Ability } from '@casl/ability'
 
 Vue.use(api);
-import "@/plugins/Dayjs";
+Vue.use(abilitiesPlugin, new Ability());
+
 Vue.config.productionTip = false;
 
 new Vue({
