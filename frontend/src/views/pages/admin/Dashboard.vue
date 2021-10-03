@@ -69,6 +69,10 @@
 	import { mapGetters } from "vuex";
 	export default {
 		name: "Dashboard",
+		created() {
+			this.token = this.$route.params.token;
+			this.initialize();
+		},
 		props: {
 			showrightsidebar: {
 				type: Boolean,
@@ -80,11 +84,31 @@
 			},
 		},
 		data: () => ({
+			token: null,
 			loginTime: 0,
 			drawer: null,
 			drawerRight: null,
 		}),
 		methods: {
+			initialize: async function() {
+				await this.$ajax
+					.get("/auth/me", {
+						headers: {
+							Authorization: "Bearer " + this.token,
+						},
+					})
+					.then(({ data }) => {
+						console.log(data);
+						// this.dashboard = data.role[0];
+						// this.$store.dispatch("uiadmin/changeDashboard", this.dashboard);
+					})
+					.catch(error => {
+						if (error.response.status == 401) {
+							this.$router.push("/login");
+						}
+					});
+				// this.$store.dispatch("uiadmin/init", this.$ajax);
+			},
 			logout() {
 				this.loginTime = 0;
 				this.$ajax

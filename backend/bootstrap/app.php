@@ -45,6 +45,7 @@ $app->singleton(
 
 $app->configure('app');
 $app->configure('cors');
+$app->configure('permission');
 $app->configure('auth');
 $app->configure('jwt');
 
@@ -59,6 +60,8 @@ $app->middleware([
 
 $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
+    'permission' => Spatie\Permission\Middlewares\PermissionMiddleware::class,
+    'role'=> Spatie\Permission\Middlewares\RoleMiddleware::class,
 ]);
 
 /*
@@ -69,8 +72,18 @@ $app->routeMiddleware([
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(App\Providers\EventServiceProvider::class);
+$app->register(Spatie\Permission\PermissionServiceProvider::class);
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 $app->register(Fruitcake\Cors\CorsServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+
+/*
+|--------------------------------------------------------------------------
+| alias
+|--------------------------------------------------------------------------
+*/
+$app->alias('cache', \Illuminate\Cache\CacheManager::class);
 
 /*
 |--------------------------------------------------------------------------
