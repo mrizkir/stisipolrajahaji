@@ -104,7 +104,8 @@ class AuthController extends Controller
 	 */
 	public function me()
 	{
-		$user = $this->guard()->user()->toArray();		
+		$user = $this->guard()->user()->toArray();
+		$user['permissions']=$this->guard()->user()->permissions->pluck('id','name')->toArray();		
 		return response()->json($user);
 	}
 	/**
