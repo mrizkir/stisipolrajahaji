@@ -5,6 +5,8 @@ import createPersistedState from "vuex-persistedstate";
 import SecureLS from "secure-ls";
 import app from "./app"
 import Auth from "./modules/auth";
+import Uifront from "./modules/uifront";
+import Uiadmin from "./modules/uiadmin";
 
 const ls = new SecureLS({ isCompression: false });
 
@@ -18,6 +20,8 @@ export default new Vuex.Store({
     appConfig: appConfigStoreModule,
     app,
     auth: Auth,
+    uifront: Uifront,
+    uiadmin: Uiadmin,
   },
   plugins: [
 		createPersistedState({

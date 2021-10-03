@@ -140,7 +140,7 @@
 	export default {
 		name: "Login",
 		created() {
-			if (this.$store.getters["auth/Authenticated"]) {
+			if (this.$store.getters["auth/Authenticated"]) {				
 				this.$router.push(
 					"/dashboard/" + this.$store.getters["auth/AccessToken"]
 				);

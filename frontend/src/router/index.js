@@ -21,6 +21,14 @@ const routes = [
 		component: () => import("../views/pages/front/Login.vue"),
 	},
   {
+		path: "/dashboard/:token",
+		name: "AdminDashboard",
+		meta: {
+			title: "DASHBOARD",
+		},
+		component: () => import("../views/pages/admin/Dashboard.vue"),
+	},
+  {
     path: "*",
     redirect: "error-404",
   },
