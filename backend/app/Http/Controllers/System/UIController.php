@@ -4,6 +4,7 @@ namespace App\Http\Controllers\System;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Helpers\HelperAuth;
 use App\Models\System\ConfigurationModel;
 use App\Models\DMaster\TAModel;
 use App\Models\DMaster\FakultasModel;
@@ -54,7 +55,7 @@ class UIController extends Controller {
                 'text'=>'PENDEK'
               ]
             ];
-    $roles = $this->getRoleName();
+    $roles = [];
     // if (count($roles) > 0)
     // {
     //   if ($this->hasRole('superadmin'))

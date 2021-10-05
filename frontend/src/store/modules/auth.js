@@ -1,3 +1,5 @@
+import ability from "@/plugins/ability";
+
 //state
 const getDefaultState = () => {
 	return {
@@ -65,6 +67,9 @@ const mutations = {
 	setUser: (state, user) => {
 		state.user = user;
 	},
+	setAbility: (permissions) => {
+		ability.update(permissions);
+	},
 	resetState(state) {
 		Object.assign(state, getDefaultState());
 	},
@@ -129,9 +134,10 @@ const getters = {
 	},
 };
 const actions = {
-	afterLoginSuccess({ commit },data) {
+	afterLoginSuccess({ commit }, data) {
 		commit("setToken", data.token);
 		commit("setUser", data.user);
+		commit("setAbility", data.user.permissions);
 	},
 	logout({ commit }) {
 		commit("resetState");

@@ -52,7 +52,7 @@
 			</v-menu>
 		</v-app-bar>
 		<v-main class="mx-4 mb-4">
-			<slot />
+			test		
 		</v-main>
 		<v-footer app padless fixed>
 			<v-card class="flex" color="yellow darken-2" flat tile>
@@ -67,6 +67,7 @@
 </template>
 <script>
 	import { mapGetters } from "vuex";
+
 	export default {
 		name: "Dashboard",
 		created() {
@@ -104,7 +105,9 @@
 					})
 					.catch(error => {
 						if (error.response.status == 401) {
-							this.$router.push("/login");
+							this.$store.dispatch("auth/logout");
+							this.$store.dispatch("uifront/reinit");
+							this.$store.dispatch("uiadmin/reinit");							
 						}
 					});
 				// this.$store.dispatch("uiadmin/init", this.$ajax);
