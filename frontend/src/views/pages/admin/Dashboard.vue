@@ -52,7 +52,72 @@
 			</v-menu>
 		</v-app-bar>
 		<v-main class="mx-4 mb-4">
-			test		
+			<v-container flud color="#f1f2f6">
+				<v-row class="mt-n5">
+					<v-col xs="12" sm="4" md="3" class="align-self-start" v-if="$store.getters['auth/can']('DMASTER-GROUP')">
+						<v-card							
+							class="clickable"							
+							color="text-center"
+							@click.native="$router.push('/dmaster')"
+						>
+							<v-card-text class="d-flex flex-column justify-center align-center">
+								<v-avatar
+									color="primary"
+									class="v-avatar-light-bg primary--text mt-10"
+									icon
+									size="50"
+								>
+									<v-icon
+										size="2rem"
+										color="primary"
+									>
+										{{ icons.mdiSourceBranch }}
+									</v-icon>
+								</v-avatar>
+								<h6 class="text-xl mt-4 font-weight-medium">
+									DATA MASTER
+								</h6>
+							</v-card-text>
+							<v-card-text>
+								Pengaturan berbagai parameter sebagai referensi dari modul-modul lain dalam sistem.
+							</v-card-text>							
+						</v-card>
+					</v-col>
+					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />
+					<v-col xs="12" sm="4" md="3" v-if="$store.getters['auth/can']('KEUANGAN-GROUP')">
+							<v-card
+								elevation="0"
+								class="mx-auto clickable"
+								max-width="344"
+								min-height="210"
+								color="blue"
+								@click.native="$router.push('/keuangan')"
+							>
+								<div class="text-center pt-4">
+									<v-btn
+										class="mx-2"
+										fab
+										dark
+										large
+										elevation ="0"
+										color="white"
+									>
+										<v-icon color="blue">
+											mdi-note-multiple-outline
+										</v-icon>
+									</v-btn>
+								</div>
+								<v-card-title class="white--text font-weight-bold justify-center">
+									KEUANGAN
+								</v-card-title>
+								<v-card-subtitle class="white--text font-weight-medium text-center">
+									Modul ini digunakan untuk mengelola Keuangan Perguruan Tinggi.
+								</v-card-subtitle>
+							</v-card>
+					</v-col>
+					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly"/>          
+				</v-row>
+			</v-container>
 		</v-main>
 		<v-footer app padless fixed>
 			<v-card class="flex" color="yellow darken-2" flat tile>
@@ -67,12 +132,19 @@
 </template>
 <script>
 	import { mapGetters } from "vuex";
-
+	import { mdiSourceBranch } from "@mdi/js";
 	export default {
 		name: "Dashboard",
 		created() {
 			this.token = this.$route.params.token;
-			this.initialize();
+			this.initialize();			
+		},
+		setup() {
+			return {
+				icons: {
+					mdiSourceBranch,
+				}
+			};
 		},
 		props: {
 			showrightsidebar: {

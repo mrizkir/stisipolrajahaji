@@ -98,23 +98,7 @@ const getters = {
 		}
 	},
 	Role: state => {
-		var role = "";
-		if (state.access_token != null && state.user != null) {
-			let roles = state.user.role;
-			for (var i = 0; i < roles.length; i++) {
-				switch (roles[i]) {
-					case "mahasiswabaru":
-						role = role + "[mahasiswabaru] ";
-						break;
-					case "mahasiswa":
-						role = role + "[mahasiswa] ";
-						break;
-					default:
-						role = role + "[" + roles[i] + "] ";
-				}
-			}
-		}
-		return role;
+		return state.user.role;
 	},
 	User: state => {
 		return state.user;
