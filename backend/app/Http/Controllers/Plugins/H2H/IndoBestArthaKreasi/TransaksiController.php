@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
 use App\Helpers\HelperAkademik;
 use App\Models\SPMB\FormulirPendaftaranOnlineModel;
 use App\Models\DMaster\ProgramStudiModel;
+use App\Models\Akademik\DulangModel;
+
+use App\Helpers\HelperKeuangan;
 
 use Exception;
-
-use Ramsey\Uuid\Uuid;
 
 class TransaksiController extends Controller {  
 	public function inquiryTagihan(Request $request)
@@ -106,7 +106,7 @@ class TransaksiController extends Controller {
 
 				}			
 			break;
-			case 11:
+			case 11: //bayar cuti
 				$data = \DB::table('transaksi_cuti AS t')
 					->select(\DB::raw('
 						t.no_transaksi,
@@ -168,7 +168,7 @@ class TransaksiController extends Controller {
 				}
 				return response()->json([
 					'Result' => [
-						'status'=>00,
+						'status'=>'00',
 						'message'=>'Request Data Berhasil',
 						'data'=>$payload,
 					]
@@ -185,181 +185,266 @@ class TransaksiController extends Controller {
 	}
 	public function payment(Request $request)
 	{
-		$config = ConfigurationModel::getCache();
+		$this->validate($request, [
+			'kode_billing'=>'required',
+			'no_ref'=>'required',
+		]);
 
-		$messages=[
-			'kode_billing.required'=>'kode billing diperlukan mohon di isi',
-			'kode_billing.exists'=>'kode billing tidak terdaftar didatabase',
-			'noref.required'=>'Nomor referensi dibutuhkan',
-			'noref.numeric'=>'Nomor referensi harus numeric',
-			
-			'amount”.required'=>'amount diperlukan mohon di isi',
-			'amount”.numeric'=>'Nilai amount harus numeric',
-			
-			'tanggal_terima.required'=>'tanggal terima dibutuhkan',
-			'tanggal_kirim.required'=>'tanggal kirim dibutuhkan',
-		];
-		$validator = Validator::make($request->all(),[
-			'kode_billing'=>'required|exists:transaksi,no_transaksi',
-			'noref'=>'required|numeric',
-			'amount'=>'required|numeric',
-			'tanggal_terima'=>'required',
-			'tanggal_kirim'=>'required',
-		],$messages);
+		$kode_billing = $request->input('kode_billing');		
 
-		if ($validator->fails())
+		$tipe_transaksi=substr($kode_billing, 0,2);
+
+		$userid=$this->getUserid();
+
+		switch ($tipe_transaksi)
 		{
-			return Response()->json(['Result'=>[
-					'status'=>'11',        
-					'message'=>"Format request tidak sesuai",
-					'errors'=>$validator->customMessages
-				]
-			], 200); 
-		}
-		else
-		{
-			$kode_billing=$request->input('kode_billing');
-			$transaksi=TransaksiModel::select(\DB::raw('
-										transaksi.id,
-										CONCAT(transaksi.no_transaksi,\' \') AS no_transaksi,
-										transaksi.no_faktur,
-										formulir_pendaftaran.no_formulir,
-										transaksi.nim,        
-										formulir_pendaftaran.nama_mhs,    
-										\''.addslashes($config['NAMA_PT']).'\' AS universitas,        
-										\'\' AS fakultas,   
-										program_studi.nama_prodi AS prodi,
-										transaksi.kjur,
-										transaksi.idsmt,
-										transaksi.ta,
-										transaksi.idkelas,
-										transaksi.total,
-										0 AS denda,
-										transaksi.status,
-										COALESCE(konfirmasi_pembayaran.updated_at, "N.A") AS updated_at_konfirm
-									'))
-									->join('formulir_pendaftaran','formulir_pendaftaran.user_id','transaksi.user_id')
-									->leftJoin('konfirmasi_pembayaran','konfirmasi_pembayaran.transaksi_id','transaksi.id')
-									->leftJoin('program_studi','program_studi.id','transaksi.kjur')
-									->where('transaksi.no_transaksi',$kode_billing)
-									->first();
+			case 10: //bayar biasa
+				$data = \DB::table('transaksi AS t')
+					->select(\DB::raw('
+						t.no_transaksi,
+						t.kjur,
+						t.no_formulir,
+						fp.nama_mhs,
+						t.nim,
+						t.tahun,
+						t.idsmt,
+						t.idkelas,
+						rm.k_status,
+						rm.perpanjang,
+						fp.ta AS tahun_masuk,
+						fp.idsmt AS semester_masuk,
+						t.commited
+					'))
+					->leftJoin('formulir_pendaftaran AS fp', 'fp.no_formulir', 't.no_formulir')
+					->leftJoin('register_mahasiswa AS rm', 't.no_formulir', 'rm.no_formulir')
+					->where('t.no_transaksi', $kode_billing)
+					->first();
 			
-			if ($transaksi->status==1)
-			{
-				return Response()->json(['Result'=>[
+				if (is_null($data))        {
+					return Response()->json(['Result'=>[
+													'status'=>'14',        
+													'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"
+												]
+											], 200); 
+				}
+				else if ($data->commited == 1)
+				{
+					return Response()->json(['Result'=>[
 												'status'=>'88',        
-												'message'=>"Tagihan sudah dibayarkan tanggal: ".\App\Helpers\Helper::tanggal('d/m/Y H:i:s',$transaksi->updated_at_konfirm),
-												'noref'=>$transaksi->no_faktur
+												'message'=>"Tagihan sudah dibayarkan."
 											]
 										], 200); 
-			}
-			else if ($transaksi->status==2)
-			{
-				return Response()->json(['Result'=>[
-												'status'=>'88',        
-												'message'=>"status kode billing ini dibatalkan"
-											]
-										], 200); 
-			}
-			else if ($transaksi->total!=$request->input('amount'))
-			{     
-				return Response()->json(['Result'=>[
-											'status'=>'11',        
-											'message'=>'Nilai nominal salah ('.\App\Helpers\Helper::formatUang($request->input('amount')).') karena  tidak sama dengan dengan transaksi '.\App\Helpers\Helper::formatUang($transaksi->total)
-										]
-									], 200); 
-			}
-			else
-			{
-				$result = \DB::transaction(function () use ($request,$transaksi) {
-					$no_ref=$request->input('noref');
-					$konfirmasi=KonfirmasiPembayaranModel::find($transaksi->id);
-					if (is_null($konfirmasi))
-					{
-						$konfirmasi_insert=KonfirmasiPembayaranModel::create([
-							'transaksi_id'=>$transaksi->id,    
-							'user_id'=>$this->getUserid(),    
-							'no_transaksi'=>$transaksi->no_transaksi,
-							'id_channel'=>4,
-							'total_bayar'=>$transaksi->total,
-							'nomor_rekening_pengirim'=>'HOST TO HOST',
-							'nama_rekening_pengirim'=>'BANK RIAU KEPRI SYARIAH',
-							'nama_bank_pengirim'=>'BANK RIAU KEPRI SYARIAH',
-							'desc'=>'',
-							'tanggal_bayar'=>date ('Y-m-d H:m:s'),    
-							'bukti_bayar'=>"storage/images/buktibayar/paid.png",  
-							'verified'=>true
-						]);                   
-						$transaksi=$konfirmasi_insert->transaksi;                   
-					}
-					else
-					{
-						$transaksi=$konfirmasi->transaksi;                   
-					}
-					$transaksi->no_faktur=$no_ref;
-					$transaksi->status=1;
-					$transaksi->save();
-					
-					//aksi setelah PAID
+				}
+				else
+				{
+					$result = \DB::transaction(function () use ($request, $data) {
+						$no_transaksi = $data->no_transaksi;
+						$no_ref = $request->input('no_ref');
+						$userid = $this->getUserid();
+						$total_tagihan = \DB::table('transaksi_detail')
+							->where('no_transaksi', $no_transaksi)
+							->sum('dibayarkan');
 
-					$detail = TransaksiDetailModel::select(\DB::raw('
-														kombi_id
-													'))
-													->where('transaksi_id',$transaksi->id)
-													->get();
-					foreach ($detail as $v)
-					{
-						switch ($v->kombi_id)
+						\DB::table('transaksi')
+							->where('no_transaksi', $no_transaksi)
+							->update([
+								'commited'=> 1
+							]);
+
+						if ($data->nama_mhs == '' && $data->nim == '' && $data->kjur == 0) //biaya pendaftaran
 						{
-							case 101: //biaya formulir pendaftaran
-								$formulir=\App\Models\SPMB\FormulirPendaftaranModel::find($transaksi->user_id);                   
-								$no_formulir=$formulir->idsmt.mt_rand();
-								$formulir->no_formulir=$no_formulir;
-								$formulir->save();
-							break;
-							case 202:
-								if (!(\App\Models\Akademik\DulangModel::where('tahun',$transaksi->ta)
-																		->where('idsmt',$transaksi->idsmt)
-																		->where('idkelas',$transaksi->idkelas)
-																		->where('nim',$transaksi->nim)
-																		->exists()))
-								{
-									\App\Models\Akademik\DulangModel::create([
-																				'id'=>Uuid::uuid4()->toString(),
-																				'user_id'=>$transaksi->user_id,
-																				'nim'=>$transaksi->nim,
-																				'tahun'=>$transaksi->ta,
-																				'idsmt'=>$transaksi->idsmt,
-																				'tasmt'=>$transaksi->ta.$transaksi->idsmt,
-																				'idkelas'=>$transaksi->idkelas,
-																				'status_sebelumnya'=>'A',
-																				'k_status'=>'A',
-																			]);
-								}
-							break;
-						}
-					}
-					
-					\App\Models\System\ActivityLog::log($request,[
-																	'object' => $transaksi, 
-																	'object_id' => $transaksi->id, 
-																	'user_id' => $this->getUserid(), 
-																	'message' => 'Transaksi berhasil.'
-																]);
-					$result=[
-						'status'=>'00',
-						'kode_billing'=>$transaksi->no_transaksi,
-						'message'=>'Pembayaran Berhasil',
-						'noref'=>$no_ref,
-					];
+							$sql = "INSERT INTO transaksi_api (
+								no_transaksi,
+								no_faktur,
+								kjur,
+								tahun,
+								idsmt,
+								idkelas,
+								no_formulir,
+								nim,
+								commited,
+								tanggal,
+								userid,
+								total,
+								date_added,
+								date_modified
+							)
+							SELECT 
+								no_transaksi,
+								no_faktur,
+								kjur,
+								tahun,
+								idsmt,
+								idkelas,
+								no_formulir,
+								nim,
+								commited,
+								tanggal,
+								$userid,
+								$total_tagihan,
+								NOW(),
+								NOW() 
+							FROM transaksi 
+								WHERE no_transaksi='$no_transaksi'";
 
-					return $result;
-				});
+							\DB::statement($sql);
+						}
+						elseif ($data->nim == '') //pembayaran mahasiswa baru
+						{
+							$sql = "INSERT INTO transaksi_api (
+								no_transaksi,
+								no_faktur,
+								kjur,
+								tahun,
+								idsmt,
+								idkelas,
+								no_formulir,
+								nim,
+								commited,
+								tanggal,
+								userid,
+								total,
+								date_added,
+								date_modified
+							) 
+							SELECT 
+								no_transaksi,
+								no_faktur,
+								kjur,
+								tahun,
+								idsmt,
+								idkelas,
+								no_formulir,
+								nim,
+								commited,
+								tanggal,
+								$userid,
+								$total_tagihan,
+								NOW(),
+								NOW() 
+							FROM transaksi 
+							WHERE no_transaksi='$no_transaksi'";
+
+							\DB::statement($sql);
+
+						}
+						else
+						{
+							$datadulang = \DB::table('dulang')
+								->select(\DB::raw('
+									iddulang,
+									nim,
+									tahun,
+									idsmt,
+									tanggal,
+									idkelas,
+									status_sebelumnya,
+									k_status
+								'))
+							 	->where('nim', $data->nim)
+								->where('idsmt', $data->idsmt)
+								->where('tahun', $data->tahun)
+								->first();
+
+							if (is_null($datadulang))
+							{
+								$h_keuangan = new HelperKeuangan();
+								$h_keuangan->setDataMHS([
+									'no_formulir'=>$data->no_formulir,
+									'nim'=>$data->nim,
+									'kjur'=>$data->kjur,
+									'ta'=>$data->tahun,
+									'idsmt'=>$data->idsmt,
+									'tahun_masuk'=>$data->tahun_masuk,
+									'semester_masuk'=>$data->semester_masuk,
+									'idkelas'=>$data->idkelas,
+									'k_status'=>$data->k_status,									
+								]);
+								$datadulang = $h_keuangan->getDataDulang($data->idsmt, $data->tahun);
+								
+								if (is_null($datadulang))
+								{
+									$bool = $h_keuangan->getTresholdPembayaran($data->tahun, $data->idsmt);
+									if ($bool)
+									{
+										$tasmt=$data->tahun.$data->idsmt;
+										DulangModel::create([
+											'nim'=>$data->nim,
+											'tahun'=>$data->tahun,
+											'idsmt'=>$data->idsmt,
+											'tasmt'=>$tasmt,
+											'tanggal'=>\Carbon\Carbon::now(),
+											'idkelas'=>$data->idkelas,
+											'k_status'=>'A',
+											'status_sebelumnya'=>'A',
+										]);
+										
+										\DB::table('register_mahasiswa')
+											->where('nim', $data->nim)
+											->update([
+												'k_status'=>'A'
+											]);
+									}
+								}
+								$sql = "INSERT INTO transaksi_api (
+									no_transaksi,
+									no_faktur,
+									kjur,
+									tahun,
+									idsmt,
+									idkelas,
+									no_formulir,
+									nim,
+									commited,
+									tanggal,
+									userid,
+									total,
+									date_added,
+									date_modified
+								) 
+								SELECT 
+									no_transaksi,
+									no_faktur,
+									kjur,
+									tahun,
+									idsmt,
+									idkelas,
+									no_formulir,
+									nim,
+									commited,
+									tanggal,
+									$userid,
+									$total_tagihan,
+									NOW(),
+									NOW() 
+								FROM transaksi 
+									WHERE no_transaksi='$no_transaksi'";
+								
+								\DB::statement($sql);
+							}
+							return 	[
+								'status'=>'00',
+								'kode_billing'=>$data->no_transaksi,
+								'message'=>'Pembayaran Berhasil',
+								'noref'=>$no_ref,
+							];
+						}
+					});
+					return response()->json([
+															'Result' => $result
+														], 200);
+				}
+			break;
+			case 12: //bayar cuti
+
+			break;
+			default:
 				return response()->json([
-											'Result' => $result
-										], 200);
-			}
-		
-		}        
+					'Result' => [
+						'status'=>30,
+						'message'=>'Proses Login telah berhasil, namun ada error yaitu tipe_transaksi tidak dikenal.',						
+					]
+				], 200);
+		}
 	}
 }
