@@ -52,19 +52,18 @@ class TransaksiController extends Controller {
 					->first();
 				
 				if (is_null($data))        {
-					return Response()->json(['Result'=>[
-													'status'=>'14',        
-													'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"
-												]
-											], 200); 
+					return Response()->json([
+						'status'=>'14',        
+						'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"											
+					], 200); 
 				}
 				else if ($data->commited==1)
 				{
-					return Response()->json(['Result'=>[
-												'status'=>'88',        
-												'message'=>"Tagihan sudah dibayarkan."
-											]
-										], 200); 
+					return Response()->json([
+						'status'=>'88',        
+						'message'=>"Tagihan sudah dibayarkan."
+						
+					], 200); 
 				}
 				else
 				{
@@ -96,12 +95,10 @@ class TransaksiController extends Controller {
 
 					$payload['commited']=$data->commited;
 
-					return response()->json([
-						'Result' => [
-							'status'=>00,
-							'message'=>'Request Data Berhasil',
-							'data'=>$payload,
-						]
+					return response()->json([						
+						'status'=>'00',
+						'message'=>'Request Data Berhasil',
+						'data'=>$payload,						
 					], 200); 			
 
 				}			
@@ -131,19 +128,17 @@ class TransaksiController extends Controller {
 				->first();
 			
 				if (is_null($data))        {
-					return Response()->json(['Result'=>[
-													'status'=>'14',        
-													'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"
-												]
-											], 200); 
+					return Response()->json([
+						'status'=>'14',        
+						'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"												
+					], 200); 
 				}
 				else if ($data->commited==1)
 				{
-					return Response()->json(['Result'=>[
-												'status'=>'88',        
-												'message'=>"Tagihan sudah dibayarkan."
-											]
-										], 200); 
+					return Response()->json([
+						'status'=>'88',        
+						'message'=>"Tagihan sudah dibayarkan."											
+					], 200); 
 				}
 				else
 				{
@@ -166,20 +161,16 @@ class TransaksiController extends Controller {
 					$payload['tanggal']=$data->tanggal;	
 					$payload['date_added']=$data->date_added;	
 				}
-				return response()->json([
-					'Result' => [
-						'status'=>'00',
-						'message'=>'Request Data Berhasil',
-						'data'=>$payload,
-					]
+				return response()->json([					
+					'status'=>'00',
+					'message'=>'Request Data Berhasil',
+					'data'=>$payload,				
 				], 200);
 			break;
 			default:
-				return response()->json([
-					'Result' => [
-						'status'=>30,
-						'message'=>'Proses Login telah berhasil, namun ada error yaitu tipe_transaksi tidak dikenal.',						
-					]
+				return response()->json([					
+					'status'=>30,
+					'message'=>'Proses Login telah berhasil, namun ada error yaitu tipe_transaksi tidak dikenal.',						
 				], 200);
 		}
 	}
@@ -221,19 +212,17 @@ class TransaksiController extends Controller {
 					->first();
 			
 				if (is_null($data))        {
-					return Response()->json(['Result'=>[
-													'status'=>'14',        
-													'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"
-												]
-											], 200); 
+					return Response()->json([
+						'status'=>'14',        
+						'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"												
+					], 200); 
 				}
 				else if ($data->commited == 1)
 				{
-					return Response()->json(['Result'=>[
-												'status'=>'88',        
-												'message'=>"Tagihan sudah dibayarkan."
-											]
-										], 200); 
+					return Response()->json([
+						'status'=>'88',        
+						'message'=>"Tagihan dengan KODE_BILLING ($kode_billing) sudah dibayarkan."											
+					], 200); 
 				}
 				else
 				{
@@ -430,20 +419,16 @@ class TransaksiController extends Controller {
 							];
 						}
 					});
-					return response()->json([
-															'Result' => $result
-														], 200);
+					return response()->json($result, 200);
 				}
 			break;
 			case 12: //bayar cuti
 
 			break;
 			default:
-				return response()->json([
-					'Result' => [
-						'status'=>30,
-						'message'=>'Proses Login telah berhasil, namun ada error yaitu tipe_transaksi tidak dikenal.',						
-					]
+				return response()->json([					
+					'status'=>30,
+					'message'=>'Proses Login telah berhasil, namun ada error yaitu tipe_transaksi tidak dikenal.',											
 				], 200);
 		}
 	}
