@@ -21,6 +21,11 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 
 	//ui admin
 	$router->get('/system/setting/uiadmin',['uses'=>'System\UIController@admin','as'=>'ui.admin']);
+
+	//kemahasiswaan	
+	$router->post('/kemahasiswaan/daftarmhs',['middleware'=>['role:superadmin|akademik|programstudi|puslahta|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@index','as'=>'daftarmhs.index']);
+	$router->get('/kemahasiswaan/daftarmhs/all',['middleware'=>['role:superadmin|akademik|programstudi|puslahta|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@all','as'=>'daftarmhs.all']);
+
 });
 
 //payment - [bank riau kepri]
