@@ -1,4 +1,5 @@
 import Vue from "vue"
+import store from "../store/index";
 import VueRouter from "vue-router"
 
 Vue.use(VueRouter)
@@ -28,6 +29,26 @@ const routes = [
 		},
 		component: () => import("../views/pages/admin/Dashboard.vue"),
 	},
+	//dmaster	
+	{
+		path: "/dmaster",
+		name: "DMaster",
+		meta: {
+			title: "DATA MASTER",
+			requiresAuth: true,
+				},
+		component: () => import("../views/pages/admin/dmaster/DMaster.vue"),
+	},
+	//keuangan
+	{
+		path: "/keuangan",
+		name: "Keuangan",
+		meta: {
+			title: "KEUANGAN",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/keuangan/Keuangan.vue"),
+	},
   {
     path: "*",
     redirect: "error-404",
@@ -40,6 +61,19 @@ const router = new VueRouter({
   scrollBehavior() {
     return { x: 0, y: 0 }
   },
-})
+});
+
+router.beforeEach((to, from, next) => {
+	document.title = to.meta.title;
+	if (to.matched.some(record => record.meta.requiresAuth)) {
+		if (store.getters["auth/Authenticated"]) {
+			next();
+			return;
+		}
+		next("/login");
+	} else {
+		next();
+	}
+});
 
 export default router

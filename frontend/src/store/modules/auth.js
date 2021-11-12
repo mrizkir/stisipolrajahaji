@@ -94,7 +94,7 @@ const getters = {
 		if (state.user === null || typeof state.user === "undefined") {
 			return "N.A";
 		} else {
-			return state.user.default_role;
+			return state.user.role;
 		}
 	},
 	Role: state => {
