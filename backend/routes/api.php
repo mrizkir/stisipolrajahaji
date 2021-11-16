@@ -29,7 +29,7 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 });
 
 //payment - [bank riau kepri]
-$router->group(['prefix'=>'h2h/iak', 'middleware'=>'auth:api'], function () use ($router)
+$router->group(['prefix'=>'v2/h2h/iak', 'middleware'=>'auth:api'], function () use ($router)
 {
 	//inquiry tagihan
 	$router->post('/inquiry-tagihan',['uses'=>'Plugins\H2H\IndoBestArthaKreasi\TransaksiController@inquiryTagihan','as'=>'iak.transaksi.inquiry-tagihan']);

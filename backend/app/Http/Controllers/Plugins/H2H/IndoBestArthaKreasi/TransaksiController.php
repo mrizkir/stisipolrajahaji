@@ -239,8 +239,9 @@ class TransaksiController extends Controller {
 							->update([
 								'commited'=> 1
 							]);
-
-						if ($data->nama_mhs == '' && $data->nim == '' && $data->kjur == 0) //biaya pendaftaran
+						
+						
+						if ($data->nama_mhs == '' && ($data->nim == '' || $data->nim == '0') && $data->kjur == 0) //biaya pendaftaran
 						{
 							$sql = "INSERT INTO transaksi_api (
 								no_transaksi,
@@ -277,8 +278,15 @@ class TransaksiController extends Controller {
 								WHERE no_transaksi='$no_transaksi'";
 
 							\DB::statement($sql);
+
+							return 	[
+								'status'=>'00',
+								'kode_billing'=>$data->no_transaksi,
+								'message'=>'Pembayaran Berhasil',
+								'noref'=>$no_ref,
+							];
 						}
-						elseif ($data->nim == '') //pembayaran mahasiswa baru
+						elseif ($data->nim == '' || $data->nim == '0') //pembayaran mahasiswa baru
 						{
 							$sql = "INSERT INTO transaksi_api (
 								no_transaksi,
@@ -315,7 +323,13 @@ class TransaksiController extends Controller {
 							WHERE no_transaksi='$no_transaksi'";
 
 							\DB::statement($sql);
-
+							
+							return 	[
+								'status'=>'00',
+								'kode_billing'=>$data->no_transaksi,
+								'message'=>'Pembayaran Berhasil',
+								'noref'=>$no_ref,
+							];							
 						}
 						else
 						{
