@@ -49,6 +49,55 @@ const routes = [
 		},
 		component: () => import("../views/pages/admin/keuangan/Keuangan.vue"),
 	},
+	//akademik
+	{
+		path: "/akademik",
+		name: "Akademik",
+		meta: {
+			title: "AKADEMIK",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/akademik/Akademik.vue"),
+	},
+	//kemahasiswaaan
+	{
+		path: "/kemahasiswaan",
+		name: "Kemahasiswaan",
+		meta: {
+			title: "KEMAHASISWAAN",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/kemahasiswaan/Kemahasiswaan.vue"),
+	},
+	//kepegawaian
+	{
+		path: "/kepegawaian",
+		name: "Kepegawaian",
+		meta: {
+			title: "KEPEGAWAIAN",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/kepegawaian/Kepegawaian.vue"),
+	},
+	{
+		path: "/kemahasiswaan",
+		name: "Kemahasiswaan",
+		meta: {
+			title: "KEMAHASISWAAN",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/kemahasiswaan/Kemahasiswaan.vue"),
+	},
+	//system - users
+	{
+		path: "/system-users",
+		name: "SystemUsers",
+		meta: {
+			title: "SYSTEM - USERS",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/system/SystemUsers.vue"),
+	},
   {
     path: "*",
     redirect: "error-404",

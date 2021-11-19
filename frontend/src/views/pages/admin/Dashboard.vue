@@ -114,6 +114,66 @@
 						</v-card>
 					</v-col>
 					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />					
+					<v-col xs="12" sm="4" md="3" class="align-self-start" v-if="$store.getters['auth/can']('AKADEMIK-GROUP')">
+						<v-card							
+							class="clickable"							
+							color="text-center"
+							@click.native="$router.push('/akademik')"
+						>
+							<v-card-text class="d-flex flex-column justify-center align-center">
+								<v-avatar
+									color="primary"
+									class="v-avatar-light-bg primary--text mt-10"
+									icon
+									size="50"
+								>
+									<v-icon
+										size="2rem"
+										color="primary"
+									>
+										{{ icons.mdiCashMultiple }}
+									</v-icon>
+								</v-avatar>
+								<h6 class="text-xl mt-4 font-weight-medium">
+									AKADEMIK
+								</h6>
+							</v-card-text>
+							<v-card-text>
+								Modul ini digunakan untuk mengelola akademik Perguruan Tinggi.
+							</v-card-text>							
+						</v-card>
+					</v-col>
+					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />					
+					<v-col xs="12" sm="4" md="3" class="align-self-start" v-if="$store.getters['auth/can']('SYSTEM-USERS-GROUP')">
+						<v-card							
+							class="clickable"							
+							color="text-center"
+							@click.native="$router.push('/system-users')"
+						>
+							<v-card-text class="d-flex flex-column justify-center align-center">
+								<v-avatar
+									color="primary"
+									class="v-avatar-light-bg primary--text mt-10"
+									icon
+									size="50"
+								>
+									<v-icon
+										size="2rem"
+										color="primary"
+									>
+										{{ icons.mdiCashMultiple }}
+									</v-icon>
+								</v-avatar>
+								<h6 class="text-xl mt-4 font-weight-medium">
+									USER SISTEM
+								</h6>
+							</v-card-text>
+							<v-card-text>
+								Modul ini digunakan untuk mengelola user sistem.
+							</v-card-text>							
+						</v-card>
+					</v-col>
+					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />					
 				</v-row>
 			</v-container>
 		</v-main>
