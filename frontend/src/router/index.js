@@ -79,15 +79,6 @@ const routes = [
 		},
 		component: () => import("../views/pages/admin/kepegawaian/Kepegawaian.vue"),
 	},
-	{
-		path: "/kemahasiswaan",
-		name: "Kemahasiswaan",
-		meta: {
-			title: "KEMAHASISWAAN",
-			requiresAuth: true,
-		},
-		component: () => import("../views/pages/admin/kemahasiswaan/Kemahasiswaan.vue"),
-	},
 	//system - users
 	{
 		path: "/system-users",

@@ -1,6 +1,6 @@
 <template>
 	<div>	
-		<v-app-bar app>
+		<v-app-bar app elevation="0">
 			<v-toolbar-title
 				class="headline clickable"
 				@click.stop="
@@ -144,6 +144,38 @@
 						</v-card>
 					</v-col>
 					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />					
+					<v-col xs="12" sm="4" md="3" class="align-self-start" v-if="$store.getters['auth/can']('KEPEGAWAIAN-GROUP')">
+						<v-card							
+							class="clickable"							
+							color="text-center"
+							@click.native="$router.push('/kepegawaian')"
+						>
+							<v-card-text class="d-flex flex-column justify-center align-center">
+								<v-avatar
+									color="primary"
+									class="v-avatar-light-bg primary--text mt-10"
+									icon
+									size="50"
+								>
+									<v-icon
+										size="2rem"
+										color="primary"
+									>
+										{{ icons.mdiCashMultiple }}
+									</v-icon>
+								</v-avatar>
+								<h6 class="text-xl mt-4 font-weight-medium">
+									KEPEGAWAIAN
+								</h6>
+							</v-card-text>
+							<v-card-text>
+								Modul ini digunakan untuk mengelola kepegawaian terutama dosen.
+							</v-card-text>							
+						</v-card>
+					</v-col>
+					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />					
+				</v-row>
+				<v-row class="mt-n5">
 					<v-col xs="12" sm="4" md="3" class="align-self-start" v-if="$store.getters['auth/can']('SYSTEM-USERS-GROUP')">
 						<v-card							
 							class="clickable"							
@@ -173,7 +205,7 @@
 							</v-card-text>							
 						</v-card>
 					</v-col>
-					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />					
+					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />
 				</v-row>
 			</v-container>
 		</v-main>

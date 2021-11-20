@@ -5,7 +5,7 @@
       flat
       :absolute="appBarType === 'static'"
       :elevate-on-scroll="appBarType !== 'static'"
-      :elevation="appBarType !== 'static' ? $vuetify.theme.isDark ? 4: 3 : 0"
+      elevation="0"
       class="mx-auto app-bar-static"
     >
       <v-toolbar-title>
