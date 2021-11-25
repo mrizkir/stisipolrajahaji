@@ -1,6 +1,6 @@
 <?php
 $router->get('/', function () use ($router) {
-	return 'Campus50v2 API';
+	return 'PortalEKampus API';
 });
 
 $router->group(['prefix'=>'v2'], function () use ($router)
