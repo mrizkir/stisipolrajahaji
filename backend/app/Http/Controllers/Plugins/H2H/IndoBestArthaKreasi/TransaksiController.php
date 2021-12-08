@@ -237,7 +237,7 @@ class TransaksiController extends Controller {
 						\DB::table('transaksi')
 							->where('no_transaksi', $no_transaksi)
 							->update([
-								'no_ref'=>$no_ref,
+								'no_faktur'=>$no_ref,
 								'commited'=> 1
 							]);
 						
