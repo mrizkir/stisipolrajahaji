@@ -59,6 +59,15 @@ const routes = [
 		},
 		component: () => import("../views/pages/admin/akademik/Akademik.vue"),
 	},
+	{
+		path: "/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas",
+		name: "PerkuliahanJenisAktivitas",
+		meta: {
+			title: "PERKULIAHAN - JENIS AKTIVITAS",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/akademik/perkuliahan/aktivitasmahasiswa/JenisAktivitas.vue"),
+	},
 	//kemahasiswaaan
 	{
 		path: "/kemahasiswaan",

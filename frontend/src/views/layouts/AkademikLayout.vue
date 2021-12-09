@@ -13,7 +13,40 @@
 			:temporary="temporaryleftsidebar"
 			app
 		>
-			
+			<v-divider></v-divider>
+			<v-subheader
+				style="color:#f0935c"				
+			>
+				PERKULIAHAN
+			</v-subheader>
+			<v-list-group
+				group="/akademik/perkuliahan/aktivitasmahasiswa"
+				no-action
+			>
+				<template v-slot:activator>
+					<v-list-item-icon class="mr-2">
+						<v-icon>mdi-chart-timeline</v-icon>
+					</v-list-item-icon>
+					<v-list-item-content>
+						<v-list-item-title>AKTIVITAS MAHASISWA</v-list-item-title>
+					</v-list-item-content>
+				</template>
+				<div>
+					<v-list-item
+						link						
+						to="/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas"
+					>
+						<v-list-item-icon class="mr-2">
+							<v-icon>mdi-arrow-right-bold-hexagon-outline</v-icon>
+						</v-list-item-icon>
+						<v-list-item-content>
+							<v-list-item-title>
+								JENIS AKTIVITAS
+							</v-list-item-title>
+						</v-list-item-content>
+					</v-list-item>
+				</div>
+			</v-list-group>
 		</v-navigation-drawer>
 		<v-main class="mx-4 mb-4">
 			<slot />
