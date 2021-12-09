@@ -266,19 +266,7 @@ const actions = {
 					commit("setTahunAkademik", data.tahun_akademik);
 					commit("setDaftarSemester", data.daftar_semester);
 					commit("setSemesterAkademik", data.semester_akademik);
-
-					let daftar_fakultas = data.daftar_fakultas;
-					var fakultas = [];
-					daftar_fakultas.forEach(element => {
-						fakultas.push({
-							id: element.kode_fakultas,
-							text: element.nama_fakultas,
-							nama_fakultas: element.nama_fakultas,
-						});
-					});
-					commit("setDaftarFakultas", fakultas);
-					commit("setFakultasID", data.fakultas_id);
-
+					
 					let daftar_prodi = data.daftar_prodi;
 					var prodi = [];
 					daftar_prodi.forEach(element => {

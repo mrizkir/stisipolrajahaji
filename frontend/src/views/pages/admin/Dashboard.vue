@@ -54,7 +54,7 @@
 		<v-main class="mx-4 mb-4">
 			<v-container flud color="#f1f2f6">
 				<v-row class="mt-n5">
-					<v-col xs="12" sm="4" md="3" class="align-self-start" v-if="$store.getters['auth/can']('DMASTER-GROUP')">
+					<v-col xs="12" sm="4" md="3" class="align-self-start">
 						<v-card							
 							class="clickable"							
 							color="text-center"
@@ -84,7 +84,7 @@
 						</v-card>
 					</v-col>
 					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />
-					<v-col xs="12" sm="4" md="3" class="align-self-start" v-if="$store.getters['auth/can']('KEUANGAN-GROUP')">
+					<v-col xs="12" sm="4" md="3" class="align-self-start">
 						<v-card							
 							class="clickable"							
 							color="text-center"
@@ -114,7 +114,7 @@
 						</v-card>
 					</v-col>
 					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />					
-					<v-col xs="12" sm="4" md="3" class="align-self-start" v-if="$store.getters['auth/can']('AKADEMIK-GROUP')">
+					<v-col xs="12" sm="4" md="3" class="align-self-start">
 						<v-card							
 							class="clickable"							
 							color="text-center"
@@ -144,7 +144,7 @@
 						</v-card>
 					</v-col>
 					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />					
-					<v-col xs="12" sm="4" md="3" class="align-self-start" v-if="$store.getters['auth/can']('KEPEGAWAIAN-GROUP')">
+					<v-col xs="12" sm="4" md="3" class="align-self-start">
 						<v-card							
 							class="clickable"							
 							color="text-center"
@@ -176,7 +176,7 @@
 					<v-responsive width="100%" v-if="$vuetify.breakpoint.xsOnly" />					
 				</v-row>
 				<v-row class="mt-n5">
-					<v-col xs="12" sm="4" md="3" class="align-self-start" v-if="$store.getters['auth/can']('SYSTEM-USERS-GROUP')">
+					<v-col xs="12" sm="4" md="3" class="align-self-start">
 						<v-card							
 							class="clickable"							
 							color="text-center"
@@ -261,10 +261,9 @@
 							Authorization: "Bearer " + this.token,
 						},
 					})
-					.then(({ data }) => {
-						console.log(data);
-						// this.dashboard = data.role[0];
-						// this.$store.dispatch("uiadmin/changeDashboard", this.dashboard);
+					.then(({ data }) => {						
+						this.dashboard = data.role;
+						this.$store.dispatch("uiadmin/changeDashboard", this.dashboard);
 					})
 					.catch(error => {
 						if (error.response.status == 401) {
@@ -273,7 +272,7 @@
 							this.$store.dispatch("uiadmin/reinit");							
 						}
 					});
-				// this.$store.dispatch("uiadmin/init", this.$ajax);
+				this.$store.dispatch("uiadmin/init", this.$ajax);
 			},
 			logout() {
 				this.loginTime = 0;
