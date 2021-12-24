@@ -27,7 +27,7 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	$router->get('/kemahasiswaan/daftarmhs/all',['middleware'=>['role:superadmin|akademik|programstudi|puslahta|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@all','as'=>'daftarmhs.all']);
 	
 	//akademik - perkuliahan - aktivitas mahasiswa - jenis aktivitas
-	$router->post('/akademik/perkuliahan/jenisaktivitas',['middleware'=>['role:superadmin|akademik|programstudi'],'uses'=>'Perkuliahan\JenisAktivitasController@index','as'=>'perkuliahan-jenisaktivitas.index']);	
+	$router->get('/akademik/perkuliahan/jenisaktivitas',['middleware'=>['role:superadmin|akademik|programstudi'],'uses'=>'Perkuliahan\JenisAktivitasController@index','as'=>'perkuliahan-jenisaktivitas.index']);	
 
 });
 

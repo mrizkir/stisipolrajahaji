@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Perkuliahan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Akademik\JenisAktivitasModel;
 
 class JenisAktivitasController extends Controller {      
   /**
@@ -12,11 +13,11 @@ class JenisAktivitasController extends Controller {
    */
   public function index()
   { 
-    $data = [];
+    $data = JenisAktivitasModel::all();
     return Response()->json([
       'status'=>'00',        
       'message'=>"data jenis aktivitas berhasil diperoleh",
-      'data'=>$data,
+      'jenisaktivitas'=>$data,
     ], 200); 
   }     
 }

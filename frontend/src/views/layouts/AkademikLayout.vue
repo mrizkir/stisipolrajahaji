@@ -25,7 +25,7 @@
 			>
 				<template v-slot:activator>
 					<v-list-item-icon class="mr-2">
-						<v-icon>mdi-chart-timeline</v-icon>
+						<v-icon>{{icons.mdiAccountBoxMultiple}}</v-icon>
 					</v-list-item-icon>
 					<v-list-item-content>
 						<v-list-item-title>AKTIVITAS MAHASISWA</v-list-item-title>
@@ -37,7 +37,7 @@
 						to="/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas"
 					>
 						<v-list-item-icon class="mr-2">
-							<v-icon>mdi-arrow-right-bold-hexagon-outline</v-icon>
+							<v-icon>{{icons.mdiArrowCollapseRight}}</v-icon>
 						</v-list-item-icon>
 						<v-list-item-content>
 							<v-list-item-title>
@@ -54,8 +54,17 @@
 	</div>
 </template>
 <script>
+	import { mdiAccountBoxMultiple, mdiArrowCollapseRight } from "@mdi/js";
 	export default {
 		name: "AkademikLayout",
+		setup() {
+			return {
+				icons: {
+					mdiAccountBoxMultiple,
+					mdiArrowCollapseRight,
+				}
+			};
+		},
 		props: {
 			showrightsidebar: {
 				type: Boolean,

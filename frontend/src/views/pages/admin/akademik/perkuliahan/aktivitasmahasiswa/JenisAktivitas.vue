@@ -1,32 +1,31 @@
 <template>
 	<AkademikLayout>
 		<ModuleHeader>
-      <template v-slot:icon>
+			<template v-slot:icon>
 				mdi-book
 			</template>
-      <template v-slot:name>
+			<template v-slot:name>
 				JENIS AKTIVITAS
 			</template>
-      <template v-slot:breadcrumbs>
+			<template v-slot:breadcrumbs>
 				<v-breadcrumbs :items="breadcrumbs" class="pa-0">
 					<template v-slot:divider>
-						<v-icon>mdi-chevron-right</v-icon>
+						<v-icon>{{icons.mdiChevronRight}}</v-icon>
 					</template>
 				</v-breadcrumbs>
 			</template>
-      <template v-slot:desc>
+			<template v-slot:desc>
 				<v-alert color="cyan" border="left" colored-border type="info">
 					Halaman untuk mengelola berbagai macam jenis aktivitas mahasiswa
 				</v-alert>
 			</template>
-    </ModuleHeader>
-    <v-container fluid>
-      <v-row class="mb-4" no-gutters>
+		</ModuleHeader>
+		<v-container fluid>
+			<v-row class="mb-4" no-gutters>
 				<v-col cols="12">
-          <v-data-table
+					<v-data-table
 						:headers="headers"
-						:items="datatable"
-						:search="search"
+						:items="datatable"						
 						item-key="id"
 						show-expand
 						:expanded.sync="expanded"
@@ -38,19 +37,49 @@
 						:loading="datatableLoading"
 						loading-text="Loading... Please wait"
 					>
-
-          </v-data-table>
-        </v-col>
-      </v-row>
-    </v-container>
-  </AkademikLayout>
+						<template v-slot:top>
+							<v-toolbar flat>
+								<v-toolbar-title>DAFTAR JENIS AKTIVITAS</v-toolbar-title>
+								<v-divider class="mx-4" inset vertical />
+								<v-spacer></v-spacer>
+								<v-dialog v-model="dialogfrm" max-width="500px" persistent>
+									<template v-slot:activator="{ on: dialog }">
+										<v-tooltip bottom>
+											<template v-slot:activator="{ on: tooltip }">
+												<v-btn
+													color="primary"
+													icon
+													outlined
+													small
+													class="ma-2"
+													v-on="{ ...tooltip, ...dialog }"
+													:disabled="false"
+												>
+													<v-icon>{{icons.mdiPlus}}</v-icon>
+												</v-btn>
+											</template>
+											<span>Tambah Jenis Kegiatan</span>
+										</v-tooltip>
+									</template>
+								</v-dialog>
+							</v-toolbar>
+						</template>
+						<template v-slot:no-data>
+							Data belum tersedia
+						</template>
+					</v-data-table>
+				</v-col>
+			</v-row>
+		</v-container>
+	</AkademikLayout>
 </template>
 <script>
-  import AkademikLayout from "@/views/layouts/AkademikLayout";
+	import { mdiChevronRight, mdiPlus } from "@mdi/js";
+	import AkademikLayout from "@/views/layouts/AkademikLayout";
 	import ModuleHeader from "@/components/ModuleHeader";
-  export default {
-    name: "JenisAktivitas",
-    created() {
+	export default {
+		name: "JenisAktivitas",
+		created() {
 			this.breadcrumbs = [
 				{
 					text: "HOME",
@@ -77,28 +106,61 @@
 					disabled: true,
 					href: "#",
 				},
-			];			
+			];
+			this.initialize();
 		},
-    data: () => ({
-      breadcrumbs: null,
-      btnLoading: false,
-			datatableLoading: false,      
+		setup() {
+			return {
+				icons: {
+					mdiChevronRight,
+					mdiPlus					
+				}
+			};
+		},
+		data: () => ({
+			breadcrumbs: null,
+			btnLoading: false,
+			datatableLoading: false,
 			expanded: [],
 			datatable: [],
-      headers: [],
-    }),
-    methods: {
-      dataTableRowClicked(item) {
+			headers: [
+				{ text: "ID", value: "idjenis", width: 100, sortable: false },
+				{ text: "NAMA JENIS", value: "nama_jenis" },
+				{ text: "AKSI", value: "actions", sortable: false, width: 100 },
+			],
+
+			//dialog
+			dialogfrm: false,
+			dialogdetailitem: false,
+		}),
+		methods: {
+			initialize: async function() {
+				this.datatableLoading = true;
+				await this.$ajax
+					.get("/akademik/perkuliahan/jenisaktivitas", {
+						headers: {
+							Authorization: this.$store.getters["auth/Token"],
+						},
+					})
+					.then(({ data }) => {
+						this.datatable = data.jenisaktivitas;
+						this.datatableLoading = false;
+					})
+					.catch(() => {
+						this.datatableLoading = false;
+					});
+			},
+			dataTableRowClicked(item) {
 				if (item === this.expanded[0]) {
 					this.expanded = [];
 				} else {
 					this.expanded = [item];
 				}
 			},
-    },
-    components: {
+		},
+		components: {
 			AkademikLayout,
 			ModuleHeader,			
 		},
-  };
+	};
 </script>
