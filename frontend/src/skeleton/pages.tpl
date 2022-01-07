@@ -1,48 +1,79 @@
 <template>
-	<AkademikLayout>
+	<AdminLayout>
 		<ModuleHeader>
 			<template v-slot:icon>
-				mdi-book
+				mdi-file
 			</template>
 			<template v-slot:name>
-				JENIS AKTIVITAS
+				PAGE
+			</template>
+			<template v-slot:subtitle>
+				KETERANGAN
 			</template>
 			<template v-slot:breadcrumbs>
 				<v-breadcrumbs :items="breadcrumbs" class="pa-0">
 					<template v-slot:divider>
-						<v-icon>{{icons.mdiChevronRight}}</v-icon>
+						<v-icon>mdi-chevron-right</v-icon>
 					</template>
 				</v-breadcrumbs>
 			</template>
 			<template v-slot:desc>
 				<v-alert color="cyan" border="left" colored-border type="info">
-					Halaman untuk mengelola berbagai macam jenis aktivitas mahasiswa
+					Text
 				</v-alert>
 			</template>
 		</ModuleHeader>
+		<template v-slot:filtersidebar>
+			
+		</template>
 		<v-container fluid>
+			<v-row class="mb-4" no-gutters>
+				<v-col cols="12">
+					<v-card>
+						<v-card-title>
+							FILTER
+						</v-card-title>
+						<v-card-text></v-card-text>
+					</v-card>
+				</v-col>
+			</v-row>
+			<v-row class="mb-4" no-gutters>
+				<v-col cols="12">
+					<v-card>
+						<v-card-text>
+							<v-text-field
+								v-model="search"
+								append-icon="mdi-database-search"
+								label="Search"
+								single-line
+								hide-details
+							></v-text-field>
+						</v-card-text>
+					</v-card>
+				</v-col>
+			</v-row>
 			<v-row class="mb-4" no-gutters>
 				<v-col cols="12">
 					<v-data-table
 						:headers="headers"
-						:items="datatable"						
+						:items="datatable"
+						:search="search"
 						item-key="id"
+						sort-by="name"
 						show-expand
 						:expanded.sync="expanded"
 						:single-expand="true"
-						:disable-pagination="true"
-						:hide-default-footer="true"
 						@click:row="dataTableRowClicked"
 						class="elevation-1"
 						:loading="datatableLoading"
 						loading-text="Loading... Please wait"
 					>
 						<template v-slot:top>
-							<v-toolbar flat>
-								<v-toolbar-title>DAFTAR JENIS AKTIVITAS</v-toolbar-title>
+							<v-toolbar flat color="white">
+								<v-toolbar-title>DATA TABLE</v-toolbar-title>
 								<v-divider class="mx-4" inset vertical />
 								<v-spacer></v-spacer>
-								<v-dialog v-model="dialogfrm" max-width="750px" persistent>
+								<v-dialog v-model="dialogfrm" max-width="500px" persistent>
 									<template v-slot:activator="{ on: dialog }">
 										<v-tooltip bottom>
 											<template v-slot:activator="{ on: tooltip }">
@@ -55,10 +86,10 @@
 													v-on="{ ...tooltip, ...dialog }"
 													:disabled="false"
 												>
-													<v-icon>{{icons.mdiPlus}}</v-icon>
+													<v-icon>mdi-plus</v-icon>
 												</v-btn>
 											</template>
-											<span>Tambah Jenis Kegiatan</span>
+											<span>Tooltip text</span>
 										</v-tooltip>
 									</template>
 									<v-form ref="frmdata" v-model="form_valid" lazy-validation>
@@ -68,10 +99,10 @@
 											</v-card-title>
 											<v-card-text>
 												<v-text-field
-													v-model="formdata.nama_aktivitas"
-													label="NAMA JENIS AKTIVITAS"
+													v-model="formdata.name"
+													label="NAME"
 													outlined
-													:rules="rule_nama_aktivitas"
+													:rules="rule_name"
 												>
 												</v-text-field>
 											</v-card-text>
@@ -98,7 +129,7 @@
 								</v-dialog>
 								<v-dialog
 									v-model="dialogdetailitem"
-									max-width="750px"
+									max-width="500px"
 									persistent
 								>
 									<v-card>
@@ -111,7 +142,7 @@
 													<v-card flat>
 														<v-card-title>ID :</v-card-title>
 														<v-card-subtitle>
-															{{ formdata.idjenis }}
+															{{ formdata.id }}
 														</v-card-subtitle>
 													</v-card>
 												</v-col>
@@ -139,9 +170,9 @@
 											<v-row no-gutters>
 												<v-col xs="12" sm="6" md="6">
 													<v-card flat>
-														<v-card-title>NAMA AKTIVITAS :</v-card-title>
+														<v-card-title>NAME :</v-card-title>
 														<v-card-subtitle>
-															{{ formdata.nama_aktivitas }}
+															{{ formdata.name }}
 														</v-card-subtitle>
 													</v-card>
 												</v-col>
@@ -181,6 +212,9 @@
 								</v-dialog>
 							</v-toolbar>
 						</template>
+						<template v-slot:item.id="{ item }">
+							{{ item.id }}
+						</template>
 						<template v-slot:item.actions="{ item }">
 							<v-tooltip bottom>
 								<template v-slot:activator="{ on, attrs }">
@@ -191,7 +225,7 @@
 										class="mr-2"
 										@click.stop="viewItem(item)"
 									>
-										{{icons.mdiEye}}
+										mdi-eye
 									</v-icon>
 								</template>
 								<span>Detail Tooltip</span>
@@ -203,12 +237,13 @@
 										v-on="on"
 										small
 										class="mr-2"
-										@click.stop="editItem(item)"										
+										@click.stop="editItem(item)"
+										:disabled="true"
 									>
-										{{ icons.mdiPencil }}
+										mdi-pencil
 									</v-icon>
 								</template>
-								<span>Ubah Jenis Aktivitas</span>
+								<span>Ubah Tooltip</span>
 							</v-tooltip>
 							<v-tooltip bottom>
 								<template v-slot:activator="{ on, attrs }">
@@ -220,16 +255,16 @@
 										:disabled="btnLoading"
 										@click.stop="deleteItem(item)"
 									>
-										{{icons.mdiDelete}}
+										mdi-delete
 									</v-icon>
 								</template>
-								<span>Hapus Jenis Aktivitas</span>
+								<span>Hapus Tooltip</span>
 							</v-tooltip>
 						</template>
 						<template v-slot:expanded-item="{ headers, item }">
 							<td :colspan="headers.length" class="text-center">
 								<v-col cols="12">
-									<strong>ID:</strong>{{ item.idjenis }}
+									<strong>ID:</strong>{{ item.id }}
 									<strong>CREATED AT:</strong>
 									{{ $date(item.created_at).format("DD/MM/YYYY HH:mm") }}
 									<strong>UPDATED AT:</strong>
@@ -244,14 +279,13 @@
 				</v-col>
 			</v-row>
 		</v-container>
-	</AkademikLayout>
+	</AdminLayout>
 </template>
 <script>
-	import { mdiChevronRight, mdiPlus, mdiEye, mdiDelete, mdiPencil } from "@mdi/js";
-	import AkademikLayout from "@/views/layouts/AkademikLayout";
+	import AdminLayout from "@/views/layouts/AdminLayout";
 	import ModuleHeader from "@/components/ModuleHeader";
 	export default {
-		name: "JenisAktivitas",
+		name: "PAGE",
 		created() {
 			this.breadcrumbs = [
 				{
@@ -260,49 +294,32 @@
 					href: "/dashboard/" + this.$store.getters["auth/AccessToken"],
 				},
 				{
-					text: "AKADEMIK",
-					disabled: false,
-					href: "/akademik",
-				},
-				{
-					text: "PERKULIAHAN",
+					text: "PAGE_GROUP",
 					disabled: false,
 					href: "#",
 				},
 				{
-					text: "AKTIVITAS MAHASISWA",
-					disabled: false,
-					href: "#",
-				},
-				{
-					text: "JENIS AKTIVITAS",
+					text: "PAGE",
 					disabled: true,
 					href: "#",
 				},
 			];
 			this.initialize();
 		},
-		setup() {
-			return {
-				icons: {
-					mdiChevronRight,
-					mdiPlus,
-					mdiDelete,
-					mdiEye,
-					mdiPencil,
-				}
-			};
+		mounted() {
+			this.firstloading = false;
 		},
 		data: () => ({
-			breadcrumbs: null,
+			firstloading: true,
 			btnLoading: false,
 			datatableLoading: false,
 			expanded: [],
 			datatable: [],
-			headers: [				
-				{ text: "NAMA AKTIVITAS", value: "nama_aktivitas" },
+			headers: [
+				{ text: "ID", value: "id" },
 				{ text: "AKSI", value: "actions", sortable: false, width: 100 },
 			],
+			search: null,
 
 			//dialog
 			dialogfrm: false,
@@ -311,37 +328,42 @@
 			//form data
 			form_valid: true,
 			formdata: {
-				idjenis: null,
-				nama_aktivitas: null,
+				id: 0,
+				name: null,
 				created_at: null,
 				updated_at: null,
 			},
 			formdefault: {
-				idjenis: null,
-				nama_aktivitas: null,
+				id: 0,
+				name: null,
 				created_at: null,
 				updated_at: null,
 			},
 			editedIndex: -1,
 
-			//form rules			
-			rule_nama_aktivitas: [
-				value => !!value || "Mohon untuk di isi nama jenis aktivitas !!!",
+			//form rules
+			rule_user_nomorhp: [
+				value => !!value || "Kode mohon untuk diisi !!!",
 				value =>
-					/^[A-Za-z\s]*$/.test(value) || "Nama jenis aktivitas hanya boleh string dan spasi",
+					/^\+[1-9]{1}[0-9]{1,14}$/.test(value) || "Kode hanya boleh angka",
+			],
+			rule_name: [
+				value => !!value || "Mohon untuk di isi name !!!",
+				value =>
+					/^[A-Za-z\s]*$/.test(value) || "Name hanya boleh string dan spasi",
 			],
 		}),
 		methods: {
 			initialize: async function() {
 				this.datatableLoading = true;
 				await this.$ajax
-					.get("/akademik/perkuliahan/jenisaktivitas", {
+					.get("/path", {
 						headers: {
 							Authorization: this.$store.getters["auth/Token"],
 						},
 					})
 					.then(({ data }) => {
-						this.datatable = data.jenisaktivitas;
+						this.datatable = data.object;
 						this.datatableLoading = false;
 					})
 					.catch(() => {
@@ -355,16 +377,31 @@
 					this.expanded = [item];
 				}
 			},
+			viewItem(item) {
+				this.formdata = item;
+				this.dialogdetailitem = true;
+				// this.$ajax.get("/path/"+item.id,{
+				//     headers: {
+				//         Authorization: this.$store.getters["auth/Token"],
+				//     }
+				// 	}).then(({ data }) => {
+				// });
+			},
+			editItem(item) {
+				this.editedIndex = this.datatable.indexOf(item);
+				this.formdata = Object.assign({}, item);
+				this.dialogfrm = true;
+			},
 			save: async function() {
 				if (this.$refs.frmdata.validate()) {
 					this.btnLoading = true;
 					if (this.editedIndex > -1) {
 						await this.$ajax
 							.post(
-								"/akademik/perkuliahan/jenisaktivitas/" + this.formdata.idjenis,
+								"/path/" + this.formdata.id,
 								{
 									_method: "PUT",
-									nama_aktivitas: this.formdata.nama_aktivitas,
+									name: this.formdata.name,
 								},
 								{
 									headers: {
@@ -373,7 +410,7 @@
 								}
 							)
 							.then(({ data }) => {
-								Object.assign(this.datatable[this.editedIndex], data.jenisaktivitas);
+								Object.assign(this.datatable[this.editedIndex], data.object);
 								this.closedialogfrm();
 								this.btnLoading = false;
 							})
@@ -383,9 +420,9 @@
 					} else {
 						await this.$ajax
 							.post(
-								"/akademik/perkuliahan/jenisaktivitas/store",
+								"/path/store",
 								{
-									nama_aktivitas: this.formdata.nama_aktivitas,
+									name: this.formdata.name,
 								},
 								{
 									headers: {
@@ -394,7 +431,7 @@
 								}
 							)
 							.then(({ data }) => {
-								this.datatable.push(data.jenisaktivitas);
+								this.datatable.push(data.object);
 								this.closedialogfrm();
 								this.btnLoading = false;
 							})
@@ -404,20 +441,11 @@
 					}
 				}
 			},
-			viewItem(item) {
-				this.formdata = item;
-				this.dialogdetailitem = true;				
-			},
-			editItem(item) {
-				this.editedIndex = this.datatable.indexOf(item);
-				this.formdata = Object.assign({}, item);
-				this.dialogfrm = true;
-			},
 			deleteItem(item) {
 				this.$root.$confirm
 					.open(
 						"Delete",
-						"Apakah Anda ingin menghapus data dengan ID " + item.idjenis + " ?",
+						"Apakah Anda ingin menghapus data dengan ID " + item.id + " ?",
 						{ color: "red" }
 					)
 					.then(confirm => {
@@ -425,7 +453,7 @@
 							this.btnLoading = true;
 							this.$ajax
 								.post(
-									"/akademik/perkuliahan/jenisaktivitas/" + item.idjenis,
+									"/path/" + item.id,
 									{
 										_method: "DELETE",
 									},
@@ -464,12 +492,12 @@
 		},
 		computed: {
 			formTitle() {
-				return this.editedIndex === -1 ? "TAMBAH JENIS AKTIVITAS" : "UBAH JENIS AKTIVITAS";
+				return this.editedIndex === -1 ? "TAMBAH DATA" : "UBAH DATA";
 			},
 		},
 		components: {
-			AkademikLayout,
-			ModuleHeader,			
+			AdminLayout,
+			ModuleHeader,
 		},
 	};
 </script>

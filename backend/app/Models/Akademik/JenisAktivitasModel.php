@@ -26,7 +26,7 @@ class JenisAktivitasModel extends Model {
 	 */
 	protected $fillable = [
 		'idjenis',
-		'nama_jenis',		
+		'nama_aktivitas',		
 	];
 	/**
 	 * enable auto_increment.
