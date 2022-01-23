@@ -23,15 +23,15 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	$router->get('/system/setting/uiadmin',['uses'=>'System\UIController@admin','as'=>'ui.admin']);
 
 	//kemahasiswaan	
-	$router->post('/kemahasiswaan/daftarmhs',['middleware'=>['role:superadmin|akademik|programstudi|puslahta|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@index','as'=>'daftarmhs.index']);
-	$router->get('/kemahasiswaan/daftarmhs/all',['middleware'=>['role:superadmin|akademik|programstudi|puslahta|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@all','as'=>'daftarmhs.all']);
+	$router->post('/kemahasiswaan/daftarmhs',['middleware'=>['role:superadmin|manajemen|operator nilai|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@index','as'=>'daftarmhs.index']);
+	$router->get('/kemahasiswaan/daftarmhs/all',['middleware'=>['role:superadmin|manajemen|operator nilai|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@all','as'=>'daftarmhs.all']);
 	
 	//akademik - perkuliahan - aktivitas mahasiswa - jenis aktivitas
-	$router->get('/akademik/perkuliahan/jenisaktivitas',['middleware'=>['role:superadmin|akademik|programstudi'],'uses'=>'Perkuliahan\JenisAktivitasController@index','as'=>'perkuliahan-jenisaktivitas.index']);				
-	$router->post('/akademik/perkuliahan/jenisaktivitas/store',['middleware'=>['role:superadmin|akademik|programstudi'],'uses'=>'Perkuliahan\JenisAktivitasController@store','as'=>'perkuliahan-jenisaktivitas.store']);
-	$router->get('/akademik/perkuliahan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|akademik|programstudi'],'uses'=>'Perkuliahan\JenisAktivitasController@show','as'=>'perkuliahan-jenisaktivitas.show']);
-	$router->put('/akademik/perkuliahan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|akademik|programstudi'],'uses'=>'Perkuliahan\JenisAktivitasController@update','as'=>'perkuliahan-jenisaktivitas.update']);
-	$router->delete('/akademik/perkuliahan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|akademik|programstudi'],'uses'=>'Perkuliahan\JenisAktivitasController@destroy','as'=>'perkuliahan-jenisaktivitas.destroy']);
+	$router->get('/akademik/perkuliahan/jenisaktivitas',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Perkuliahan\JenisAktivitasController@index','as'=>'perkuliahan-jenisaktivitas.index']);				
+	$router->post('/akademik/perkuliahan/jenisaktivitas/store',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Perkuliahan\JenisAktivitasController@store','as'=>'perkuliahan-jenisaktivitas.store']);
+	$router->get('/akademik/perkuliahan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Perkuliahan\JenisAktivitasController@show','as'=>'perkuliahan-jenisaktivitas.show']);
+	$router->put('/akademik/perkuliahan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Perkuliahan\JenisAktivitasController@update','as'=>'perkuliahan-jenisaktivitas.update']);
+	$router->delete('/akademik/perkuliahan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Perkuliahan\JenisAktivitasController@destroy','as'=>'perkuliahan-jenisaktivitas.destroy']);
 
 });
 
