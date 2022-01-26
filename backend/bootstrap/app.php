@@ -44,6 +44,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('database');
 $app->configure('cors');
 $app->configure('permission');
 $app->configure('auth');
