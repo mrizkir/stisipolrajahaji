@@ -12,4 +12,7 @@ export default new Vuetify({
       variations: false,
     },
   },
+  icons: {
+    iconfont: 'mdi'
+  }
 })

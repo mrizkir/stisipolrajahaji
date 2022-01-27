@@ -2,7 +2,7 @@
 	<AkademikLayout>
 		<ModuleHeader>
 			<template v-slot:icon>
-				mdi-book
+				{{ icons.mdiBook }}
 			</template>
 			<template v-slot:name>
 				JENIS AKTIVITAS
@@ -247,7 +247,7 @@
 	</AkademikLayout>
 </template>
 <script>
-	import { mdiChevronRight, mdiPlus, mdiEye, mdiDelete, mdiPencil } from "@mdi/js";
+	import { mdiChevronRight, mdiPlus, mdiEye, mdiDelete, mdiPencil, mdiBook } from "@mdi/js";
 	import AkademikLayout from "@/views/layouts/AkademikLayout";
 	import ModuleHeader from "@/components/ModuleHeader";
 	export default {
@@ -290,6 +290,7 @@
 					mdiDelete,
 					mdiEye,
 					mdiPencil,
+					mdiBook
 				}
 			};
 		},

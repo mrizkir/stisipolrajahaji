@@ -67,6 +67,8 @@
 						class="elevation-1"
 						:loading="datatableLoading"
 						loading-text="Loading... Please wait"
+						prev-icon="mdi-menu-left"
+      			next-icon="mdi-menu-right"
 					>
 						<template v-slot:top>
 							<v-toolbar flat color="white">
