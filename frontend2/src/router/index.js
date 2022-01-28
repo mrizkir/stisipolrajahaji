@@ -1,37 +1,59 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from "../store/index";
+import store from '../store/index'
+
+import NotFoundComponent from "../components/NotFoundComponent";
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-		path: "/",
-		name: "FrontDashboard",
+		path: '/',
+		name: 'FrontDashboard',
 		meta: {
-			title: "DASHBOARD",
+			title: 'DASHBOARD',
 		},
-		component: () => import("../views/pages/front/Home.vue"),
+		component: () => import('../views/pages/front/Home.vue'),
+	},
+	{
+		path: "/login",
+		name: "FrontLogin",
+		meta: {
+			title: "LOGIN",
+		},
+		component: () => import("../views/pages/front/Login.vue"),
+	},
+	{
+		path: '/404',
+		name: 'NotFoundComponent',
+		meta: {
+			title: 'PAGE NOT FOUND',
+		},
+		component: NotFoundComponent,
+	},
+	{
+		path: '*',
+		redirect: '/404',
 	},
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
 })
 
 router.beforeEach((to, from, next) => {
-	document.title = to.meta.title;
+	document.title = to.meta.title
 	if (to.matched.some(record => record.meta.requiresAuth)) {
-		if (store.getters["auth/Authenticated"]) {
-			next();
-			return;
+		if (store.getters['auth/Authenticated']) {
+			next()
+			return
 		}
-		next("/login");
+		next('/login')
 	} else {
-		next();
+		next()
 	}
-});
+})
 
 export default router
