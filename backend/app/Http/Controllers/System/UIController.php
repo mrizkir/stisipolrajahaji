@@ -18,19 +18,20 @@ class UIController extends Controller {
   public function frontend ()
   {
     $config = ConfigurationModel::getCache();        
-    $captcha_site_key = $config['CAPTCHA_SITE_KEY'];
-    $tahun_pendaftaran = $config['default_tahun_pendaftaran'];
-    $semester_pendaftaran = $config['default_semester_PENDAFTARAN'];
-    $identitas['nama_pt']=$config['NAMA_PT'];
-    $identitas['nama_pt_alias']=$config['NAMA_PT_ALIAS'];
-    $identitas['bentuk_pt']=$config['BENTUK_PT'];
+    // $captcha_site_key = $config['CAPTCHA_SITE_KEY'];
+    // $tahun_pendaftaran = $config['default_tahun_pendaftaran'];
+    // $semester_pendaftaran = $config['default_semester_PENDAFTARAN'];
+    // $identitas['nama_pt']=$config['NAMA_PT'];
+    // $identitas['nama_pt_alias']=$config['NAMA_PT_ALIAS'];
+    // $identitas['bentuk_pt']=$config['BENTUK_PT'];
     return Response()->json([
                   'status'=>1,
                   'pid'=>'fetchdata',
-                  'captcha_site_key'=>$captcha_site_key,
-                  'tahun_pendaftaran'=>$tahun_pendaftaran,
-                  'semester_pendaftaran'=>$semester_pendaftaran,
-                  'identitas'=>$identitas,
+                  // 'captcha_site_key'=>$captcha_site_key,
+                  // 'tahun_pendaftaran'=>$tahun_pendaftaran,
+                  // 'semester_pendaftaran'=>$semester_pendaftaran,
+                  // 'identitas'=>$identitas,
+                  'daftar_role'=>HelperAuth::getRealRoleName(),
                   'message'=>'Fetch data ui untuk front berhasil diperoleh'
                 ], 200);
   }
