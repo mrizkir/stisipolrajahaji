@@ -2,82 +2,94 @@
   <FrontendLayout>
     <b-form-row>
       <b-col>
-        <b-form @submit="onSubmit" @reset="onReset">
+        <b-form @submit.prevent="onSubmit" name="frmlogin" id="frmlogin">    
           <b-form-group
             label="Username:"
             label-for="txtUsername"
-          >
+          >      
             <b-form-input
               id="txtUsername"
-              v-model="formdata.username"
+              v-model="v$.formdata.username.$model"
               placeholder="Masukan username"
-            />          
+              :state="validateState('username')"
+              aria-describedby="frmlogin-username"
+            />
+            <b-form-invalid-feedback
+              id="frmlogin-username"
+            >
+              Username tidak boleh kosong, silahkan diisi !!!.
+            </b-form-invalid-feedback>
           </b-form-group>
+          
           <b-form-group
-            label="Password:"
+            label="Username:"
             label-for="txtPassword"
-          >
+          >      
             <b-form-input
               id="txtPassword"
-              v-model="formdata.password"
-              type="password"
+              v-model="v$.formdata.password.$model"
               placeholder="Masukan password"
-            />          
+              type="password"
+              :state="validateState('password')"
+              aria-describedby="frmlogin-password"
+            />
+            <b-form-invalid-feedback
+              id="frmlogin-password"
+            >
+              Password tidak boleh kosong, silahkan diisi !!!.
+            </b-form-invalid-feedback>
           </b-form-group>
-          <b-form-group
-            label="Page:"            
-          >
-                   
-          </b-form-group>
-          <b-button type="submit" variant="primary">Submit</b-button>
-          <b-button type="reset" variant="danger">Reset</b-button>
+          <!-- Submit Button -->
+          <div class="buttons-w">
+            <button :disabled="v$.formdata.$invalid" class="btn btn-primary">Login</button>
+          </div>
         </b-form>
       </b-col>
     </b-form-row>
-    <div v-if="v$.formdata.username.$error">Name field has an error.</div>
   </FrontendLayout>
 </template>
 <script>
   import FrontendLayout from '@/views/layouts/FrontendLayout';
   import useVuelidate from '@vuelidate/core'
   import { required } from '@vuelidate/validators'
+
   export default {
     name: 'Login',
-    setup() {
-      return {
-        v$: useVuelidate(),
-      }
+    setup () {
+      return { v$: useVuelidate() }
     },
+
     data() {
       return {
         formdata: {
-          username: null,
-          password: null,
-          page: null,
+          username: '',
+          password: '',
         },
       }
     },
+      
     validations() {
       return {
         formdata: {
-          username: required,
-          password: required,
-          page: required,
+          username: {
+            required 
+          },
+          password: {
+            required,             
+          },
         },
       }
     },
     methods: {
-      async onSubmit(event) {
-        event.preventDefault()
-        const result = await this.v$.$touch()
-        if (!result) {
-          return
-        }
-        console.log(result);
+      validateState(name) {
+        const { $dirty, $error } = this.v$.formdata[name];
+        return $dirty ? !$error : null;
       },
-      onReset() {
-
-      },
+      async onSubmit() {      
+        if (!this.v$.formdata.$invalid) {
+          console.log(true);
+        }      
+      }    
     },
     components: {
 			FrontendLayout,
