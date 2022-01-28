@@ -39,6 +39,21 @@
               Password tidak boleh kosong, silahkan diisi !!!.
             </b-form-invalid-feedback>
           </b-form-group>
+          <b-form-group
+            label="Halaman:"            
+          >      
+            <b-form-select
+              v-model="v$.formdata.page.$model"
+              :options="daftar_page"
+              :state="validateState('page')"
+              aria-describedby="frmlogin-page"
+            />
+            <b-form-invalid-feedback
+              id="frmlogin-page"
+            >
+              Silahkan pilih akan mengakses halaman apa ?
+            </b-form-invalid-feedback>
+          </b-form-group>
           <!-- Submit Button -->
           <div class="buttons-w">
             <button :disabled="v$.formdata.$invalid" class="btn btn-primary">Login</button>
@@ -55,15 +70,20 @@
 
   export default {
     name: 'Login',
-    setup () {
-      return { v$: useVuelidate() }
+    setup() {
+      return { 
+        v$: useVuelidate(),        
+      }
     },
 
     data() {
+      const daftar_page = this.$store.getters['uifront/getDaftarPage'];      
       return {
+        daftar_page: daftar_page,
         formdata: {
-          username: '',
-          password: '',
+          username: null,
+          password: null,
+          page: '',
         },
       }
     },
@@ -75,6 +95,9 @@
             required 
           },
           password: {
+            required,             
+          },
+          page: {
             required,             
           },
         },
