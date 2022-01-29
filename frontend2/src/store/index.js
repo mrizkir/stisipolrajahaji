@@ -10,7 +10,7 @@ Vue.use(Vuex)
 
 const ls = new SecureLS({ isCompression: false })
 
-export default new Vuex.Store({  
+export default new Vuex.Store({	
   modules: {
 		uifront: Uifront,
 		auth: Auth,

@@ -22,15 +22,14 @@ const getters = {
 		return state.loaded
 	},
   getDaftarPage: state => {
-
 		return state.daftar_page
 	},
 }
 const actions = {
-  init({ commit, state }, ajax) {
+  init({ commit, getters }, ajax) {
 		//dipindahkan kesini karena ada beberapa kasus yang melaporkan ini membuat bermasalah.
-		// commit("setLoaded", false)
-    if (!state.loaded) {
+		commit("setLoaded", false)		
+    if (!getters.isLoaded) {
 			ajax.get('/system/setting/uifront').then(({ data }) => {				
 				var daftar_page = [{
 					value: '',
@@ -47,7 +46,10 @@ const actions = {
 				commit('setLoaded', true)
 			})
 		}
-  }
+  },
+	reinit({ commit }) {
+		commit("resetState");
+	},
 }
 export default {
 	namespaced: true,

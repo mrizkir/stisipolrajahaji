@@ -56,7 +56,7 @@
           </b-form-group>
           <!-- Submit Button -->
           <div class="buttons-w">
-            <button :disabled="v$.formdata.$invalid" class="btn btn-primary">Login</button>
+            <button :disabled="v$.formdata.$invalid || btnLoading" class="btn btn-primary">Login</button>
           </div>
         </b-form>
       </b-col>
@@ -64,7 +64,7 @@
   </FrontendLayout>
 </template>
 <script>
-  import FrontendLayout from '@/views/layouts/FrontendLayout';
+  import FrontendLayout from '@/views/layouts/FrontendLayout'
   import useVuelidate from '@vuelidate/core'
   import { required } from '@vuelidate/validators'
 
@@ -76,10 +76,25 @@
       }
     },
 
+    created() {
+			if (this.$store.getters["auth/Authenticated"]) {				
+				this.$router.push(
+					"/dashboard/" + this.$store.getters["auth/AccessToken"]
+				);
+			}      
+		},
+
+    mounted() {
+      this.daftar_page = this.$store.getters['uifront/getDaftarPage']
+      if (!this.daftar_page.length) {
+        this.$router.go();
+      }
+    },
+
     data() {
-      const daftar_page = this.$store.getters['uifront/getDaftarPage'];      
       return {
-        daftar_page: daftar_page,
+        btnLoading: false,
+        daftar_page: [],
         formdata: {
           username: null,
           password: null,
@@ -105,12 +120,38 @@
     },
     methods: {
       validateState(name) {
-        const { $dirty, $error } = this.v$.formdata[name];
-        return $dirty ? !$error : null;
+        const { $dirty, $error } = this.v$.formdata[name]
+        return $dirty ? !$error : null
       },
-      async onSubmit() {      
+      async onSubmit() {
         if (!this.v$.formdata.$invalid) {
-          console.log(true);
+          this.btnLoading = true
+          await this.$ajax
+						.post("/auth/login", {
+							username: this.formdata.username,
+							password: this.formdata.password,
+							page: this.formdata.page,
+						})
+						.then(({ data }) => {
+							this.$ajax
+								.get("/auth/me", {
+									headers: {
+										Authorization: data.token_type + " " + data.access_token,
+									},
+								})
+								.then(response => {
+									var data_user = {
+										token: data,
+										user: response.data,
+									}
+									this.$store.dispatch("auth/afterLoginSuccess", data_user)
+								})
+							this.btnLoading = false							
+							this.$router.push("/dashboard/" + data.access_token)
+						})
+						.catch(() => {
+							this.btnLoading = false
+						})
         }      
       }    
     },

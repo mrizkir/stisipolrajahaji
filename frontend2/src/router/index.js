@@ -7,6 +7,7 @@ import NotFoundComponent from "../components/NotFoundComponent";
 Vue.use(VueRouter)
 
 const routes = [
+	//front
   {
 		path: '/',
 		name: 'FrontDashboard',
@@ -22,6 +23,15 @@ const routes = [
 			title: "LOGIN",
 		},
 		component: () => import("../views/pages/front/Login.vue"),
+	},
+	//admin
+	{
+		path: "/dashboard/:token",
+		name: "AdminDashboard",
+		meta: {
+			title: "DASHBOARD",
+		},
+		component: () => import("../views/pages/admin/Dashboard.vue"),
 	},
 	{
 		path: '/404',
