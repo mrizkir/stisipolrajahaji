@@ -44,6 +44,15 @@ const routes = [
 		component: () => import('../views/pages/admin/pengguna/PenggunaSistem.vue'),
 	},
 	{
+		path: "/sistem-pengguna/permission",
+		name: "PenggunaPermission",
+		meta: {
+			title: "PENGGUNA - PERMISSION",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/pengguna/PenggunaPermission.vue"),
+	},
+	{
 		path: '/404',
 		name: 'NotFoundComponent',
 		meta: {

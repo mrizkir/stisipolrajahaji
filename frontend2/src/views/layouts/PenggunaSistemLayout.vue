@@ -26,12 +26,18 @@
           </div>
           <nav class="mb-3">
             <b-nav vertical>
-              <b-nav-item active>
+              <b-nav-item
+                to="/sistem-pengguna"
+                v-if="$store.getters['auth/can']('SYSTEM-USERS-GROUP')"
+              >
                 <b-icon icon="arrow-right" />
                 DASHBOARD
               </b-nav-item>
               <b-nav-item href="#" disabled>KONFIGURASI</b-nav-item>
-              <b-nav-item>
+              <b-nav-item
+                to="/sistem-pengguna/permission"
+                v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS')"
+              >
                 <b-icon icon="arrow-right" />
                 PERMISSION
               </b-nav-item>              
@@ -44,9 +50,28 @@
         </div>
       </template>
     </b-sidebar>
+    <b-container fluid>      
+      <b-row>
+        <b-col>
+          <b-breadcrumb>
+            <b-breadcrumb-item
+              :to="'/dashboard/' + $store.getters['auth/AccessToken']"
+            >
+              <b-icon icon="house-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+              Home
+            </b-breadcrumb-item>            
+            <slot name="page-breadcrumb" />          
+          </b-breadcrumb>
+        </b-col>
+      </b-row>
+      <div>
+        <h4><slot name="page-header" /></h4>
+      </div>
+    </b-container>
     <main>
-      <slot />
-    </main>    
+      <slot name="page-content" />
+    </main>
+
   </div>
 </template>
 <script>

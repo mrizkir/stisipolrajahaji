@@ -1,10 +1,16 @@
 <template>  
   <PenggunaSistemLayout>
+    <template v-slot:page-header>
+      Permission
+    </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item active>Pengguna Sistem</b-breadcrumb-item>      
+      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>      
+      <b-breadcrumb-item active>Permission</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
-      page-content
+      <b-container fluid>
+        page-content
+      </b-container>
     </template>
   </PenggunaSistemLayout>
 </template>
