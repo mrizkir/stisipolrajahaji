@@ -2,7 +2,21 @@
   <div>
     <navbar />
     <b-container fluid>
-      <slot />
+      <b-row class="mt-2">
+				<b-col md="3" sm="6" xs="12">
+					<b-card
+						bg-variant="dark"
+						text-variant="white"
+						title="Pengguna Sistem"
+						v-if="$store.getters['auth/can']('SYSTEM-USERS-GROUP')"
+					>
+						<b-card-text>
+							Mengatur roles, permission, dan pengguna
+						</b-card-text>
+						<b-button variant="primary" to="/sistem-pengguna">GO</b-button>
+					</b-card>
+				</b-col>
+			</b-row>
     </b-container>
   </div>
 </template>
@@ -20,21 +34,21 @@
     methods: {
 			initialize() {
 				this.$ajax
-					.get("/auth/me", {
+					.get('/auth/me', {
 						headers: {
-							Authorization: "Bearer " + this.token,
+							Authorization: 'Bearer ' + this.token,
 						},
 					})
 					.then(({ data }) => {						
 						this.dashboard = data.role;
-						// this.$store.dispatch("uiadmin/changeDashboard", this.dashboard);
+						// this.$store.dispatch('uiadmin/changeDashboard', this.dashboard);
 					})
 					.catch(error => {
 						if (error.response.status == 401) {
               this.$router.push('/login');
 						}
 					});
-				// this.$store.dispatch("uiadmin/init", this.$ajax);
+				// this.$store.dispatch('uiadmin/init', this.$ajax);
 			},
     },
     components: {
@@ -42,3 +56,6 @@
     },
   }
 </script>
+<style lang="scss" scoped>
+@import 'src/scss/dashboard-menu.scss';
+</style>

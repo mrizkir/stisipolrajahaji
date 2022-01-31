@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store/index'
 
-import NotFoundComponent from "../components/NotFoundComponent";
+import NotFoundComponent from '../components/NotFoundComponent';
 
 Vue.use(VueRouter)
 
@@ -17,21 +17,31 @@ const routes = [
 		component: () => import('../views/pages/front/Home.vue'),
 	},
 	{
-		path: "/login",
-		name: "FrontLogin",
+		path: '/login',
+		name: 'FrontLogin',
 		meta: {
-			title: "LOGIN",
+			title: 'LOGIN',
 		},
-		component: () => import("../views/pages/front/Login.vue"),
+		component: () => import('../views/pages/front/Login.vue'),
 	},
 	//admin
 	{
-		path: "/dashboard/:token",
-		name: "AdminDashboard",
+		path: '/dashboard/:token',
+		name: 'AdminDashboard',
 		meta: {
-			title: "DASHBOARD",
+			title: 'DASHBOARD',
 		},
-		component: () => import("../views/pages/admin/Dashboard.vue"),
+		component: () => import('../views/pages/admin/Dashboard.vue'),
+	},
+	//system - users
+	{
+		path: '/sistem-pengguna',
+		name: 'PenggunaSistem',
+		meta: {
+			title: 'SISTEM - PENGGUNA',
+			requiresAuth: true,
+		},
+		component: () => import('../views/pages/admin/pengguna/PenggunaSistem.vue'),
 	},
 	{
 		path: '/404',

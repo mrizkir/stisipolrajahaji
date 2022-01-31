@@ -1,11 +1,19 @@
 <template>
-  <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand to="#">PortalEkampusV2</b-navbar-brand>
+  <b-navbar
+		toggleable="lg"
+		type="dark"
+		variant="dark"		
+	>
+    <b-navbar-brand
+			:to="'/dashboard/' + $store.getters['auth/AccessToken']"
+		>
+			PortalEkampusV2
+		</b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        
+        <slot name="sidebartoggle" />
       </b-navbar-nav>
 
       <!-- geser ke kanan -->
