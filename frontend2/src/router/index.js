@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueBodyClass from 'vue-body-class'
 import store from '../store/index'
 
 import NotFoundComponent from '../components/NotFoundComponent';
@@ -21,6 +22,7 @@ const routes = [
 		name: 'FrontLogin',
 		meta: {
 			title: 'LOGIN',
+			bodyClass: 'login-page',
 		},
 		component: () => import('../views/pages/front/Login.vue'),
 	},
@@ -30,6 +32,7 @@ const routes = [
 		name: 'AdminDashboard',
 		meta: {
 			title: 'DASHBOARD',
+			bodyClass: 'sidebar-mini layout-fixed',
 		},
 		component: () => import('../views/pages/admin/Dashboard.vue'),
 	},
@@ -39,6 +42,7 @@ const routes = [
 		name: 'PenggunaSistem',
 		meta: {
 			title: 'SISTEM - PENGGUNA',
+			bodyClass: 'sidebar-mini layout-fixed',
 			requiresAuth: true,
 		},
 		component: () => import('../views/pages/admin/pengguna/PenggunaSistem.vue'),
@@ -48,6 +52,7 @@ const routes = [
 		name: "PenggunaPermission",
 		meta: {
 			title: "PENGGUNA - PERMISSION",
+			bodyClass: 'sidebar-mini layout-fixed',
 			requiresAuth: true,
 		},
 		component: () => import("../views/pages/admin/pengguna/PenggunaPermission.vue"),
@@ -71,8 +76,9 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 })
-
-router.beforeEach((to, from, next) => {
+const vueBodyClass = new VueBodyClass(routes);
+router.beforeEach((to, from, next) => {	
+	vueBodyClass.guard(to, next)
 	document.title = to.meta.title
 	if (to.matched.some(record => record.meta.requiresAuth)) {
 		if (store.getters['auth/Authenticated']) {

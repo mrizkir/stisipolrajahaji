@@ -1,70 +1,79 @@
 <template>
-  <FrontendLayout>
-    <b-form-row>
-      <b-col>
-        <b-form @submit.prevent="onSubmit" name="frmlogin" id="frmlogin">    
-          <b-form-group
-            label="Username:"
-            label-for="txtUsername"
-          >      
-            <b-form-input
-              id="txtUsername"
-              v-model="v$.formdata.username.$model"
-              placeholder="Masukan username"
-              :state="validateState('username')"
-              aria-describedby="frmlogin-username"
-            />
-            <b-form-invalid-feedback
-              id="frmlogin-username"
-            >
-              Username tidak boleh kosong, silahkan diisi !!!.
-            </b-form-invalid-feedback>
-          </b-form-group>
-          
-          <b-form-group
-            label="Username:"
-            label-for="txtPassword"
-          >      
-            <b-form-input
-              id="txtPassword"
-              v-model="v$.formdata.password.$model"
-              placeholder="Masukan password"
-              type="password"
-              :state="validateState('password')"
-              aria-describedby="frmlogin-password"
-            />
-            <b-form-invalid-feedback
-              id="frmlogin-password"
-            >
-              Password tidak boleh kosong, silahkan diisi !!!.
-            </b-form-invalid-feedback>
-          </b-form-group>
-          <b-form-group
-            label="Halaman:"            
-          >      
-            <b-form-select
-              v-model="v$.formdata.page.$model"
-              :options="daftar_page"
-              :state="validateState('page')"
-              aria-describedby="frmlogin-page"
-            />
-            <b-form-invalid-feedback
-              id="frmlogin-page"
-            >
-              Silahkan pilih akan mengakses halaman apa ?
-            </b-form-invalid-feedback>
-          </b-form-group>
-          <!-- Submit Button -->
-          <div class="buttons-w">
-            <button :disabled="v$.formdata.$invalid || btnLoading" class="btn btn-primary">Login</button>
-          </div>
-        </b-form>
-      </b-col>
-    </b-form-row>
-  </FrontendLayout>
+  <div class="login-box">
+    <div class="login-logo">
+      PortalEkampusV2
+    </div>
+    <b-card
+      class="login-card-body"    
+    >
+      <p class="login-box-msg">Silahkan masukan username dan password</p>
+      <b-form @submit.prevent="onSubmit" name="frmlogin" id="frmlogin">    
+        <b-form-group
+          label="Username:"
+          label-for="txtUsername"
+        >      
+          <b-form-input
+            id="txtUsername"
+            v-model="v$.formdata.username.$model"
+            placeholder="Masukan username"
+            :state="validateState('username')"
+            aria-describedby="frmlogin-username"
+          />
+          <b-form-invalid-feedback
+            id="frmlogin-username"
+          >
+            Username tidak boleh kosong, silahkan diisi !!!.
+          </b-form-invalid-feedback>
+        </b-form-group>
+        
+        <b-form-group
+          label="Username:"
+          label-for="txtPassword"
+        >      
+          <b-form-input
+            id="txtPassword"
+            v-model="v$.formdata.password.$model"
+            placeholder="Masukan password"
+            type="password"
+            :state="validateState('password')"
+            aria-describedby="frmlogin-password"
+          />
+          <b-form-invalid-feedback
+            id="frmlogin-password"
+          >
+            Password tidak boleh kosong, silahkan diisi !!!.
+          </b-form-invalid-feedback>
+        </b-form-group>
+        <b-form-group
+          label="Halaman:"            
+        >      
+          <b-form-select
+            v-model="v$.formdata.page.$model"
+            :options="daftar_page"
+            :state="validateState('page')"
+            aria-describedby="frmlogin-page"
+          />
+          <b-form-invalid-feedback
+            id="frmlogin-page"
+          >
+            Silahkan pilih akan mengakses halaman apa ?
+          </b-form-invalid-feedback>
+        </b-form-group>        
+        <div class="buttons-w">
+          <b-button
+            type="submit"
+            :disabled="v$.formdata.$invalid || btnLoading"
+            variant="primary"
+            block
+          >
+            Login
+          </b-button>
+        </div>
+      </b-form>
+    </b-card>    
+  </div>
 </template>
 <script>
-  import FrontendLayout from '@/views/layouts/FrontendLayout'
   import useVuelidate from '@vuelidate/core'
   import { required } from '@vuelidate/validators'
 
@@ -155,8 +164,5 @@
         }      
       }    
     },
-    components: {
-			FrontendLayout,
-		},
   }
 </script>

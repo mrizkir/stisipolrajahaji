@@ -1,16 +1,19 @@
-/**
-* menu di sidebar sebelah kiri
-* inspirasi dari https://youtu.be/zLypHbuuJyM
-*/
-#left-sidebar .nav-item > .nav-link {
-  color: #fff;
-}
-#left-sidebar .nav-item > .nav-link:hover {
-  color: #ccc;
-}
-#left-sidebar .divider {
-  border: 1px solid #fff;
-  width: 100%;
-}
+@import "node_modules/bootstrap/scss/functions.scss";
+//AdminLTE
+@import "AdminLTE/bootstrap-variables";
 @import "node_modules/bootstrap/scss/bootstrap.scss";
+//bootstrap vue
 @import "node_modules/bootstrap-vue/src/index.scss";
+
+//admin lte
+
+@import "AdminLTE/variables";
+@import "AdminLTE/variables-alt";
+@import "AdminLTE/mixins";
+
+@import "AdminLTE/parts/core";
+@import "AdminLTE/parts/components";
+@import "AdminLTE/parts/extra-components";
+@import "AdminLTE/parts/pages";
+@import "AdminLTE/parts/plugins";
+// @import "AdminLTE/parts/miscellaneous";

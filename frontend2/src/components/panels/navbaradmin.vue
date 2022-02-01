@@ -1,14 +1,8 @@
 <template>
   <b-navbar
 		toggleable="lg"
-		type="dark"
-		variant="dark"		
+		class="main-header navbar-white"		
 	>
-    <b-navbar-brand
-			:to="'/dashboard/' + $store.getters['auth/AccessToken']"
-		>
-			PortalEkampusV2
-		</b-navbar-brand>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
