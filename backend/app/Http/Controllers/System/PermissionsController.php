@@ -21,7 +21,7 @@ class PermissionsController extends Controller {
         if ($user->hasRole('superadmin'))
         {
             $data = Permission::orderBy('name','ASC')
-                                ->get();
+                                ->paginate(10);
         }
         else if ($user->hasRole('akademik'))
         {
