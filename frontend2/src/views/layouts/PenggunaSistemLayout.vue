@@ -2,7 +2,7 @@
   <div class="wrapper">
     <navbar>
       <template v-slot:sidebartoggle>
-        <b-button variant="dark" v-b-toggle.left-sidebar>          
+        <b-button variant="dark" v-b-toggle.left-sidebar>
           <b-icon icon="layout-text-sidebar"></b-icon>
         </b-button>
       </template>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar />
+    <navbar classBNavbar="none" />
     <b-container fluid>
       <b-row class="mt-2">
 				<b-col md="3" sm="6" xs="12">

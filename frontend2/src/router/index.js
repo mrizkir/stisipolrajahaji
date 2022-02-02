@@ -31,8 +31,7 @@ const routes = [
 		path: '/dashboard/:token',
 		name: 'AdminDashboard',
 		meta: {
-			title: 'DASHBOARD',
-			bodyClass: 'sidebar-mini layout-fixed',
+			title: 'DASHBOARD',			
 		},
 		component: () => import('../views/pages/admin/Dashboard.vue'),
 	},

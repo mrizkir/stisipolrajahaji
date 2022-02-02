@@ -1,7 +1,7 @@
 <template>
   <b-navbar
 		toggleable="lg"
-		class="main-header navbar-white"		
+		:class="classBNavbar"		
 	>
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -21,7 +21,13 @@
 </template>
 <script>
   export default {
-    name: 'navbaradmin',		
+    name: 'navbaradmin',
+		props: {
+			classBNavbar: {
+				type: String,
+				default: 'main-header navbar-white',
+			}
+		},
     methods: {
       logout() {
 				this.$ajax
