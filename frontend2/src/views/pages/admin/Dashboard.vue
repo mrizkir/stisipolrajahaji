@@ -48,7 +48,7 @@
               this.$router.push('/login');
 						}
 					});
-				// this.$store.dispatch('uiadmin/init', this.$ajax);
+				this.$store.dispatch('uiadmin/init', this.$ajax);
 			},
     },
     components: {

@@ -30,12 +30,14 @@
                   id="datatable"
                   :fields="fields"
                   :items="datatable"
+                  :sort-by.sync="sortBy"
+                  :sort-desc.sync="sortDesc"
                   striped
                   hover
                   show-empty
                 >
                   <template #cell(aksi)="{ item }">                    
-                    <b-button variant="outline-danger p-1" size="xs" @click.stop="showModalDelete(item)">
+                    <b-button variant="outline-danger p-1" size="xs" @click.stop="showModalDelete(item)" :disabled="btnLoading">
                       <b-icon icon="trash" class="p-0 m-0"></b-icon>
                     </b-button>
                   </template>
@@ -82,9 +84,13 @@
   export default {
     name: 'PenggunaSistem',
     created() {
+      this.$store.dispatch("uiadmin/addToPages", {
+				name: "permission",				
+			});
       this.initialize(this.currentPage)
     },
     data: () => ({
+      btnLoading: false,
       //setting table
       currentPage: 1,
       perPage: 10,
@@ -94,6 +100,7 @@
         {
           key: 'name',
           label: 'Nama Permission',
+          sortable: true,
         },        
         {
           key: 'guard_name',
@@ -101,6 +108,9 @@
         },
         'aksi',        
       ],
+      sortBy: 'name',
+      sortDesc: false,
+      
       dataItem: {},
     }),
     methods: {
@@ -130,6 +140,31 @@
       },
       handleDelete(event) {
         event.preventDefault();
+        this.btnLoading = true;
+        this.$ajax.post(
+          '/system/setting/permissions/' + this.dataItem.id,
+            {
+              _method: 'DELETE',
+            },
+            {
+              headers: {
+                Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+              }
+            }
+          )
+          .then(() => {
+            this.initialize();
+            this.btnLoading = false;
+          })
+          .catch(() => {
+            this.btnLoading = false;
+          });
+          
+        // Hide the modal manually
+        this.$nextTick(() => {
+          this.dataItem = {}
+          this.$bvModal.hide('modal-delete')
+        })
       },
     },
     components: {
