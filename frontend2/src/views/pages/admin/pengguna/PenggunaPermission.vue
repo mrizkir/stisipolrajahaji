@@ -27,7 +27,7 @@
                 <div class="input-group input-group-sm" style="width: 250">
                   <b-form-input class="float-right" placeholder="Cari" v-model="search" />                    
                   <div class="input-group-append">
-                    <button type="submit" class="btn btn-default" @click.stop="initialize()" :disabled="btnLoading">
+                    <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
                       <b-icon icon="search" />
                     </button>
                   </div>
@@ -153,6 +153,7 @@
         var url = '/system/setting/permissions?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
 
         if (page.loaded && page.search != null) {
+          this.search = page.search
           url = page.search.length > 0 ? url + '&search=' + page.search : url
         }
         
@@ -171,6 +172,11 @@
           });
           this.datatableLoading = false
         })             
+      },
+      handleSearch() {
+        this.currentPage = 1
+        this.updatepage()
+        this.initialize();
       },
       handlePageChange(value) {
         this.currentPage = value

@@ -27,7 +27,8 @@ class PermissionsController extends Controller {
 
 			$data = Permission::orderBy($sortby, $orderby);
 			if ($request->filled('search')) {
-				$data = $data->whereRaw('name LIKE "%' . $request->query('search') . '%"');
+				$search = $request->query('search');
+				$data = $data->where('name', 'LIKE', "%$search%");
 			}			
 			$data = $data->paginate(10);
 		}
