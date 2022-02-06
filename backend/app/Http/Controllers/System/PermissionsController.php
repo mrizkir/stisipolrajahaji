@@ -18,10 +18,18 @@ class PermissionsController extends Controller {
 	{ 
 		$this->hasPermissionTo('SYSTEM-SETTING-PERMISSIONS_BROWSE');
 		$user=$this->guard()->user();
+
 		if ($user->hasRole('superadmin'))
 		{
-			$data = Permission::orderBy('name','ASC')
-			->paginate(10);
+			$sortdesc = $request->filled('sortdesc') ? $request->query('sortdesc', false) : false;
+			$orderby = $sortdesc == 'true' ? 'desc' : 'asc';
+			$sortby = $request->filled('sortby') ? $request->query('sortby', 'name') : 'name';
+
+			$data = Permission::orderBy($sortby, $orderby);
+			if ($request->filled('search')) {
+				$data = $data->whereRaw('name LIKE "%' . $request->query('search') . '%"');
+			}			
+			$data = $data->paginate(10);
 		}
 		else if ($user->hasRole('akademik'))
 		{

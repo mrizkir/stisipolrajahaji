@@ -48,7 +48,7 @@ const getters = {
 
 //actions
 const actions = {
-  init ({ commit, state, rootGetters }, ajax) {
+  async init ({ commit, state, rootGetters }, ajax) {
 		commit('setLoaded', false)
 		if (!state.loaded && rootGetters['auth/Authenticated']) {
 			// commit(
@@ -56,7 +56,7 @@ const actions = {
 			// 	rootGetters['uifront/getSemesterPendaftaran']
 			// )
 			let token = rootGetters['auth/Token']
-			ajax
+			await ajax
 				.get('/system/setting/uiadmin', {
 					headers: {
 						Authorization: token,

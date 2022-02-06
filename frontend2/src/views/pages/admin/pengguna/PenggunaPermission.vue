@@ -11,31 +11,47 @@
       <b-container fluid>
         <b-row>
           <b-col>
-            <b-card>
+            <b-card
+              no-body
+              class="card card-primary card-outline"
+            >
               <template #header>
                 <h3 class="card-title">Daftar Permission</h3>
                 <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 250;">
-                    <b-form-input class="float-right" placeholder="Cari" />                    
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <b-icon icon="search" />
-                      </button>
-                    </div>
-                  </div>
+                  <b-button size="xs" variant="outline-primary">
+                    <b-icon icon="plus-circle" />
+                  </b-button>                  
                 </div>
               </template>
-              <b-card-text class="p-0">
+              <b-card-body class="p-0">
+                <div class="input-group input-group-sm" style="width: 250">
+                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />                    
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-default" @click.stop="initialize()" :disabled="btnLoading">
+                      <b-icon icon="search" />
+                    </button>
+                  </div>
+                </div>
                 <b-table
                   id="datatable"
+                  primary-key="id"
                   :fields="fields"
                   :items="datatable"
                   :sort-by.sync="sortBy"
-                  :sort-desc.sync="sortDesc"
+                  :sort-desc.sync="sortDesc" 
+                  :current-page="currentPage"
+                  :busy="datatableLoading"
+                  outlined
                   striped
                   hover
                   show-empty
                 >
+                  <template #table-busy>
+                    <div class="text-center text-danger my-2">
+                      <b-spinner class="align-middle"></b-spinner>
+                      <strong>Loading...</strong>
+                    </div>
+                  </template>
                   <template #cell(aksi)="{ item }">                    
                     <b-button variant="outline-danger p-1" size="xs" @click.stop="showModalDelete(item)" :disabled="btnLoading">
                       <b-icon icon="trash" class="p-0 m-0"></b-icon>
@@ -45,16 +61,15 @@
                     tidak ada data yang bisa ditampilkan
                   </template>
                 </b-table>
-              </b-card-text>
+              </b-card-body>
               <template #footer>
                 <b-pagination
                   v-model="currentPage"
                   :total-rows="totalRows"
                   :per-page="perPage"
                   aria-controls="datatable"
-                  class="pagination-sm m-0 float-right"
-                  primary-key="id"
-                  @change="handlePageChange"                  
+                  class="pagination-sm m-0 float-right"                  
+                  @change="handlePageChange"
                   responsive                  
                 ></b-pagination>
               </template>
@@ -84,12 +99,21 @@
   export default {
     name: 'PenggunaSistem',
     created() {
-      this.$store.dispatch("uiadmin/addToPages", {
-				name: "permission",				
-			});
-      this.initialize(this.currentPage)
+      this.$store.dispatch('uiadmin/addToPages', {
+				name: 'permission',
+        loaded: false,
+        perPage: this.perPage,
+        currentPage: this.currentPage,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
+        search: this.search,
+			})
+    },
+    mounted() {
+      this.initialize()      
     },
     data: () => ({
+      datatableLoading: false,
       btnLoading: false,
       //setting table
       currentPage: 1,
@@ -110,13 +134,29 @@
       ],
       sortBy: 'name',
       sortDesc: false,
-      
+      search: null,
       dataItem: {},
     }),
     methods: {
-      initialize(currentPage) {
+      updatepage() {
+        var page = this.$store.getters['uiadmin/Page']('permission')
+        page.perPage = this.perPage
+        page.currentPage = this.currentPage
+        page.sortBy = this.sortBy
+        page.sortDesc = this.sortDesc
+        page.search = this.search
+        this.$store.dispatch('uiadmin/updatePage', page)
+      },
+      async initialize() {
         this.datatableLoading = true
-        this.$ajax.get('/system/setting/permissions?page=' + currentPage, {
+        var page = this.$store.getters['uiadmin/Page']('permission')
+        var url = '/system/setting/permissions?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
+
+        if (page.loaded && page.search != null) {
+          url = page.search.length > 0 ? url + '&search=' + page.search : url
+        }
+        
+        await this.$ajax.get(url, {
           headers: {
             Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
           }
@@ -124,23 +164,29 @@
         .then(({ data }) => {
           this.totalRows = data.permissions.total
           this.datatable = data.permissions.data
+          page.loaded = true
+          this.$store.dispatch('uiadmin/updatePage', page)
+          this.$nextTick(() => {            
+            this.currentPage = page.currentPage        
+          });
           this.datatableLoading = false
         })             
       },
       handlePageChange(value) {
         this.currentPage = value
-        this.initialize(this.currentPage)
+        this.updatepage()
+        this.initialize()
       },
       showModalDelete(item) {
-        this.dataItem = item;
+        this.dataItem = item
         this.$bvModal.show('modal-delete')
       },
       resetModal() {
         this.dataItem = {} 
       },
       handleDelete(event) {
-        event.preventDefault();
-        this.btnLoading = true;
+        event.preventDefault()
+        this.btnLoading = true
         this.$ajax.post(
           '/system/setting/permissions/' + this.dataItem.id,
             {
@@ -153,12 +199,12 @@
             }
           )
           .then(() => {
-            this.initialize();
-            this.btnLoading = false;
+            this.initialize()
+            this.btnLoading = false
           })
           .catch(() => {
-            this.btnLoading = false;
-          });
+            this.btnLoading = false
+          })
           
         // Hide the modal manually
         this.$nextTick(() => {
@@ -166,6 +212,12 @@
           this.$bvModal.hide('modal-delete')
         })
       },
+    },
+    watch: {
+      sortDesc() {
+        this.updatepage()
+        this.initialize()        
+      }
     },
     components: {
 			PenggunaSistemLayout,
