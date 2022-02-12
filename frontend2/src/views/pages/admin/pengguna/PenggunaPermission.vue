@@ -18,13 +18,13 @@
               <template #header>
                 <h3 class="card-title">Daftar Permission</h3>
                 <div class="card-tools">
-                  <b-button size="xs" variant="outline-primary">
+                  <b-button size="xs" variant="outline-primary" @click.stop="showModalAdd">
                     <b-icon icon="plus-circle" />
                   </b-button>                  
                 </div>
               </template>
-              <b-card-body class="p-0">
-                <div class="input-group input-group-sm" style="width: 250">
+              <b-card-body>
+                <div class="input-group input-group-sm">
                   <b-form-input class="float-right" placeholder="Cari" v-model="search" />                    
                   <div class="input-group-append">
                     <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
@@ -32,6 +32,8 @@
                     </button>
                   </div>
                 </div>
+              </b-card-body>
+              <b-card-body class="p-0">                
                 <b-table
                   id="datatable"
                   primary-key="id"
@@ -68,10 +70,12 @@
                   :total-rows="totalRows"
                   :per-page="perPage"
                   aria-controls="datatable"
-                  class="pagination-sm m-0 float-right"                  
+                  class="pagination-sm m-0 float-right"
                   @change="handlePageChange"
-                  responsive                  
-                ></b-pagination>
+                  responsive
+                  pills
+                >
+                </b-pagination>
               </template>
             </b-card>
           </b-col>
@@ -91,13 +95,62 @@
           Nama permission "{{dataItem.name}}" akan dihapus ?
         </div>
       </b-modal>
+      <b-modal
+        id="modal-add-permission"
+        header-bg-variant="primary"
+        centered
+        @hidden="resetModalAddPermission"
+        hide-footer
+      >
+        <template #modal-title>
+          Tambah Data
+        </template>
+        <div class="d-block">
+          <b-form @submit.prevent="save" name="frmdata" id="frmdata">
+            <b-form-group
+              label="Nama Permission:"
+              label-for="txtName"
+            >      
+              <b-form-input
+                id="txtName"
+                v-model="v$.formdata.name.$model"
+                placeholder="Masukan Nama Permission"
+                :state="validateState('name')"
+                aria-describedby="frmdata-name"
+              />
+              <b-form-invalid-feedback
+                id="frmdata-name"
+              >
+                Nama permission tidak boleh kosong, silahkan diisi !!!.
+              </b-form-invalid-feedback>
+            </b-form-group>
+            <div class="buttons-w">
+              <b-button
+                type="submit"
+                :disabled="v$.formdata.$invalid || btnLoading"
+                variant="primary"
+                block
+              >
+                Simpan
+              </b-button>
+            </div>
+          </b-form>
+        </div>
+      </b-modal>
     </template>
   </PenggunaSistemLayout>
 </template>
 <script>
   import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'
+  import useVuelidate from '@vuelidate/core'
+  import { required } from '@vuelidate/validators'
   export default {
     name: 'PenggunaSistem',
+    setup() {
+      return { 
+        v$: useVuelidate(),        
+      }
+    },
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
 				name: 'permission',
@@ -115,6 +168,7 @@
     data: () => ({
       datatableLoading: false,
       btnLoading: false,
+      
       //setting table
       currentPage: 1,
       perPage: 10,
@@ -136,7 +190,24 @@
       sortDesc: false,
       search: null,
       dataItem: {},
+
+      //form
+      formdata: {
+        name: null,
+      },
+      defaultform: {
+        name: null,
+      },
     }),
+    validations() {
+      return {
+        formdata: {
+          name: {
+            required 
+          },          
+        },
+      }
+    },
     methods: {
       updatepage() {
         var page = this.$store.getters['uiadmin/Page']('permission')
@@ -183,12 +254,42 @@
         this.updatepage()
         this.initialize()
       },
+      showModalAdd() {        
+        this.$bvModal.show('modal-add-permission')
+      },      
       showModalDelete(item) {
         this.dataItem = item
         this.$bvModal.show('modal-delete')
       },
       resetModal() {
         this.dataItem = {} 
+      },
+      resetModalAddPermission() {
+        this.formdata = Object.assign({}, this.defaultform)
+        this.$bvModal.hide('modal-add-permission')
+      },
+      validateState(name) {
+        const { $dirty, $error } = this.v$.formdata[name]
+        return $dirty ? !$error : null
+      },
+      async save() {
+        if (!this.v$.formdata.$invalid) {
+          this.btnLoading = true
+          await this.$ajax.post('/system/setting/permissions/store',
+            {
+              name: this.formdata.name.toLowerCase()
+            },
+            {
+              headers: {
+                Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+              }
+            }
+          ).then(() => {
+            this.$router.go();
+          }).catch(() => {
+            this.btnLoading = false;
+          });     
+        }
       },
       handleDelete(event) {
         event.preventDefault()
