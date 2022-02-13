@@ -18,7 +18,12 @@
               <template #header>
                 <h3 class="card-title">Daftar Permission</h3>
                 <div class="card-tools">
-                  <b-button size="xs" variant="outline-primary" @click.stop="showModalAdd">
+                  <b-button
+                    size="xs"
+                    variant="outline-primary"
+                    @click.stop="showModalAdd"
+                    v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_STORE')"
+                  >
                     <b-icon icon="plus-circle" />
                   </b-button>                  
                 </div>
@@ -54,10 +59,11 @@
                       <strong>Loading...</strong>
                     </div>
                   </template>
-                  <template #cell(aksi)="{ item }">                    
-                    <b-button variant="outline-danger p-1" size="xs" @click.stop="showModalDelete(item)" :disabled="btnLoading">
+                  <template #cell(aksi)="{ item }">
+                    <b-button :id="'btDelete' + item.id" variant="outline-danger p-1" size="xs" @click.stop="showModalDelete(item)" :disabled="btnLoading">
                       <b-icon icon="trash" class="p-0 m-0"></b-icon>
                     </b-button>
+                    <b-tooltip :target="'btDelete' + item.id" variant="danger">Hapus permission</b-tooltip>
                   </template>
                   <template #emptytext>
                     tidak ada data yang bisa ditampilkan
@@ -145,7 +151,7 @@
   import useVuelidate from '@vuelidate/core'
   import { required } from '@vuelidate/validators'
   export default {
-    name: 'PenggunaSistem',
+    name: 'PenggunaPermission',
     setup() {
       return { 
         v$: useVuelidate(),        
@@ -184,7 +190,11 @@
           key: 'guard_name',
           label: 'Guard',
         },
-        'aksi',        
+        {
+          label: 'Aksi',
+          key: 'aksi',
+          thStyle: 'width: 100px',
+        },
       ],
       sortBy: 'name',
       sortDesc: false,

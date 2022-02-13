@@ -57,6 +57,26 @@ const routes = [
 		component: () => import("../views/pages/admin/pengguna/PenggunaPermission.vue"),
 	},
 	{
+		path: "/sistem-pengguna/roles",
+		name: "PenggunaRoles",
+		meta: {
+			title: "PENGGUNA - ROLES",
+			bodyClass: 'sidebar-mini layout-fixed',
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/pengguna/pengguna-roles/Pengguna-Roles-Index.vue"),
+	},
+	{
+		path: "/sistem-pengguna/roles/:id/detail",
+		name: "PenggunaRolesDetail",
+		meta: {
+			title: "PENGGUNA - ROLES",
+			bodyClass: 'sidebar-mini layout-fixed',
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/pengguna/pengguna-roles/Pengguna-Roles-Show.vue"),
+	},
+	{
 		path: '/404',
 		name: 'NotFoundComponent',
 		meta: {

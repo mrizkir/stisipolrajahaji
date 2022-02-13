@@ -37,12 +37,15 @@
             <b-nav-item href="#" disabled>KONFIGURASI</b-nav-item>
             <b-nav-item
               to="/sistem-pengguna/permission"
-              v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS')"
+              v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_BROWSE')"
             >
               <b-icon icon="arrow-right" />
               PERMISSION
             </b-nav-item>              
-            <b-nav-item>
+            <b-nav-item
+              to="/sistem-pengguna/roles"
+              v-if="$store.getters['auth/can']('SYSTEM-SETTING-ROLES_BROWSE')"
+            >
               <b-icon icon="arrow-right" />
               ROLE
             </b-nav-item>
