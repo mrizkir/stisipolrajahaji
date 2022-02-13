@@ -1,5 +1,5 @@
 <template>
-  <div class="login-box">
+  <div class="login-box" v-if="userlogged">
     <div class="login-logo">
       PortalEkampusV2
     </div>
@@ -102,6 +102,7 @@
 
     data() {
       return {
+        userlogged: true,
         btnLoading: false,
         daftar_page: [],
         formdata: {
@@ -136,16 +137,16 @@
         if (!this.v$.formdata.$invalid) {
           this.btnLoading = true
           await this.$ajax
-						.post("/auth/login", {
+						.post('/auth/login', {
 							username: this.formdata.username,
 							password: this.formdata.password,
 							page: this.formdata.page,
 						})
 						.then(({ data }) => {
 							this.$ajax
-								.get("/auth/me", {
+								.get('/auth/me', {
 									headers: {
-										Authorization: data.token_type + " " + data.access_token,
+										Authorization: data.token_type + ' ' + data.access_token,
 									},
 								})
 								.then(response => {
@@ -153,10 +154,11 @@
 										token: data,
 										user: response.data,
 									}
-									this.$store.dispatch("auth/afterLoginSuccess", data_user)
+									this.$store.dispatch('auth/afterLoginSuccess', data_user)
 								})
-							this.btnLoading = false							
-							this.$router.push("/dashboard/" + data.access_token)
+							this.btnLoading = false
+              this.userlogged = false
+							this.$router.push('/dashboard/' + data.access_token)
 						})
 						.catch(() => {
 							this.btnLoading = false
