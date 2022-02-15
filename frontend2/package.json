@@ -53,7 +53,13 @@
       "parser": "babel-eslint"
     },
     "rules": {
-      "prettier/prettier": "warn"
+      "prettier/prettier": "warn",
+      "vue/valid-v-slot": [
+				"error",
+				{
+					"allowModifiers": true
+				}
+			]
     }
   }
 }

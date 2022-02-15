@@ -67,7 +67,7 @@ const routes = [
 		component: () => import("../views/pages/admin/pengguna/pengguna-roles/Pengguna-Roles-Index.vue"),
 	},
 	{
-		path: "/sistem-pengguna/roles/:id/detail",
+		path: "/sistem-pengguna/roles/:role_id/detail",
 		name: "PenggunaRolesDetail",
 		meta: {
 			title: "PENGGUNA - ROLES",

@@ -23,6 +23,8 @@
                     variant="outline-primary"
                     @click.stop="showModalAdd"
                     v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_STORE')"
+                    v-b-tooltip.hover
+                    title="Tambah Permission"
                   >
                     <b-icon icon="plus-circle" />
                   </b-button>                  
