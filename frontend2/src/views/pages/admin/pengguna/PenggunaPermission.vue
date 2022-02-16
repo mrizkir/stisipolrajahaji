@@ -54,6 +54,7 @@
                   striped
                   hover
                   show-empty
+                  responsive
                 >
                   <template #table-busy>
                     <div class="text-center text-danger my-2">

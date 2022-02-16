@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 
 import api from "./plugins/api"
+import '@/plugins/dayjs'
 
 import './scss/app.scss'
 

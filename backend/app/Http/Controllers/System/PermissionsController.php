@@ -46,7 +46,19 @@ class PermissionsController extends Controller {
 			'permissions'=>$data,
 			'message'=>'Fetch data permissions berhasil diperoleh'
 		], 200);         
-	}    
+	}
+	public function all() {
+		$this->hasPermissionTo('SYSTEM-SETTING-PERMISSIONS_BROWSE');
+		
+		$data = Permission::all();
+
+		return Response()->json([
+			'status'=>1,
+			'pid'=>'fetchdata',
+			'permissions'=>$data,
+			'message'=>'Fetch data permissions berhasil diperoleh'
+		], 200);
+	}
 	/**
 	 * Store a newly created resource in storage.
 	 *
