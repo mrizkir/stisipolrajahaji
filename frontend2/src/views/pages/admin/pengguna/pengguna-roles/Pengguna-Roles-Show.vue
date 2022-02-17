@@ -67,25 +67,54 @@
               <template #header>
                 <h3 class="card-title">Daftar Permission</h3>                         
               </template>
+              <b-card-body>
+                <b-form-group
+                  label="Filter"
+                  label-for="filter-input"
+                  label-cols-sm="3"
+                  label-align-sm="right"
+                  label-size="sm"
+                  class="mb-0"
+                >
+                  <b-input-group size="sm">
+                    <b-form-input
+                      id="filter-input"
+                      v-model="filter"
+                      type="search"
+                      placeholder="Type to Search"
+                    ></b-form-input>
+
+                    <b-input-group-append>
+                      <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                    </b-input-group-append>
+                  </b-input-group>
+                </b-form-group>
+              </b-card-body>
               <b-card-body class="p-0">
                 <b-alert class="m-3 font-italic" show>
                   Silahkan pilih permission untuk role {{data_role.name}} dengan cara mengklik baris dalam tabel di bawah ini.
-                </b-alert>
+                </b-alert>                
                 <b-table
+                  id="datatable"
                   ref="datatable"
                   primary-key="id"
                   :fields="fields"
                   :items="datatable"
+                  :per-page="perPage"
+                  :current-page="currentPage"
+                  @row-selected="onRowSelected"                  
+                  select-mode="multi"
                   :sort-by.sync="sortBy"
                   :sort-desc.sync="sortDesc"
                   :busy="datatableLoading"
-                  @row-selected="onRowSelected"
-                  select-mode="multi"
+                  :filter="filter"
+                  :filter-included-fields="filterOn"
+                  @filtered="onFiltered"
+                  selectable
                   outlined                  
                   hover
                   show-empty
                   responsive
-                  selectable
                 >
                   <template #table-busy>
                     <div class="text-center text-danger my-2">
@@ -108,31 +137,40 @@
                   </template>
                 </b-table>
               </b-card-body>
+              <template #footer>
+                <b-pagination
+                  v-model="currentPage"
+                  :total-rows="totalRows"
+                  :per-page="perPage"
+                  aria-controls="datatable"
+                  class="pagination-sm m-0 float-right"  
+                  responsive
+                  pills
+                >
+                </b-pagination>
+              </template>
             </b-card>
            </b-col>
         </b-row>
       </b-container>
-    </template>
+    </template>  
   </PenggunaSistemLayout>
 </template>
+
 <script>
-  import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'  
+  import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'
   export default {
     name: 'PenggunaRolesShow',
     created() {
       this.role_id =this.$route.params.role_id;
       this.initialize();
     },
-    data: () => ({
+    data: () => ({  
       role_id: null,
       datatableLoading: false,
       btnLoading: false,
       
       data_role : {},
-
-      //setting table
-      datatable: [],
-      role_permission: [],
 
       fields: [
         {
@@ -150,8 +188,17 @@
           thStyle: 'width: 100px',
         },
       ],
+
+      //setting table  
+      totalRows: 1,  
+      perPage: 10,
+      currentPage: 1,
       sortBy: 'name',
       sortDesc: false,
+      datatable: [],
+      filter: null,
+      filterOn: [],
+      role_permission: [],
     }),
     methods: {
       async initialize() {
@@ -165,38 +212,34 @@
         })
         .then(({ data }) => {          
           this.data_role = data.role
-          this.role_permssion = data.role.permissions;
-          this.datatableLoading = false
+          this.role_permssion = data.role.permissions;          
         })
 
-        this.$ajax
-					.get("/system/setting/permissions/all", {
-						headers: {
-							Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
-						},
-					})
-					.then(({ data, status }) => {
-						if (status == 200) {
-							this.datatable = data.permissions
-						}
-					})
-				// this.$ajax
-				// 	.get("/system/setting/roles/" + item.id + "/permission", {
-				// 		headers: {
-				// 			Authorization: this.TOKEN,
-				// 		},
-				// 	})
-				// 	.then(({ data, status }) => {
-				// 		if (status == 200) {
-				// 			this.permissions_selected = data.permissions;
-				// 		}
-				// 	});
-        
+        await this.$ajax
+        .get("/system/setting/permissions/all", {
+          headers: {
+            Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+          },
+        })
+        .then(({ data, status }) => {
+          if (status == 200) {
+            this.datatable = data.permissions
+            this.totalRows = this.datatable.length
+            this.datatableLoading = false
+          }
+        })
+        .catch(() => {
+          this.datatableLoading = false
+        })
       },
       onRowSelected(items) {
         this.role_permission = items
       },
-    },
+      onFiltered(filteredItems) {        
+        this.totalRows = filteredItems.length
+        this.currentPage = 1
+      }
+    },    
     components: {
 			PenggunaSistemLayout,
 		},

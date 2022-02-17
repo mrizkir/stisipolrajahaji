@@ -55,6 +55,7 @@
                   hover
                   show-empty
                   responsive
+                  no-local-sorting
                 >
                   <template #table-busy>
                     <div class="text-center text-danger my-2">
