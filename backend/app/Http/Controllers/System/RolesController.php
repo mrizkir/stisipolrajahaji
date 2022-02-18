@@ -186,6 +186,59 @@ class RolesController extends Controller {
 		}
 	}    
 	/**
+	 * Display the specified role permissions by id.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function roleallpermissions($id)
+	{
+		$this->hasPermissionTo('SYSTEM-SETTING-ROLES_SHOW');
+
+		$role=Role::findByID($id);
+
+		if (is_null($role))
+		{
+			return Response()->json([
+				'status'=>0,
+				'pid'=>'fetchdata',    
+				'message'=>["Role ID ($id) gagal diperoleh"]
+			], 422); 
+		}
+		else
+		{
+			$subquery=\DB::table('role_has_permissions AS B')
+			->select(\DB::raw('
+				B.permission_id,
+				B.role_id				
+			'))
+			->where('B.role_id',$role->id);                      
+			
+			$permissions=\DB::table('permissions AS A')
+				->select(\DB::raw('
+					A.id,
+					A.name,    
+					A.guard_name,
+					CASE 
+						WHEN B.permission_id IS NOT NULL THEN							
+							"true"
+					END AS selected
+				'))   
+				->leftJoinSub($subquery,'B',function($join) {
+					$join->on('B.permission_id','=','A.id');
+				})
+				->orderByRaw('CASE WHEN  selected IS NULL THEN 1 ELSE 0 END')
+				->get();
+
+			return Response()->json([
+				'status'=>1,
+				'pid'=>'fetchdata',
+				'permissions'=>$permissions,    
+				'message'=>'Fetch all permission dengan pilihan role '.$role->name.' berhasil diperoleh.'
+			], 200);
+		}
+	}    
+	/**
 	 * Display the specified role permissions by name.
 	 *
 	 * @param  int  $id
@@ -206,11 +259,11 @@ class RolesController extends Controller {
 		else
 		{
 			return Response()->json([
-										'status'=>1,
-										'pid'=>'fetchdata',
-										'permissions'=>$role->permissions,    
-										'message'=>'Fetch permission role '.$role->name.' berhasil diperoleh.'
-									], 200); 
+				'status'=>1,
+				'pid'=>'fetchdata',
+				'permissions'=>$role->permissions,    
+				'message'=>'Fetch permission role '.$role->name.' berhasil diperoleh.'
+			], 200); 
 		}
 	}    
 	/**
