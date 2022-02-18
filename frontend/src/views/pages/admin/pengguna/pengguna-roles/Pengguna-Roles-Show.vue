@@ -60,105 +60,107 @@
         </b-row>
         <b-row>
           <b-col>
-            <b-card
-              no-body
-              class="card card-primary card-outline"
-            >
-              <template #header>
-                <h3 class="card-title">Daftar Permission ({{ selectedPermissions.length }})</h3>  
-                <div class="card-tools">
-                  <b-button
-                    size="xs"
-                    variant="outline-primary"
-                    :disabled="selectedPermissions.length === 0 || btnLoading"
-                    @click.stop="save"                    
-                    v-b-tooltip.hover
-                    title="Simpan Permission"
-                    class="mr-1"
+            <b-overlay :show="btnLoading" rounded="sm">
+              <b-card
+                no-body
+                class="card card-primary card-outline"
+              >
+                <template #header>
+                  <h3 class="card-title">Daftar Permission ({{ selectedPermissions.length }})</h3>  
+                  <div class="card-tools">
+                    <b-button
+                      size="xs"
+                      variant="outline-primary"
+                      :disabled="selectedPermissions.length === 0 || btnLoading"
+                      @click.stop="save"                    
+                      v-b-tooltip.hover
+                      title="Simpan Permission"
+                      class="mr-1"
+                    >
+                      save
+                    </b-button>
+                    <b-btn
+                      size="xs"
+                      variant="outline-primary"
+                      :disabled="selectedPermissions.length === 0"
+                      @click="clearSelected"
+                      v-b-tooltip.hover
+                      title="Kosongkan pilihan permission"
+                    >
+                      Kosongkan
+                    </b-btn>               
+                  </div>
+                </template>
+                <b-card-body>
+                  <b-form-group
+                    label="Filter"
+                    label-for="filter-input"
+                    label-cols-sm="2"
+                    label-align-sm="right"
+                    label-size="sm"
+                    class="mb-0"
                   >
-                    save
-                  </b-button>
-                  <b-btn
-                    size="xs"
-                    variant="outline-primary"
-                    :disabled="selectedPermissions.length === 0"
-                    @click="clearSelected"
-                    v-b-tooltip.hover
-                    title="Kosongkan pilihan permission"
-                  >
-                    Kosongkan
-                  </b-btn>               
-                </div>
-              </template>
-              <b-card-body>
-                <b-form-group
-                  label="Filter"
-                  label-for="filter-input"
-                  label-cols-sm="2"
-                  label-align-sm="right"
-                  label-size="sm"
-                  class="mb-0"
-                >
-                  <b-input-group>
-                    <b-form-input
-                      id="filter-input"
-                      v-model="filter"
-                      type="search"
-                      placeholder="Type to Search"
-                    ></b-form-input>
+                    <b-input-group>
+                      <b-form-input
+                        id="filter-input"
+                        v-model="filter"
+                        type="search"
+                        placeholder="Type to Search"
+                      ></b-form-input>
 
-                    <b-input-group-append>
-                      <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
-                    </b-input-group-append>
-                  </b-input-group>
-                </b-form-group>
-              </b-card-body>
-              <b-card-body class="p-0">
-                <b-alert class="m-3 font-italic" show>
-                  Silahkan pilih permission untuk role {{data_role.name}} dengan cara mengklik baris dalam tabel di bawah ini.
-                </b-alert>                
-                <b-table
-                  id="datatable"
-                  primary-key="id"
-                  :items="datatable"
-                  :fields="fields"
-                  :per-page="perPage"
-                  :current-page="currentPage"
-                  @row-clicked="rowClicked"
-                  :tbody-tr-class="tbodyRowClass"
-                  :busy="datatableLoading"
-                  :filter="filter"
-                  :filter-included-fields="filterOn"
-                  @filtered="onFiltered"
-                  outlined
-                  hover
-                  show-empty
-                  responsive
-                >
-                  <template #table-busy>
-                    <div class="text-center text-danger my-2">
-                      <b-spinner class="align-middle"></b-spinner>
-                      <strong>Loading...</strong>
-                    </div>
-                  </template>
-                  <template v-slot:cell(selected)="{ item, field: { key } }" >
-                    <b-checkbox v-model="item[key]"></b-checkbox>
-                  </template>
-                </b-table>              
-              </b-card-body>
-              <template #footer>
-                 <b-pagination
-                  aria-controls="datatable"
-                  :per-page="perPage"
-                  v-model="currentPage"
-                  :total-rows="totalRows"
-                  class="pagination-sm m-0 float-right"  
-                  responsive
-                  pills
-                >
-                </b-pagination>
-              </template>
-            </b-card>
+                      <b-input-group-append>
+                        <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                      </b-input-group-append>
+                    </b-input-group>
+                  </b-form-group>
+                </b-card-body>
+                <b-card-body class="p-0">
+                  <b-alert class="m-3 font-italic" show>
+                    Silahkan pilih permission untuk role {{data_role.name}} dengan cara mengklik baris dalam tabel di bawah ini.
+                  </b-alert>                
+                  <b-table
+                    id="datatable"
+                    primary-key="id"
+                    :items="datatable"
+                    :fields="fields"
+                    :per-page="perPage"
+                    :current-page="currentPage"
+                    @row-clicked="rowClicked"
+                    :tbody-tr-class="tbodyRowClass"
+                    :busy="datatableLoading"
+                    :filter="filter"
+                    :filter-included-fields="filterOn"
+                    @filtered="onFiltered"
+                    outlined
+                    hover
+                    show-empty
+                    responsive
+                  >
+                    <template #table-busy>
+                      <div class="text-center text-danger my-2">
+                        <b-spinner class="align-middle"></b-spinner>
+                        <strong>Loading...</strong>
+                      </div>
+                    </template>
+                    <template v-slot:cell(selected)="{ item, field: { key } }" >
+                      <b-checkbox v-model="item[key]"></b-checkbox>
+                    </template>
+                  </b-table>              
+                </b-card-body>
+                <template #footer>
+                  <b-pagination
+                    aria-controls="datatable"
+                    :per-page="perPage"
+                    v-model="currentPage"
+                    :total-rows="totalRows"
+                    class="pagination-sm m-0 float-right"  
+                    responsive
+                    pills
+                  >
+                  </b-pagination>
+                </template>
+              </b-card>
+            </b-overlay>
           </b-col>
         </b-row>
       </b-container>
