@@ -1,13 +1,14 @@
 <template>
-  <FrontLayout>
-    test
-  </FrontLayout>
+  <FrontendLayout>
+
+  </FrontendLayout>
 </template>
 <script>
-  import FrontLayout from "@/views/layouts/FrontLayout";
+  import FrontendLayout from '@/views/layouts/FrontendLayout'
   export default {
+    name: 'Home',
     components: {
-			FrontLayout,			
-		},
-  };
+			FrontendLayout,
+		},    
+  }
 </script>

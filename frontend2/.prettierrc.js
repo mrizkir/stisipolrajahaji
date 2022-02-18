@@ -1,3 +1,0 @@
-module.export = {
-  vueIndentScriptAndStyle: true,
-}

@@ -18,7 +18,19 @@ class RolesController extends Controller {
 	public function index(Request $request)
 	{   
 		$this->hasPermissionTo('SYSTEM-SETTING-ROLES_DESTROY');
-		$data = Role::all();
+		$data = Role::select(\DB::raw('
+			*,
+			0 AS jumlah_permission,
+			0 AS jumlah_pengguna
+		'))
+		->get();
+
+		$data->transform(function ($item, $key) {
+			$role = Role::findByName($item->name);			
+			$item->jumlah_permission = $role->permissions->count();
+			$item->jumlah_pengguna = User::role($role->name)->count();
+			return $item;
+		});
 		return Response()->json([
 			'status'=>1,
 			'pid'=>'fetchdata',
@@ -50,6 +62,7 @@ class RolesController extends Controller {
 				'status'=>1,
 				'pid'=>'fetchdata',
 				'role'=>$role,
+				'permissions'=>$role->permissions,
 				'message'=>'Fetch permission role '.$role->name.' berhasil diperoleh.'
 			], 200); 
 		}

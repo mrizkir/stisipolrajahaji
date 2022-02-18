@@ -1,227 +1,113 @@
-import Vue from "vue"
-import store from "../store/index";
-import VueRouter from "vue-router"
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import VueBodyClass from 'vue-body-class'
+import store from '../store/index'
+
+import NotFoundComponent from '../components/NotFoundComponent';
 
 Vue.use(VueRouter)
 
 const routes = [
+	//front
   {
-		path: "/",
-		name: "FrontDashboard",
+		path: '/',
+		name: 'FrontDashboard',
 		meta: {
-			title: "DASHBOARD",
+			title: 'DASHBOARD',
 		},
-		component: () => import("../views/pages/front/Home.vue"),
-	},
-  {
-		path: "/login",
-		name: "FrontLogin",
-		meta: {
-			title: "LOGIN",
-		},
-		component: () => import("../views/pages/front/Login.vue"),
-	},
-  {
-		path: "/dashboard/:token",
-		name: "AdminDashboard",
-		meta: {
-			title: "DASHBOARD",
-		},
-		component: () => import("../views/pages/admin/Dashboard.vue"),
-	},
-	//dmaster	
-	{
-		path: "/dmaster",
-		name: "DMaster",
-		meta: {
-			title: "DATA MASTER",
-			requiresAuth: true,
-				},
-		component: () => import("../views/pages/admin/dmaster/DMaster.vue"),
-	},
-	//keuangan
-	{
-		path: "/keuangan",
-		name: "Keuangan",
-		meta: {
-			title: "KEUANGAN",
-			requiresAuth: true,
-		},
-		component: () => import("../views/pages/admin/keuangan/Keuangan.vue"),
-	},
-	//akademik
-	{
-		path: "/akademik",
-		name: "Akademik",
-		meta: {
-			title: "AKADEMIK",
-			requiresAuth: true,
-		},
-		component: () => import("../views/pages/admin/akademik/Akademik.vue"),
+		component: () => import('../views/pages/front/Home.vue'),
 	},
 	{
-		path: "/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas",
-		name: "PerkuliahanJenisAktivitas",
+		path: '/login',
+		name: 'FrontLogin',
 		meta: {
-			title: "PERKULIAHAN - JENIS AKTIVITAS",
-			requiresAuth: true,
+			title: 'LOGIN',
+			bodyClass: 'login-page',
 		},
-		component: () => import("../views/pages/admin/akademik/perkuliahan/aktivitasmahasiswa/JenisAktivitas.vue"),
+		component: () => import('../views/pages/front/Login.vue'),
 	},
-	//kemahasiswaaan
+	//admin
 	{
-		path: "/kemahasiswaan",
-		name: "Kemahasiswaan",
+		path: '/dashboard/:token',
+		name: 'AdminDashboard',
 		meta: {
-			title: "KEMAHASISWAAN",
-			requiresAuth: true,
+			title: 'DASHBOARD',			
 		},
-		component: () => import("../views/pages/admin/kemahasiswaan/Kemahasiswaan.vue"),
-	},
-	//kepegawaian
-	{
-		path: "/kepegawaian",
-		name: "Kepegawaian",
-		meta: {
-			title: "KEPEGAWAIAN",
-			requiresAuth: true,
-		},
-		component: () => import("../views/pages/admin/kepegawaian/Kepegawaian.vue"),
+		component: () => import('../views/pages/admin/Dashboard.vue'),
 	},
 	//system - users
 	{
-		path: "/system-users",
-		name: "SystemUsers",
+		path: '/sistem-pengguna',
+		name: 'PenggunaSistem',
 		meta: {
-			title: "SYSTEM - USERS",
+			title: 'SISTEM - PENGGUNA',
+			bodyClass: 'sidebar-mini layout-fixed',
 			requiresAuth: true,
 		},
-		component: () => import("../views/pages/admin/system/SystemUsers.vue"),
+		component: () => import('../views/pages/admin/pengguna/PenggunaSistem.vue'),
 	},
 	{
-		path: "/system-users/permissions",
-		name: "UsersPermissions",
+		path: "/sistem-pengguna/permission",
+		name: "PenggunaPermission",
 		meta: {
-			title: "USERS - PERMISSIONS",
+			title: "PENGGUNA - PERMISSION",
+			bodyClass: 'sidebar-mini layout-fixed',
 			requiresAuth: true,
 		},
-		component: () => import("../views/pages/admin/system/Permissions.vue"),
+		component: () => import("../views/pages/admin/pengguna/PenggunaPermission.vue"),
 	},
 	{
-		path: "/system-users/mypermission",
-		name: "MyPermissions",
+		path: "/sistem-pengguna/roles",
+		name: "PenggunaRoles",
 		meta: {
-			title: "USERS - MY PERMISSION",
+			title: "PENGGUNA - ROLES",
+			bodyClass: 'sidebar-mini layout-fixed',
 			requiresAuth: true,
 		},
-		component: () => import("../views/pages/admin/system/MyPermission.vue"),
+		component: () => import("../views/pages/admin/pengguna/pengguna-roles/Pengguna-Roles-Index.vue"),
 	},
 	{
-		path: "/system-users/roles",
-		name: "UsersRoles",
+		path: "/sistem-pengguna/roles/:role_id/detail",
+		name: "PenggunaRolesDetail",
 		meta: {
-			title: "USERS - ROLES",
+			title: "PENGGUNA - ROLES",
+			bodyClass: 'sidebar-mini layout-fixed',
 			requiresAuth: true,
 		},
-		component: () => import("../views/pages/admin/system/Roles.vue"),
+		component: () => import("../views/pages/admin/pengguna/pengguna-roles/Pengguna-Roles-Show.vue"),
 	},
 	{
-		path: "/system-users/superadmin",
-		name: "UsersSuperadmin",
+		path: '/404',
+		name: 'NotFoundComponent',
 		meta: {
-			title: "USERS - SUPER ADMIN",
-			requiresAuth: true,
+			title: 'PAGE NOT FOUND',
 		},
-		component: () => import("../views/pages/admin/system/UsersSuperadmin.vue"),
+		component: NotFoundComponent,
 	},
 	{
-		path: "/system-users/pmb",
-		name: "UsersPMB",
-		meta: {
-			title: "USERS - PMB",
-			requiresAuth: true,
-		},
-		component: () => import("../views/pages/admin/system/UsersPMB.vue"),
+		path: '*',
+		redirect: '/404',
 	},
-	{
-		path: "/system-users/akademik",
-		name: "UsersAkademik",
-		meta: {
-			title: "USERS - AKADEMIK",
-			requiresAuth: true,
-		},
-		component: () => import("../views/pages/admin/system/UsersAkademik.vue"),
-	},
-	{
-		path: "/system-users/prodi",
-		name: "UsersProdi",
-		meta: {
-			title: "USERS - PROGRAM STUDI",
-			requiresAuth: true,
-		},
-		component: () => import("../views/pages/admin/system/UsersProdi.vue"),
-	},
-	{
-		path: "/system-users/puslahta",
-		name: "UsersPuslahta",
-		meta: {
-			title: "USERS - PUSLAHTA",
-			requiresAuth: true,
-		},
-		component: () => import("../views/pages/admin/system/UsersPuslahta.vue"),
-	},
-	{
-		path: "/system-users/dosen",
-		name: "UsersDosen",
-		meta: {
-			title: "USERS - DOSEN",
-			requiresAuth: true,
-		},
-		component: () => import("../views/pages/admin/system/UsersDosen.vue"),
-	},
-	{
-		path: "/system-users/keuangan",
-		name: "UsersKeuangan",
-		meta: {
-			title: "USERS - KEUANGAN",
-			requiresAuth: true,
-		},
-		component: () => import("../views/pages/admin/system/UsersKeuangan.vue"),
-	},
-	{
-		path: "/system-users/profil",
-		name: "UsersProfil",
-		meta: {
-			title: "USERS - PROFILE",
-			requiresAuth: true,
-		},
-		component: () => import("../views/pages/admin/system/UsersProfile.vue"),
-	},
-  {
-    path: "*",
-    redirect: "error-404",
-  },
-];
+]
+
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   routes,
-  scrollBehavior() {
-    return { x: 0, y: 0 }
-  },
-});
-
-router.beforeEach((to, from, next) => {
-	document.title = to.meta.title;
+})
+const vueBodyClass = new VueBodyClass(routes);
+router.beforeEach((to, from, next) => {	
+	vueBodyClass.guard(to, next)
+	document.title = to.meta.title
 	if (to.matched.some(record => record.meta.requiresAuth)) {
-		if (store.getters["auth/Authenticated"]) {
-			next();
-			return;
+		if (store.getters['auth/Authenticated']) {
+			next()
+			return
 		}
-		next("/login");
+		next('/login')
 	} else {
-		next();
+		next()
 	}
-});
+})
 
 export default router
