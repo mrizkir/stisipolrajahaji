@@ -34,20 +34,28 @@
               <b-icon icon="arrow-right" />
               DASHBOARD
             </b-nav-item>
-            <b-nav-item href="#" disabled>KONFIGURASI</b-nav-item>
+            <li class="nav-header">KONFIGURASI</li>
             <b-nav-item
               to="/sistem-pengguna/permission"
               v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_BROWSE')"
             >
               <b-icon icon="arrow-right" />
               PERMISSION
-            </b-nav-item>              
+            </b-nav-item>
             <b-nav-item
               to="/sistem-pengguna/roles"
               v-if="$store.getters['auth/can']('SYSTEM-SETTING-ROLES_BROWSE')"
             >
               <b-icon icon="arrow-right" />
               ROLE
+            </b-nav-item>
+            <li class="nav-header">PENGGUNA</li>
+            <b-nav-item
+              to="/sistem-pengguna/akademik"
+              v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_BROWSE')"
+            >
+              <b-icon icon="arrow-right" />
+              AKADEMIK
             </b-nav-item>
           </b-nav>
         </nav>

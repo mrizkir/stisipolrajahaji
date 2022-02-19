@@ -37,7 +37,7 @@
                     title="Tambah Permission"
                   >
                     <b-icon icon="plus-circle" />
-                  </b-button>                  
+                  </b-button>
                 </div>
               </template>
               <b-card-body>

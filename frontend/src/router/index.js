@@ -77,6 +77,24 @@ const routes = [
 		component: () => import("../views/pages/admin/pengguna/pengguna-roles/Pengguna-Roles-Show.vue"),
 	},
 	{
+		path: "/sistem-pengguna/akademik",
+		name: "PenggunaAkademik",
+		meta: {
+			title: "PENGGUNA - AKADEMIK",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Akademik-Index.vue"),
+	},
+	{
+		path: "/sistem-pengguna/akademik/create",
+		name: "PenggunaAkademikCreate",
+		meta: {
+			title: "PENGGUNA - AKADEMIK",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Akademik-Create.vue"),
+	},
+	{
 		path: '/404',
 		name: 'NotFoundComponent',
 		meta: {

@@ -20,11 +20,24 @@ class UsersAkademikController extends Controller {
 	public function index(Request $request)
 	{           
 		$this->hasPermissionTo('SYSTEM-USERS-AKADEMIK_BROWSE');
+		
+		$sortdesc = $request->filled('sortdesc') ? $request->query('sortdesc', false) : false;
+		$orderby = $sortdesc == 'true' ? 'desc' : 'asc';
+		$sortby = $request->filled('sortby') ? $request->query('sortby', 'nama') : 'nama';
+		
 		$data = User::where('page','m')
-					->orderBy('username','ASC')
-					->paginate(10);  
-					
+			->orderBy($sortby, $orderby);  
+		
+		if ($request->filled('search')) {
+			$search = $request->query('search');
+			$data = $data->whereRaw("page='m' AND nama LIKE '%$search%'")
+			->orWhereRaw("page='m' AND email LIKE '%$search%'")
+			->orWhereRaw("page='m' AND username LIKE '%$search%'");			
+		}
+		$data = $data->paginate(10);
+
 		$role = Role::findByName('manajemen');
+
 		return Response()->json([
 								'status'=>1,
 								'pid'=>'fetchdata',
