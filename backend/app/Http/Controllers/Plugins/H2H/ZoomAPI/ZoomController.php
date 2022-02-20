@@ -82,8 +82,7 @@ class ZoomController extends Controller {
         if (is_null($zoom))
         {
             return Response()->json([
-                                    'status'=>0,
-                                    'pid'=>'update',    
+                                    'status'=>0,   
                                     'message'=>["account zoom ($id) gagal di testing"]
                                 ], 422); 
         }
@@ -153,7 +152,6 @@ class ZoomController extends Controller {
             {
                 return Response()->json([
                     'status'=>0,
-                    'pid'=>'update', 
                     'request'=> \GuzzleHttp\Psr7\Message::toString($e->getRequest()),  
                     'response'=> \GuzzleHttp\Psr7\Message::toString($e->getResponse()),  
                     'message'=>["account zoom ($id) gagal di sync (check response untuk lebih detail)"]
@@ -177,7 +175,6 @@ class ZoomController extends Controller {
         {
             return Response()->json([
                                     'status'=>0,
-                                    'pid'=>'update',    
                                     'message'=>["account zoom ($id) gagal diupdate"]
                                 ], 422); 
         }
@@ -248,8 +245,7 @@ class ZoomController extends Controller {
         if (is_null($zoom))
         {
             return Response()->json([
-                                    'status'=>0,
-                                    'pid'=>'update',    
+                                    'status'=>0,   
                                     'message'=>["account zoom ($id) gagal diperoleh"]
                                 ], 422); 
         }
@@ -280,7 +276,6 @@ class ZoomController extends Controller {
         {
             return Response()->json([
                                     'status'=>0,
-                                    'pid'=>'destroy',    
                                     'message'=>["Kode account zoom ($id) gagal dihapus"]
                                 ], 422); 
         }

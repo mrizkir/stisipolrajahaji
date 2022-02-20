@@ -1,12 +1,12 @@
 <template>
   <PenggunaSistemLayout>
     <template v-slot:page-header>
-      Pengguna Akademik
+      Pengguna Manajemen
     </template>
     <template v-slot:page-breadcrumb>
       <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>      
-      <b-breadcrumb-item to="/sistem-pengguna/akademik">Pengguna Akademik</b-breadcrumb-item>      
-      <b-breadcrumb-item active>Ubah</b-breadcrumb-item>
+      <b-breadcrumb-item to="/sistem-pengguna/manajemen">Pengguna Manajemen</b-breadcrumb-item>      
+      <b-breadcrumb-item active>Tambah</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
       <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_UPDATE')">
@@ -17,9 +17,9 @@
               class="card-primary card-outline"
             >
               <template #header>
-                <h3 class="card-title">Ubah Pengguna</h3>
+                <h3 class="card-title">Tambah Pengguna</h3>
                 <div class="card-tools">
-                  <button type="button" class="btn btn-tool" v-b-tooltip.hover title="Keluar" @click.stop="$router.push('/sistem-pengguna/akademik')">
+                  <button type="button" class="btn btn-tool" v-b-tooltip.hover title="Keluar" @click.stop="$router.push('/sistem-pengguna/manajemen')">
                     <b-icon icon="x-square"></b-icon>
                   </button>
                 </div>
@@ -87,14 +87,6 @@
                     placeholder="Password"
                   />
                 </b-form-group>
-                <b-form-group
-                  label="Status:"            
-                >      
-                  <b-form-select
-                    v-model="formdata.active"
-                    :options="[{value: 0, text: 'TIDAK AKTIF'}, {value: 1, text: 'AKTIF'}]"
-                  />                  
-                </b-form-group>
               </b-card-body>
               <template #footer>            
                 <b-button
@@ -118,14 +110,7 @@
 
   import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'  
   export default {
-    name: 'PenggunaAkademikEdit',
-    created() {
-      this.user_id =this.$route.params.user_id
-    },
-    mounted() {
-      this.initialize()
-    },
-
+    name: 'PenggunaManajemenCreate',    
     setup() {
       return { 
         v$: useVuelidate(),        
@@ -139,8 +124,7 @@
         nama: null,
         email: null,
         username: null,
-        password: null,
-        active: null,
+        password: null,        
       },      
     }),
 
@@ -165,30 +149,17 @@
       validateState(name) {
         const { $dirty, $error } = this.v$.formdata[name]
         return $dirty ? !$error : null
-      },
-      async initialize() {
-        var url = '/system/usersakademik/' + this.user_id;
-        await this.$ajax.get(url, {
-          headers: {
-            Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
-          }
-        })
-        .then(({ data }) => {
-          this.formdata = data.user
-        })
-      },
+      },      
       async onSubmit() {
         if (!this.v$.formdata.$invalid) {
           this.btnLoading = true
           
-          this.$ajax.post('/system/usersakademik/' + this.user_id,
+          this.$ajax.post('/system/usersmanajemen/store',
 						{
-							_method: 'PUT',
 							nama: this.formdata.nama,
 							email: this.formdata.email,
 							username: this.formdata.username,
-							password: this.formdata.password,
-							active: this.formdata.active,							
+							password: this.formdata.password,							
 						},
 						{
 							headers: {
@@ -197,7 +168,7 @@
 						}
 					)
           .then(() => {
-						this.$router.push('/sistem-pengguna/akademik')
+						this.$router.push('/sistem-pengguna/manajemen')
 					})
           .catch(() => {
 						this.btnLoading = false;

@@ -119,8 +119,7 @@ class PermissionsController extends Controller {
 		if (is_null($permission))
 		{
 			return Response()->json([
-				'status'=>0,
-				'pid'=>'destroy',    
+				'status'=>0,  
 				'message'=>["Permission dengan ID ($id) gagal dihapus"]
 			], 422); 
 		}

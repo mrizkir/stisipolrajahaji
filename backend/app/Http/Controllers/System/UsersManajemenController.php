@@ -13,7 +13,7 @@ use Illuminate\Validation\Rule;
 
 use App\Helpers\HelperAuth;
 
-class UsersAkademikController extends Controller
+class UsersManajemenController extends Controller
 {         
 	const LOG_CHANNEL = 'system-user';
 	/**
@@ -48,7 +48,7 @@ class UsersAkademikController extends Controller
 				'role'=>$role,
 				'result'=>$data,
 				'user'=>$this->getUsername(),
-				'message'=>'Fetch data user Akademik berhasil diperoleh'
+				'message'=>'Fetch data user manajemen berhasil diperoleh'
 			], 200);  
 	}    
 	/**
@@ -68,8 +68,7 @@ class UsersAkademikController extends Controller
 			\Log::channel(self::LOG_CHANNEL)->error("User dengan id ($id) gagal diperoleh oleh {$this->getUsername()} karena var user=null");
 
 			return Response()->json([
-				'status'=>0,
-				'pid'=>'fetchdata',    
+				'status'=>0,				
 				'message'=>["User ID ($id) gagal diperoleh"]
 			], 422); 
 		}
@@ -77,7 +76,6 @@ class UsersAkademikController extends Controller
 		{
 			return Response()->json([
 				'status'=>1,
-				'pid'=>'fetchdata', 
 				'user'=>$user,
 				'message'=>["User ID ($id) berhasil diperoleh"]
 			], 200); 
@@ -92,28 +90,37 @@ class UsersAkademikController extends Controller
 	public function store(Request $request)
 	{
 		$this->hasPermissionTo('SYSTEM-USERS-AKADEMIK_STORE');
+
 		$this->validate($request, [
-			'name'=>'required',
-			'email'=>'required|string|email|unique:user',
-			'nomor_hp'=>'required|string|unique:user',
+			'nama'=>'required',
+			'email'=>'required|string|email|unique:user',			
 			'username'=>'required|string|unique:user',
-			'password'=>'required',
-			'prodi_id'=>'required',
+			'password'=>'required',			
 		]);
-		$user = \DB::transaction(function () use ($request) {
-			$now = \Carbon\Carbon::now()->toDateTimeString();   
+		$user = \DB::transaction(function () use ($request) {			
+			$now = \Carbon\Carbon::now()->toDateTimeString(); 
+			
+			$data = HelperAuth::createHashPassword($request->input('password'));
+			$salt = $data['salt'];
+			$password = $data['password'];           
+			
 			$user=User::create([
-				'id'=>Uuid::uuid4()->toString(),
-				'name'=>$request->input('name'),
-				'email'=>$request->input('email'),
-				'nomor_hp'=>$request->input('nomor_hp'),
+				'idbank'=>0,				
 				'username'=> $request->input('username'),
-				'password'=>Hash::make($request->input('password')),            
-				'theme'=>'default',
+				'userpassword'=>$password,            
+				'salt'=>$salt,            
+				'nama'=>$request->input('nama'),
+				'email'=>$request->input('email'),
+				'page'=>'m',
+				'group_id'=>0,
+				'kjur'=>0,
+				'active'=>1,
+				'isdeleted'=>1,
+				'theme'=>'cube',
 				'default_role'=>'manajemen',
-				'foto'=> 'storage/images/users/no_photo.png',
-				'created_at'=>$now, 
-				'updated_at'=>$now
+				'foto'=>'resources/userimages/no_photo.png',
+				'logintime'=>$now,				
+				'date_added'=>$now, 				
 			]);       
 			$role='manajemen';   
 			$user->assignRole($role);          
@@ -122,72 +129,7 @@ class UsersAkademikController extends Controller
 			$permissions=$permission->pluck('name');
 			$user->givePermissionTo($permissions);    
 
-			$user_id=$user->id;
-			$daftar_prodi=json_decode($request->input('prodi_id'), true);
-			foreach($daftar_prodi as $v)
-			{
-				$sql = "
-					INSERT INTO usersprodi (                    
-						user_id, 
-						prodi_id,
-						kode_prodi,
-						nama_prodi,
-						nama_prodi_alias,
-						kode_jenjang,
-						nama_jenjang,            
-						created_at, 
-						updated_at
-					) 
-					SELECT
-						'$user_id',        
-						id,
-						kode_prodi,
-						nama_prodi,
-						nama_prodi_alias,
-						kode_jenjang,
-						nama_jenjang,              
-						NOW() AS created_at,
-						NOW() AS updated_at
-					FROM pe3_prodi                    
-					WHERE 
-						id='$v' 
-				";
-
-				\DB::statement($sql); 
-			}
-
-			$daftar_roles=json_decode($request->input('role_id'), true);
-			foreach($daftar_roles as $v)
-			{
-				if ($v=='dosen' || $v=='dosenwali' )
-				{
-					$user->assignRole($v);          
-					$permission=Role::findByName($v)->permissions;
-					$permissions=$permission->pluck('name');
-					$user->givePermissionTo($permissions);
-
-					if ($v=='dosen')
-					{
-						UserDosen::create([
-							'user_id'=>$user->id,
-							'nama_dosen'=>$request->input('name'),                
-						]);
-						if ($v=='dosenwali')
-						{
-							\DB::table('pe3_dosen')
-								->where('user_id',$user->id)
-								->update(['is_dw'=>true]);
-						}
-					}          
-				}
-			}
-
-			\App\Models\System\ActivityLog::log($request,[
-											'object' => $this->guard()->user(), 
-											'object_id' => $this->guard()->user()->id, 
-											'user_id' => $this->getUserid(), 
-											'message' => 'Menambah user Akademik('.$user->username.') berhasil'
-										]);
+			\Log::channel(self::LOG_CHANNEL)->info("User dengan id ({$user->id} a.n nama ({$user->nama}) role manajemen berhasil disimpan oleh {$this->getUsername()}");
 
 			return $user;
 		});
@@ -196,7 +138,7 @@ class UsersAkademikController extends Controller
 			'status'=>1,
 			'pid'=>'store',
 			'user'=>$user,    
-			'message'=>'Data user Akademik berhasil disimpan.'
+			'message'=>"Data user Manajemen ({$user->nama}) berhasil disimpan."
 		], 200);
 	}
 	/**
@@ -214,8 +156,7 @@ class UsersAkademikController extends Controller
 		if (is_null($user))
 		{
 			return Response()->json([
-				'status'=>0,
-				'pid'=>'update',    
+				'status'=>0,				
 				'message'=>["User ID ($id) gagal diupdate"]
 			], 422); 
 		}
@@ -253,7 +194,7 @@ class UsersAkademikController extends Controller
 				'status'=>1,
 				'pid'=>'update',
 				'user'=>$user,      
-				'message'=>'Data user Akademik '.$user->username.' berhasil diubah.'
+				'message'=>'Data user manajemen '.$user->username.' berhasil diubah.'
 			], 200); 
 		}
 	}
@@ -274,8 +215,7 @@ class UsersAkademikController extends Controller
 			\Log::channel(self::LOG_CHANNEL)->error("User dengan id ($id) gagal dihapus oleh {$this->getUsername()} karena var user=null");
 
 			return Response()->json([
-				'status'=>0,
-				'pid'=>'destroy',    
+				'status'=>0,				
 				'message'=>["User ID ($id) gagal dihapus"]
 			], 422); 
 		}
@@ -284,8 +224,7 @@ class UsersAkademikController extends Controller
 			\Log::channel(self::LOG_CHANNEL)->warning("User dengan id ({$user->id} a.n ({$user->nama}) memiliki flag isdeleted=1 jadi gagal di hapus oleh {$this->getUsername()}");
 
 			return Response()->json([
-				'status'=>0,
-				'pid'=>'destroy',    
+				'status'=>0,				
 				'message'=>["User ID ($id) gagal dihapus karena memiliki flag isdeleted=0"]
 			], 422); 
 		}
@@ -299,7 +238,7 @@ class UsersAkademikController extends Controller
 			return Response()->json([
 				'status'=>1,
 				'pid'=>'destroy',    
-				'message'=>"User Akademik ($username) berhasil dihapus"
+				'message'=>"User manajemen ($username) berhasil dihapus"
 			], 200);    
 		}
 				  

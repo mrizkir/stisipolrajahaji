@@ -44,6 +44,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'page',
         'group_id',
         'kjur',
+        'nama',
         'email',
         'active',
         'isdeleted',

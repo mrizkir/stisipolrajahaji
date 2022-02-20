@@ -77,31 +77,31 @@ const routes = [
 		component: () => import("../views/pages/admin/pengguna/pengguna-roles/Pengguna-Roles-Show.vue"),
 	},
 	{
-		path: "/sistem-pengguna/akademik",
-		name: "PenggunaAkademik",
+		path: "/sistem-pengguna/manajemen",
+		name: "PenggunaManajemen",
 		meta: {
-			title: "PENGGUNA - AKADEMIK",
+			title: "PENGGUNA - MANAJEMEN",
 			requiresAuth: true,
 		},
-		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Akademik-Index.vue"),
+		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Manajemen-Index.vue"),
 	},
 	{
-		path: "/sistem-pengguna/akademik/create",
-		name: "PenggunaAkademikCreate",
+		path: "/sistem-pengguna/manajemen/create",
+		name: "PenggunaManajemenCreate",
 		meta: {
-			title: "PENGGUNA - AKADEMIK",
+			title: "PENGGUNA - MANAJEMEN",
 			requiresAuth: true,
 		},
-		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Akademik-Create.vue"),
+		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Manajemen-Create.vue"),
 	},
 	{
-		path: "/sistem-pengguna/akademik/:user_id/edit",
-		name: "PenggunaAkademikEdit",
+		path: "/sistem-pengguna/manajemen/:user_id/edit",
+		name: "PenggunaManajemenEdit",
 		meta: {
-			title: "PENGGUNA - AKADEMIK",
+			title: "PENGGUNA - MANAJEMEN",
 			requiresAuth: true,
 		},
-		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Akademik-Edit.vue"),
+		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Manajemen-Edit.vue"),
 	},
 	{
 		path: '/404',

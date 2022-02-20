@@ -1,11 +1,11 @@
 <template>
   <PenggunaSistemLayout>
     <template v-slot:page-header>
-      Pengguna Akademik
+      Pengguna Manajemen
     </template>
     <template v-slot:page-breadcrumb>
       <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>      
-      <b-breadcrumb-item active>Pengguna Akademik</b-breadcrumb-item>
+      <b-breadcrumb-item active>Pengguna Manajemen</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
       <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_BROWSE')">
@@ -31,7 +31,7 @@
                   <b-button
                     size="xs"
                     variant="outline-primary"
-                    @click.stop="$router.push('/sistem-pengguna/akademik/create')"
+                    @click.stop="$router.push('/sistem-pengguna/manajemen/create')"
                     v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_STORE')"
                     v-b-tooltip.hover
                     title="Tambah Pengguna"
@@ -69,8 +69,7 @@
                 >
                   <template #table-busy>
                     <div class="text-center text-danger my-2">
-                      <b-spinner class="align-middle"></b-spinner>
-                      <strong>Loading...</strong>
+                      &nbsp;
                     </div>
                   </template>
                   <template #cell(active)="{ item }">
@@ -80,7 +79,7 @@
                     <b-button
                       :id="'btEdit' + item.userid" variant="outline-primary p-1 mr-1"
                       size="xs"
-                      :to="'/sistem-pengguna/akademik/' + item.userid + '/edit'"
+                      :to="'/sistem-pengguna/manajemen/' + item.userid + '/edit'"
                       :disabled="btnLoading"
                       v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_UPDATE')"
                     >
@@ -141,10 +140,10 @@
 <script>
   import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'  
   export default {
-    name: 'PenggunaAkademikIndex',
+    name: 'PenggunaManajemenIndex',
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
-				name: 'pengguna-akademik',
+				name: 'pengguna-manajemen',
         loaded: false,
         perPage: this.perPage,
         currentPage: this.currentPage,
@@ -191,14 +190,14 @@
           thStyle: 'width: 100px',
         },
       ],
-      sortBy: 'nama',
+      sortBy: 'username',
       sortDesc: false,
       search: null,
       dataItem: {},
     }),
     methods: {
       updatesettingpage() {
-        var page = this.$store.getters['uiadmin/Page']('pengguna-akademik')
+        var page = this.$store.getters['uiadmin/Page']('pengguna-manajemen')
         page.perPage = this.perPage
         page.currentPage = this.currentPage
         page.sortBy = this.sortBy
@@ -206,10 +205,27 @@
         page.search = this.search
         this.$store.dispatch('uiadmin/updatePage', page)
       },
+      clearsettingpage() {
+        var page = this.$store.getters['uiadmin/Page']('pengguna-manajemen')
+        page.loaded = false
+        page.perPage = 10
+        page.currentPage = 1
+        page.sortBy = 'username'
+        page.sortDesc = false
+        page.search = null
+        this.$store.dispatch('uiadmin/updatePage', page)
+
+        this.$bvToast.toast('Setting halaman sudah kembali ke default, silahkan refresh', {
+          title: 'Pesan Sistem',
+          variant: 'info',
+          autoHideDelay: 5000,
+          appendToast: false
+        })
+      },
       async initialize() {
         this.datatableLoading = true
-        var page = this.$store.getters['uiadmin/Page']('pengguna-akademik')
-        var url = '/system/usersakademik?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
+        var page = this.$store.getters['uiadmin/Page']('pengguna-manajemen')
+        var url = '/system/usersmanajemen?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
 
         if (page.loaded && page.search != null) {
           this.search = page.search
@@ -253,7 +269,7 @@
         event.preventDefault()
         this.btnLoading = true        
         this.$ajax.post(
-          '/system/usersakademik/' + this.dataItem.userid,
+          '/system/usersmanajemen/' + this.dataItem.userid,
             {
               _method: 'DELETE',
             },

@@ -162,7 +162,21 @@ class UIController extends Controller {
         $tahun_pendaftaran = $formulir->ta;
         $tahun_akademik = $formulir->ta;
       }
-      elseif ($this->hasRole(['akademik','programstudi']))
+      elseif ($this->hasRole('manajemen'))
+      {
+        $daftar_ta=TAModel::select(\DB::raw('tahun AS value,tahun_akademik AS text'))
+                ->orderBy('tahun','asc')
+                ->get();
+
+        $daftar_prodi=ProgramStudiModel::all();        
+        $prodi_id=$config['default_kjur'];
+
+        $tahun_pendaftaran = $config['default_tahun_pendaftaran'];
+        $tahun_akademik = $config['default_ta'];
+        $tahun_pendaftaran = $config['default_tahun_pendaftaran'];
+        $tahun_akademik = $config['default_ta'];
+      }
+      elseif ($this->hasRole('programstudi'))
       {
         $daftar_ta=TAModel::select(\DB::raw('tahun AS value,tahun_akademik AS text'))
                 ->orderBy('tahun','asc')
@@ -219,7 +233,6 @@ class UIController extends Controller {
     {
       return Response()->json([
                     'status'=>0,
-                    'pid'=>'fetchdata',
                     'message'=>'Fetch data ui gagal karena roles kosong.'
                   ], 422);
     }

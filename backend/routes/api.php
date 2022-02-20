@@ -82,11 +82,11 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	$router->delete('/system/userspmb/{id}',['middleware'=>['role:superadmin|pmb'],'uses'=>'System\UsersPMBController@destroy','as'=>'userspmb.destroy']);
 
 	//setting - users akademik
-	$router->get('/system/usersakademik',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersAkademikController@index','as'=>'usersakademik.index']);
-	$router->get('/system/usersakademik/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersAkademikController@show','as'=>'usersakademik.show']);
-	$router->post('/system/usersakademik/store',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersAkademikController@store','as'=>'usersakademik.store']);
-	$router->put('/system/usersakademik/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersAkademikController@update','as'=>'usersakademik.update']);
-	$router->delete('/system/usersakademik/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersAkademikController@destroy','as'=>'usersakademik.destroy']);
+	$router->get('/system/usersmanajemen',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersManajemenController@index','as'=>'usersmanajemen.index']);
+	$router->get('/system/usersmanajemen/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersManajemenController@show','as'=>'usersmanajemen.show']);
+	$router->post('/system/usersmanajemen/store',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersManajemenController@store','as'=>'usersmanajemen.store']);
+	$router->put('/system/usersmanajemen/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersManajemenController@update','as'=>'usersmanajemen.update']);
+	$router->delete('/system/usersmanajemen/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersManajemenController@destroy','as'=>'usersmanajemen.destroy']);
 
 	//setting - users program studi
 	$router->get('/system/usersprodi',['middleware'=>['role:superadmin|programstudi'],'uses'=>'System\UsersProdiController@index','as'=>'usersprodi.index']);

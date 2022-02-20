@@ -51,11 +51,11 @@
             </b-nav-item>
             <li class="nav-header">PENGGUNA</li>
             <b-nav-item
-              to="/sistem-pengguna/akademik"
+              to="/sistem-pengguna/manajemen"
               v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_BROWSE')"
             >
               <b-icon icon="arrow-right" />
-              AKADEMIK
+              MANAJEMEN
             </b-nav-item>
           </b-nav>
         </nav>

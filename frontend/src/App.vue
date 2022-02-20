@@ -37,7 +37,8 @@
 								title: 'Pesan Sistem',
 								variant: 'success',
 								autoHideDelay: 5000,
-								appendToast: true
+								appendToast: false,
+								solid: true,
 							})
 							break
 					}
@@ -67,7 +68,8 @@
 									title: status + ': ' + data.error,
 									variant: 'danger',
 									autoHideDelay: 5000,
-									appendToast: true
+									appendToast: false,
+									solid: true,
 								})								
 							}
 							break
@@ -85,7 +87,8 @@
 								title: status + ': Forbidden',
 								variant: 'warning',
 								autoHideDelay: 5000,
-								appendToast: true
+								appendToast: false,
+								solid: true,
 							})
 							break
 						case 404:
@@ -103,7 +106,8 @@
 								title: status + ': ' + data.error,
 								variant: 'warning',
 								autoHideDelay: 5000,
-								appendToast: true
+								appendToast: false,
+								solid: true,
 							})
 							break
 						case 405:
@@ -113,11 +117,12 @@
 								': ' +
 								data.exception +
 								') Mohon untuk dicek HTTP METHOD '
-							this.$bvToast.toast(this.page_message, {
-								title: status + ': ' + 	data.exception + ') Mohon untuk dicek HTTP METHOD ',
+							this.$bvToast.toast('Mohon untuk dicek HTTP METHOD dari url (' + config.baseURL + config.url + ')', {
+								title: status + ': Method Not Allowed',
 								variant: 'danger',
 								autoHideDelay: 5000,
-								appendToast: true
+								appendToast: false,
+								solid: true,
 							})
 							break
 						case 422:							
@@ -131,7 +136,8 @@
 											title: status + ': Unprocessible Entity',
 											variant: 'warning',
 											autoHideDelay: 5000,
-											appendToast: true
+											appendToast: false,
+											solid: true,
 										})
 										messages.push({
 											message: error_list[i],
@@ -154,7 +160,8 @@
 										title: status + ': Unprocessible Entity',
 										variant: 'warning',
 										autoHideDelay: 5000,
-										appendToast: true
+										appendToast: false,
+										solid: true,
 									})
 								}
 							}
@@ -169,7 +176,8 @@
 								title: status + ': internal server eror',
 								variant: 'danger',
 								autoHideDelay: 5000,
-								appendToast: true
+								appendToast: false,
+								solid: true,
 							})
 							break
 					}

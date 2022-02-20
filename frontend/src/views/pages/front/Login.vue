@@ -67,7 +67,14 @@
             block
           >
             Login
-          </b-button>
+          </b-button>          
+          <b-alert
+            :show="form_error"
+            variant="danger"
+            class="mt-2"
+          >
+            Username atau Password tidak dikenal !!!
+          </b-alert>
         </div>
       </b-form>
     </b-card>    
@@ -102,6 +109,7 @@
 
     data() {
       return {
+        form_error: false,
         userlogged: true,
         btnLoading: false,
         daftar_page: [],
@@ -136,13 +144,14 @@
       async onSubmit() {
         if (!this.v$.formdata.$invalid) {
           this.btnLoading = true
+          this.form_error = false
           await this.$ajax
 						.post('/auth/login', {
 							username: this.formdata.username,
 							password: this.formdata.password,
 							page: this.formdata.page,
 						})
-						.then(({ data }) => {
+						.then(({ data }) => {              
 							this.$ajax
 								.get('/auth/me', {
 									headers: {
@@ -161,6 +170,7 @@
 							this.$router.push('/dashboard/' + data.access_token)
 						})
 						.catch(() => {
+              this.form_error = true
 							this.btnLoading = false
 						})
         }      

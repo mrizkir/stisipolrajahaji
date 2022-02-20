@@ -51,8 +51,7 @@ class RolesController extends Controller {
 		if (is_null($role))
 		{
 			return Response()->json([
-				'status'=>0,
-				'pid'=>'fetchdata',    
+				'status'=>0,				
 				'message'=>["Role ID ($id) gagal diperoleh"]
 			], 422); 
 		}
@@ -170,8 +169,7 @@ class RolesController extends Controller {
 		if (is_null($role))
 		{
 			return Response()->json([
-									'status'=>0,
-									'pid'=>'fetchdata',    
+									'status'=>0,   
 									'message'=>["Role ID ($id) gagal diperoleh"]
 								], 422); 
 		}
@@ -200,8 +198,7 @@ class RolesController extends Controller {
 		if (is_null($role))
 		{
 			return Response()->json([
-				'status'=>0,
-				'pid'=>'fetchdata',    
+				'status'=>0,  
 				'message'=>["Role ID ($id) gagal diperoleh"]
 			], 422); 
 		}
@@ -251,8 +248,7 @@ class RolesController extends Controller {
 		if (is_null($role))
 		{
 			return Response()->json([
-									'status'=>0,
-									'pid'=>'fetchdata',    
+									'status'=>0, 
 									'message'=>["Role ID ($id) gagal diperoleh"]
 								], 422); 
 		}
