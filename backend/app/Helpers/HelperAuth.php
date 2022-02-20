@@ -16,7 +16,7 @@ class HelperAuth
     'on'=>'operator nilai',
     'd'=>'dosen',
     'dw'=>'dosoenwali',
-    'm'=>'mahasiswa',
+    'mh'=>'mahasiswa',
     'mb'=>'mahasiswabaru',
     'al'=>'alumni',
     'ot'=>'orangtuawali',      
@@ -32,4 +32,19 @@ class HelperAuth
       return HelperAuth::$daftar_role[$role];
     }
   }
+  /**
+	* digunakan untuk membuat hash password
+	* @return array
+	*/
+	public static function createHashPassword($password, $salt='', $new=true) {
+		if ($new) {
+			$salt = substr(md5(uniqid(rand(), true)), 0, 6);	
+			$password = hash('sha256', $salt . hash('sha256', $password));
+			$data =array('salt'=>$salt,'password'=>$password);			
+		}else {
+			$data = hash('sha256', $salt . hash('sha256', $password));	
+			$data =array('salt'=>$salt,'password'=>$password);		
+		}
+		return $data;
+	}
 }

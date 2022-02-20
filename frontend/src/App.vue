@@ -1,7 +1,14 @@
 <template>
-	<router-view>
-		
-	</router-view>
+	<b-overlay
+		:show="isLoading"
+		opacity="0.81"
+		rounded="sm"
+		spinner-variant="primary"
+		spinner-type="grow"
+		spinner-small
+	>
+		<router-view />		
+	</b-overlay>
 </template>
 <script>
   export default {
@@ -24,10 +31,14 @@
 						case 'store':
 						case 'update':
 						case 'destroy':
-						case 'resendemail':
-							// this.snackbar_color = 'success'
-							// this.snackbar_success = true
+						case 'resendemail':							
 							this.page_message = data.message
+							this.$bvToast.toast(this.page_message, {
+								title: 'Pesan Sistem',
+								variant: 'success',
+								autoHideDelay: 5000,
+								appendToast: true
+							})
 							break
 					}
 					this.setLoading(false)
@@ -41,23 +52,26 @@
           switch (status) {
 						case 401:
 							if (data.page != 'login') {
-								this.$store.dispatch('auth/logout');
-								this.$store.dispatch('uifront/reinit');
-								this.$store.dispatch('uiadmin/reinit');
-								// this.snackbar_color = 'error'
-								// this.snackbar_error = true
+								this.$store.dispatch('auth/logout')
+								this.$store.dispatch('uifront/reinit')
+								this.$store.dispatch('uiadmin/reinit')
+								
 								this.page_message =
 									'(' +
 									status +
 									': ' +
 									data.error +
 									') Token telah expire mohon login kembali'
-								console.clear();
+
+								this.$bvToast.toast('Token telah expire mohon login kembali', {
+									title: status + ': ' + data.error,
+									variant: 'danger',
+									autoHideDelay: 5000,
+									appendToast: true
+								})								
 							}
-							break;
+							break
 						case 403:
-							// this.snackbar_error = true
-							// this.snackbar_color = 'error'
 							this.page_message =
 								'(' +
 								status +
@@ -67,10 +81,14 @@
 								config.baseURL +
 								config.url +
 								']'
-							break;
+							this.$bvToast.toast(data.message + ' to access resource [' + config.baseURL + config.url +']', {
+								title: status + ': Forbidden',
+								variant: 'warning',
+								autoHideDelay: 5000,
+								appendToast: true
+							})
+							break
 						case 404:
-							// this.snackbar_error = true
-							// this.snackbar_color = 'error'
 							this.page_message =
 								'(' +
 								status +
@@ -80,26 +98,41 @@
 								config.baseURL +
 								config.url +
 								') apakah tersedia'
-							break;
+
+							this.$bvToast.toast('Mohon untuk dicek url route (' + config.baseURL + config.url + ') apakah tersedia', {
+								title: status + ': ' + data.error,
+								variant: 'warning',
+								autoHideDelay: 5000,
+								appendToast: true
+							})
+							break
 						case 405:
-							// this.snackbar_error = true
-							// this.snackbar_color = 'error'
 							this.page_message =
 								'(' +
 								status +
 								': ' +
 								data.exception +
 								') Mohon untuk dicek HTTP METHOD '
-							break;
-						case 422:
-							// this.snackbar_color = 'error'
-							// this.snackbar_error = true
-							var error_messages = [];
+							this.$bvToast.toast(this.page_message, {
+								title: status + ': ' + 	data.exception + ') Mohon untuk dicek HTTP METHOD ',
+								variant: 'danger',
+								autoHideDelay: 5000,
+								appendToast: true
+							})
+							break
+						case 422:							
+							var error_messages = []
 							for (var p in data) {
-								var messages = [];
-								var error_list = data[p];
+								var messages = []
+								var error_list = data[p]
 								if (Array.isArray(error_list)) {
 									for (var i = 0; i < error_list.length; i++) {
+										this.$bvToast.toast(error_list[i], {
+											title: status + ': Unprocessible Entity',
+											variant: 'warning',
+											autoHideDelay: 5000,
+											appendToast: true
+										})
 										messages.push({
 											message: error_list[i],
 										});
@@ -107,7 +140,7 @@
 									error_messages.push({
 										field: p,
 										error: messages,
-									});
+									})
 								} else {
 									error_messages.push({
 										field: p,
@@ -116,21 +149,33 @@
 												message: data[p],
 											},
 										],
-									});
+									})
+									this.$bvToast.toast(data[p], {
+										title: status + ': Unprocessible Entity',
+										variant: 'warning',
+										autoHideDelay: 5000,
+										appendToast: true
+									})
 								}
 							}
 							this.page_form_error_message = error_messages
-							this.page_message = '(' + status + ': Unprocessible Entity) '
-							break;
+							this.page_message = '(' + status + ': Unprocessible Entity)'							
+							break
 						case 500:
-							// this.snackbar_error = true
-							// this.snackbar_color = 'error'
 							this.page_message =
 								'(' + status + ' (internal server eror): ' + data.message
-							break;
+
+							this.$bvToast.toast(data.message, {
+								title: status + ': internal server eror',
+								variant: 'danger',
+								autoHideDelay: 5000,
+								appendToast: true
+							})
+							break
 					}
-					this.setLoading(false);
-					return Promise.reject(error);
+					this.setLoading(false)
+					console.clear()
+					return Promise.reject(error)
         }
       )      
     },

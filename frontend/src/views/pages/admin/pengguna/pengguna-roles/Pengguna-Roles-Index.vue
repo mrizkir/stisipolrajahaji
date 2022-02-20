@@ -8,12 +8,12 @@
       <b-breadcrumb-item active>Roles</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
-      <b-container fluid>
+      <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-SETTING-ROLES_BROWSE')">
         <b-row>
           <b-col>
             <b-card
               no-body
-              class="card card-primary card-outline"
+              class="card-primary card-outline"
             >
               <template #header>
                 <h3 class="card-title">Daftar Roles</h3>  
@@ -59,7 +59,8 @@
                       variant="outline-primary p-1"
                       size="xs"
                       :to="'/sistem-pengguna/roles/' + item.id + '/detail'"
-                      v-b-tooltip.hover
+                      v-b-tooltip.hover                      
+                      v-if="$store.getters['auth/can']('SYSTEM-SETTING-ROLES_SHOW')"
                       title="detail permission dari role"
                     >
                       <b-icon icon="shield-lock" class="p-0 m-0"></b-icon>

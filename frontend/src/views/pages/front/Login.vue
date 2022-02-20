@@ -7,7 +7,7 @@
       class="login-card-body"    
     >
       <p class="login-box-msg">Silahkan masukan username dan password</p>
-      <b-form @submit.prevent="onSubmit" name="frmlogin" id="frmlogin">    
+      <b-form @submit.prevent="onSubmit" name="frmlogin" id="frmlogin">
         <b-form-group
           label="Username:"
           label-for="txtUsername"

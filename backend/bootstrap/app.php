@@ -49,6 +49,7 @@ $app->configure('cors');
 $app->configure('permission');
 $app->configure('auth');
 $app->configure('jwt');
+$app->configure('logging');
 
 /*
 |--------------------------------------------------------------------------

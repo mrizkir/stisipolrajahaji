@@ -8,12 +8,12 @@
       <b-breadcrumb-item active>Permission</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
-      <b-container fluid>
+      <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_BROWSE')">
         <b-row>
           <b-col>
             <b-card
               no-body
-              class="card card-primary card-outline"
+              class="card-primary card-outline"
             >
               <template #header>
                 <h3 class="card-title">Daftar Permission</h3>
@@ -100,63 +100,63 @@
             </b-card>
           </b-col>
         </b-row>
-      </b-container>
-      <b-modal
-        id="modal-delete"
-        header-bg-variant="danger"
-        centered
-        @hidden="resetModal"
-        @ok="handleDelete"
-      >
-        <template #modal-title>
-          Hapus Data
-        </template>
-        <div class="d-block">
-          Nama permission "{{dataItem.name}}" akan dihapus ?
-        </div>
-      </b-modal>
-      <b-modal
-        id="modal-add-permission"
-        header-bg-variant="primary"
-        centered
-        @hidden="resetModalAddPermission"
-        hide-footer
-      >
-        <template #modal-title>
-          Tambah Data
-        </template>
-        <div class="d-block">
-          <b-form @submit.prevent="save" name="frmdata" id="frmdata">
-            <b-form-group
-              label="Nama Permission:"
-              label-for="txtName"
-            >      
-              <b-form-input
-                id="txtName"
-                v-model="v$.formdata.name.$model"
-                placeholder="Masukan Nama Permission"
-                :state="validateState('name')"
-                aria-describedby="frmdata-name"
-              />
-              <b-form-invalid-feedback
-                id="frmdata-name"
-              >
-                Nama permission tidak boleh kosong, silahkan diisi !!!.
-              </b-form-invalid-feedback>
-            </b-form-group>
-            <div class="buttons-w">
-              <b-button
-                type="submit"
-                :disabled="v$.formdata.$invalid || btnLoading"
-                variant="primary"
-                block
-              >
-                Simpan
-              </b-button>
-            </div>
-          </b-form>
-        </div>
-      </b-modal>
+        <b-modal
+          id="modal-delete"
+          header-bg-variant="danger"
+          centered
+          @hidden="resetModal"
+          @ok="handleDelete"
+        >
+          <template #modal-title>
+            Hapus Data
+          </template>
+          <div class="d-block">
+            Nama permission "{{dataItem.name}}" akan dihapus ?
+          </div>
+        </b-modal>
+        <b-modal
+          id="modal-add-permission"
+          header-bg-variant="primary"
+          centered
+          @hidden="resetModalAddPermission"
+          hide-footer
+        >
+          <template #modal-title>
+            Tambah Data
+          </template>
+          <div class="d-block">
+            <b-form @submit.prevent="save" name="frmdata" id="frmdata">
+              <b-form-group
+                label="Nama Permission:"
+                label-for="txtName"
+              >      
+                <b-form-input
+                  id="txtName"
+                  v-model="v$.formdata.name.$model"
+                  placeholder="Masukan Nama Permission"
+                  :state="validateState('name')"
+                  aria-describedby="frmdata-name"
+                />
+                <b-form-invalid-feedback
+                  id="frmdata-name"
+                >
+                  Nama permission tidak boleh kosong, silahkan diisi !!!.
+                </b-form-invalid-feedback>
+              </b-form-group>
+              <div class="buttons-w">
+                <b-button
+                  type="submit"
+                  :disabled="v$.formdata.$invalid || btnLoading"
+                  variant="primary"
+                  block
+                >
+                  Simpan
+                </b-button>
+              </div>
+            </b-form>
+          </div>
+        </b-modal>
+      </b-container>      
     </template>
   </PenggunaSistemLayout>
 </template>
@@ -334,8 +334,7 @@
       },
       handleDelete(event) {
         event.preventDefault()
-        this.btnLoading = true
-        var name = this.dataItem.name;
+        this.btnLoading = true        
         this.$ajax.post(
           '/system/setting/permissions/' + this.dataItem.id,
             {
@@ -350,13 +349,6 @@
           .then(() => {
             this.initialize()
             this.btnLoading = false
-            
-            this.$bvToast.toast(`Permission ${name} berhasil dihapus`, {
-              title: 'Pesan Sistem',
-              variant: 'success',
-              autoHideDelay: 5000,
-              appendToast: false
-            })
           })
           .catch(() => {
             this.btnLoading = false

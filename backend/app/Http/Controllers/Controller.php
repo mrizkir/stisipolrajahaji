@@ -24,7 +24,7 @@ class Controller extends BaseController
 	/**
 	 * digunakan untuk mendapatkan username
 	 */
-	public function getUsername ()
+	public function getUsername()
 	{
 		return $this->guard()->user()->username;
 	}

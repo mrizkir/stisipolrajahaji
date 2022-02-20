@@ -95,6 +95,15 @@ const routes = [
 		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Akademik-Create.vue"),
 	},
 	{
+		path: "/sistem-pengguna/akademik/:user_id/edit",
+		name: "PenggunaAkademikEdit",
+		meta: {
+			title: "PENGGUNA - AKADEMIK",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Akademik-Edit.vue"),
+	},
+	{
 		path: '/404',
 		name: 'NotFoundComponent',
 		meta: {

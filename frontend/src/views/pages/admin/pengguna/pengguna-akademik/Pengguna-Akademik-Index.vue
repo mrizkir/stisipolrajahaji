@@ -8,12 +8,12 @@
       <b-breadcrumb-item active>Pengguna Akademik</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
-      <b-container fluid>
+      <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_BROWSE')">
         <b-row>
           <b-col>
             <b-card
               no-body
-              class="card card-primary card-outline"
+              class="card-primary card-outline"
             >
               <template #header>
                 <h3 class="card-title">Daftar Pengguna</h3>
@@ -73,11 +73,31 @@
                       <strong>Loading...</strong>
                     </div>
                   </template>
+                  <template #cell(active)="{ item }">
+                    <b-badge :variant="item.active == 1 ? 'primary' : 'secondary'">{{ item.active == 1 ? 'aktif' : 'tidak aktif' }}</b-badge>
+                  </template>
                   <template #cell(aksi)="{ item }">
-                    <b-button :id="'btDelete' + item.id" variant="outline-danger p-1" size="xs" @click.stop="showModalDelete(item)" :disabled="btnLoading">
+                    <b-button
+                      :id="'btEdit' + item.userid" variant="outline-primary p-1 mr-1"
+                      size="xs"
+                      :to="'/sistem-pengguna/akademik/' + item.userid + '/edit'"
+                      :disabled="btnLoading"
+                      v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_UPDATE')"
+                    >
+                      <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>
+                    </b-button>
+                    <b-tooltip :target="'btEdit' + item.userid" variant="primary">Ubah Pengguna</b-tooltip>
+                    <b-button
+                      :id="'btDelete' + item.userid"
+                      variant="outline-danger p-1"
+                      size="xs"
+                      @click.stop="showModalDelete(item)"
+                      :disabled="btnLoading"
+                      v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_DESTROY')"
+                    >
                       <b-icon icon="trash" class="p-0 m-0"></b-icon>
                     </b-button>
-                    <b-tooltip :target="'btDelete' + item.id" variant="danger">Hapus Pengguna</b-tooltip>
+                    <b-tooltip :target="'btDelete' + item.userid" variant="danger">Hapus Pengguna</b-tooltip>
                   </template>
                   <template #emptytext>
                     tidak ada data yang bisa ditampilkan
@@ -100,6 +120,20 @@
             </b-card>
           </b-col>
         </b-row>
+        <b-modal
+          id="modal-delete"
+          header-bg-variant="danger"
+          centered
+          @hidden="resetModal"
+          @ok="handleDelete"
+        >
+          <template #modal-title>
+            Hapus Data
+          </template>
+          <div class="d-block">
+            User dengan username "{{dataItem.username}}" akan dihapus ?
+          </div>
+        </b-modal>        
       </b-container>
     </template>
   </PenggunaSistemLayout>
@@ -107,7 +141,7 @@
 <script>
   import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'  
   export default {
-    name: 'PenggunaRolesIndex',
+    name: 'PenggunaAkademikIndex',
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
 				name: 'pengguna-akademik',
@@ -120,7 +154,7 @@
 			})
     },
     mounted() {
-      this.initialize()      
+      this.initialize()
     },
     data: () => ({
       datatableLoading: false,
@@ -172,7 +206,7 @@
         page.search = this.search
         this.$store.dispatch('uiadmin/updatePage', page)
       },
-       async initialize() {
+      async initialize() {
         this.datatableLoading = true
         var page = this.$store.getters['uiadmin/Page']('pengguna-akademik')
         var url = '/system/usersakademik?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
@@ -188,7 +222,6 @@
           }
         })
         .then(({ data }) => {
-          console.log(data);
           this.totalRows = data.result.total
           this.datatable = data.result.data
           page.loaded = true
@@ -197,7 +230,7 @@
             this.currentPage = page.currentPage        
           });
           this.datatableLoading = false
-        })             
+        })
       },
       handleSearch() {
         this.currentPage = 1
@@ -208,6 +241,41 @@
         this.currentPage = value
         this.updatesettingpage()
         this.initialize()
+      },
+      showModalDelete(item) {
+        this.dataItem = item
+        this.$bvModal.show('modal-delete')
+      },
+      resetModal() {
+        this.dataItem = {} 
+      },
+      handleDelete(event) {
+        event.preventDefault()
+        this.btnLoading = true        
+        this.$ajax.post(
+          '/system/usersakademik/' + this.dataItem.userid,
+            {
+              _method: 'DELETE',
+            },
+            {
+              headers: {
+                Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+              }
+            }
+          )
+          .then(() => {
+            this.initialize()
+            this.btnLoading = false
+          })
+          .catch(() => {
+            this.btnLoading = false
+          })
+          
+        // Hide the modal manually
+        this.$nextTick(() => {
+          this.dataItem = {}
+          this.$bvModal.hide('modal-delete')
+        })
       },
     },
     components: {
