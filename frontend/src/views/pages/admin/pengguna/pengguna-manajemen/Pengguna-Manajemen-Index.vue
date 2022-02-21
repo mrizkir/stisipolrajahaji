@@ -77,6 +77,15 @@
                   </template>
                   <template #cell(aksi)="{ item }">
                     <b-button
+                      :id="'btDetail' + item.userid" variant="outline-primary p-1 mr-1"
+                      size="xs"
+                      :to="'/sistem-pengguna/manajemen/' + item.userid + '/detail'"
+                      :disabled="btnLoading"
+                      v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_SHOW')"
+                    >
+                      <b-icon icon="eye" class="p-0 m-0"></b-icon>
+                    </b-button>
+                    <b-button
                       :id="'btEdit' + item.userid" variant="outline-primary p-1 mr-1"
                       size="xs"
                       :to="'/sistem-pengguna/manajemen/' + item.userid + '/edit'"
@@ -187,7 +196,7 @@
         {
           label: 'Aksi',
           key: 'aksi',
-          thStyle: 'width: 100px',
+          thStyle: 'width: 150px',
         },
       ],
       sortBy: 'username',

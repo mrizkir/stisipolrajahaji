@@ -34,11 +34,12 @@
 						case 'resendemail':							
 							this.page_message = data.message
 							this.$bvToast.toast(this.page_message, {
-								title: 'Pesan Sistem',
+								title: '200: Success',
 								variant: 'success',
 								autoHideDelay: 5000,
 								appendToast: false,
 								solid: true,
+								bodyClass: 'text-break',
 							})
 							break
 					}
@@ -70,6 +71,7 @@
 									autoHideDelay: 5000,
 									appendToast: false,
 									solid: true,
+									bodyClass: 'text-break',
 								})								
 							}
 							break
@@ -89,6 +91,7 @@
 								autoHideDelay: 5000,
 								appendToast: false,
 								solid: true,
+								bodyClass: 'text-break',
 							})
 							break
 						case 404:
@@ -108,6 +111,7 @@
 								autoHideDelay: 5000,
 								appendToast: false,
 								solid: true,
+								bodyClass: 'text-break',
 							})
 							break
 						case 405:
@@ -123,6 +127,7 @@
 								autoHideDelay: 5000,
 								appendToast: false,
 								solid: true,
+								bodyClass: 'text-break',
 							})
 							break
 						case 422:							
@@ -138,6 +143,7 @@
 											autoHideDelay: 5000,
 											appendToast: false,
 											solid: true,
+											bodyClass: 'text-break',
 										})
 										messages.push({
 											message: error_list[i],
@@ -162,6 +168,7 @@
 										autoHideDelay: 5000,
 										appendToast: false,
 										solid: true,
+										bodyClass: 'text-break',
 									})
 								}
 							}
@@ -178,6 +185,7 @@
 								autoHideDelay: 5000,
 								appendToast: false,
 								solid: true,
+								bodyClass: 'text-break',
 							})
 							break
 					}

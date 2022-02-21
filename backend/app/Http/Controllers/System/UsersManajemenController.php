@@ -5,11 +5,10 @@ namespace App\Http\Controllers\System;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+
 use App\Models\User;
-use App\Models\UserDosen;
+use App\Models\DetailUser;
 use Spatie\Permission\Models\Role;
-use Ramsey\Uuid\Uuid;
-use Illuminate\Validation\Rule;
 
 use App\Helpers\HelperAuth;
 
@@ -129,6 +128,10 @@ class UsersManajemenController extends Controller
 			$permissions=$permission->pluck('name');
 			$user->givePermissionTo($permissions);    
 
+			DetailUser::create([
+				'user_id' => $user->userid,				
+			]);
+
 			\Log::channel(self::LOG_CHANNEL)->info("User dengan id ({$user->id} a.n nama ({$user->nama}) role manajemen berhasil disimpan oleh {$this->getUsername()}");
 
 			return $user;
@@ -184,6 +187,14 @@ class UsersManajemenController extends Controller
 				$user->save();
 
 				$user->assignRole('manajemen'); 
+
+				$detail = $user->detail;
+				if (is_null($detail))
+				{
+					DetailUser::create([
+						'user_id' => $user->userid,				
+					]);
+				}				
 
 				\Log::channel(self::LOG_CHANNEL)->info("User dengan id ({$user->id} a.n nama ({$user->nama}) role manajemen berhasil diupdate oleh {$this->getUsername()}");
 

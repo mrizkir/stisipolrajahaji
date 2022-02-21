@@ -83,7 +83,7 @@ const routes = [
 			title: "PENGGUNA - MANAJEMEN",
 			requiresAuth: true,
 		},
-		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Manajemen-Index.vue"),
+		component: () => import("../views/pages/admin/pengguna/pengguna-manajemen/Pengguna-Manajemen-Index.vue"),
 	},
 	{
 		path: "/sistem-pengguna/manajemen/create",
@@ -92,7 +92,7 @@ const routes = [
 			title: "PENGGUNA - MANAJEMEN",
 			requiresAuth: true,
 		},
-		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Manajemen-Create.vue"),
+		component: () => import("../views/pages/admin/pengguna/pengguna-manajemen/Pengguna-Manajemen-Create.vue"),
 	},
 	{
 		path: "/sistem-pengguna/manajemen/:user_id/edit",
@@ -101,7 +101,16 @@ const routes = [
 			title: "PENGGUNA - MANAJEMEN",
 			requiresAuth: true,
 		},
-		component: () => import("../views/pages/admin/pengguna/pengguna-akademik/Pengguna-Manajemen-Edit.vue"),
+		component: () => import("../views/pages/admin/pengguna/pengguna-manajemen/Pengguna-Manajemen-Edit.vue"),
+	},
+	{
+		path: "/sistem-pengguna/manajemen/:user_id/detail",
+		name: "PenggunaManajemenDetail",
+		meta: {
+			title: "PENGGUNA - MANAJEMEN",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/pengguna/pengguna-manajemen/Pengguna-Manajemen-Detail.vue"),
 	},
 	{
 		path: '/404',
