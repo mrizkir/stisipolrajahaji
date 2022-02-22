@@ -13,91 +13,107 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable, HasFactory, HasRoles;
+	use Authenticatable, Authorizable, HasFactory, HasRoles;
 
-    protected $guard_name = 'api';
-    
-    /**
-     * nama tabel model ini.
-     *
-     * @var string
-     */
-    protected $table = 'user';
-    /**
-     * primary key tabel ini.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'userid';
+	protected $guard_name = 'api';
+	
+	/**
+	 * The accessors to append to the model's array form.
+	 *
+	 * @var array
+	 */
+	protected $appends = ['role_name'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'userid', 
-        'idbank',
-        'username',
-        'userpassword',
-        'salt',
-        'page',
-        'group_id',
-        'kjur',
-        'nama',
-        'email',
-        'active',
-        'isdeleted',
-        'theme',
-        'foto',
-        'token',
-        'ipaddress',
-        'logintime',
-        'date_added',
-    ];
+	/**
+	 * nama tabel model ini.
+	 *
+	 * @var string
+	 */
+	protected $table = 'user';
+	/**
+	 * primary key tabel ini.
+	 *
+	 * @var string
+	 */
+	protected $primaryKey = 'userid';
 
-    /**
-     * enable auto_increment.
-     *
-     * @var string
-     */
-    public $incrementing = true;
-    /**
-     * activated timestamps.
-     *
-     * @var string
-     */
-    public $timestamps = false;
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = [ 
-        'userpassword', 'salt'
-    ];
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = [
+		'userid', 
+		'idbank',
+		'username',
+		'userpassword',
+		'salt',
+		'page',
+		'group_id',
+		'kjur',
+		'nama',
+		'email',
+		'active',
+		'isdeleted',
+		'theme',
+		'foto',
+		'token',
+		'ipaddress',
+		'logintime',
+		'date_added',
+	];
 
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
-    public function getJWTCustomClaims()
-    {
-        return [];
-    }
+	/**
+	 * enable auto_increment.
+	 *
+	 * @var string
+	 */
+	public $incrementing = true;
+	/**
+	 * activated timestamps.
+	 *
+	 * @var string
+	 */
+	public $timestamps = false;
+	/**
+	 * The attributes excluded from the model's JSON form.
+	 *
+	 * @var array
+	 */
+	protected $hidden = [ 
+		'userpassword', 'salt'
+	];
+	/**
+	 * Get the identifier that will be stored in the subject claim of the JWT.
+	 *
+	 * @return mixed
+	 */
+	public function getJWTIdentifier()
+	{
+		return $this->getKey();
+	}
 
-    public function detail()
+	/**
+	 * Return a key value array, containing any custom claims to be added to the JWT.
+	 *
+	 * @return array
+	 */
+	public function getJWTCustomClaims()
+	{
+		return [];
+	}
+
+	public function detail()
 	{
 		return $this->hasOne('App\Models\DetailUser', 'user_id','userid');
+	}
+	/**
+	 * return real role name a user
+	 *
+	 * @return string
+	 */
+	public function getRoleNameAttribute()
+	{
+		return \App\Helpers\HelperAuth::getRealRoleName($this->attributes['page']);
 	}
 }

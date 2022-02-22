@@ -4,7 +4,7 @@ namespace App\Http\Controllers\System;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\System\UsersController;
 
 use App\Models\User;
 use App\Models\DetailUser;
@@ -12,7 +12,7 @@ use Spatie\Permission\Models\Role;
 
 use App\Helpers\HelperAuth;
 
-class UsersManajemenController extends Controller
+class UsersManajemenController extends UsersController
 {         
 	const LOG_CHANNEL = 'system-user';
 	/**
@@ -49,37 +49,7 @@ class UsersManajemenController extends Controller
 				'user'=>$this->getUsername(),
 				'message'=>'Fetch data user manajemen berhasil diperoleh'
 			], 200);  
-	}    
-	/**
-	 * show the specified resource in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show(Request $request, $id)
-	{
-		$this->hasPermissionTo('SYSTEM-USERS-AKADEMIK_SHOW');
-
-		$user = User::find($id);
-		if (is_null($user))
-		{
-			\Log::channel(self::LOG_CHANNEL)->error("User dengan id ($id) gagal diperoleh oleh {$this->getUsername()} karena var user=null");
-
-			return Response()->json([
-				'status'=>0,				
-				'message'=>["User ID ($id) gagal diperoleh"]
-			], 422); 
-		}
-		else
-		{
-			return Response()->json([
-				'status'=>1,
-				'user'=>$user,
-				'message'=>["User ID ($id) berhasil diperoleh"]
-			], 200); 
-		}
-	}
+	}    	
 	/**
 	 * Store a newly created resource in storage.
 	 *

@@ -5,7 +5,7 @@ export default {
 			baseURL: process.env.VUE_APP_APIUrlV2,
 		});
 
-		Vue.prototype.$api = {
+		Vue.prototype.$backend = {
 			url: process.env.VUE_APP_API_HOST,
 			storageURL: process.env.VUE_APP_STORAGE_URL,
 			post: async function(path) {

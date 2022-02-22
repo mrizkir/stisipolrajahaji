@@ -10,9 +10,11 @@
     </template>
     <template v-slot:page-content>
       <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_UPDATE')">
-        <b-col>
-          <CreateForm urlfront="/sistem-pengguna/manajemen" urlbackend="/system/usersmanajemen/store" />
-        </b-col>
+        <b-row>
+          <b-col>
+            <CreateForm urlfront="/sistem-pengguna/manajemen" urlbackend="/system/usersmanajemen/store" />
+          </b-col>
+        </b-row>
       </b-container>
     </template>
   </PenggunaSistemLayout>

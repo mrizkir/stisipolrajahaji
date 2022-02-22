@@ -87,7 +87,7 @@
                     title="Kosongkan pilihan permission"
                   >
                     Kosongkan
-                  </b-btn>               
+                  </b-btn>
                 </div>
               </template>
               <b-card-body>
