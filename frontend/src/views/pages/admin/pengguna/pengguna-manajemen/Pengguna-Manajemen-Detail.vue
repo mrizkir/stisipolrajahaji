@@ -17,7 +17,7 @@
         </b-row>
         <b-row>
           <b-col>
-            <UserPermissions :user_id="user_id" :role_id="role_id" urlfront="/sistem-pengguna/manajemen" v-if="role_id" />
+            <UserPermissions :user_id="user_id" urlfront="/sistem-pengguna/manajemen" v-if="data_user.hasOwnProperty('userid')" />
           </b-col>
         </b-row>
       </b-container>
@@ -35,8 +35,7 @@
       this.initialize()
     },
     data: () => ({
-      user_id: null,
-      role_id: null,
+      user_id: null,      
       data_user: {},
     }),
     methods: {      
@@ -48,8 +47,7 @@
           }
         })
         .then(({ data }) => {
-          this.data_user = data.user
-          this.role_id = data.role_id
+          this.data_user = data.user          
         })
       },
     },

@@ -65,6 +65,8 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	$router->delete('/system/users/{id}',['middleware'=>['role:superadmin'],'uses'=>'System\UsersController@destroy','as'=>'users.destroy']);
 	//lokasi method userpermission ada di file UserController
 	$router->get('/system/users/{id}/permission',['middleware'=>['role:superadmin'],'uses'=>'System\UsersController@userpermissions','as'=>'users.permission']);
+	//digunakan untuk mendapatkan daftar user permission beserta seluruh role permissionnya
+	$router->get('/system/users/{id}/rolepermission',['middleware'=>['role:superadmin'],'uses'=>'System\UsersController@userrolepermission','as'=>'users.userrolepermission']);
 	$router->get('/system/users/{id}/mypermission',['uses'=>'System\UsersController@mypermission','as'=>'users.mypermission']);
 	$router->get('/system/users/{id}/prodi',['middleware'=>['role:superadmin'],'uses'=>'System\UsersController@usersprodi','as'=>'users.prodi']);
 	$router->get('/system/users/{id}/roles',['uses'=>'System\UsersController@roles','as'=>'users.roles']);

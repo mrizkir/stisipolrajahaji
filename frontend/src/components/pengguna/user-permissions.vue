@@ -4,7 +4,7 @@
     class="card-primary card-outline"
   >
     <template #header>
-      <h3 class="card-title">Data Hak Akses</h3>
+      <h3 class="card-title">Data Hak ({{ selectedPermissions.length }}) </h3>
       <div class="card-tools">
         <b-button
           size="xs"
@@ -30,8 +30,73 @@
       </div>
     </template>
     <b-card-body>
-      
+      <b-form-group
+        label="Filter"
+        label-for="filter-input"
+        label-cols-sm="2"
+        label-align-sm="right"
+        label-size="sm"
+        class="mb-0"
+      >
+        <b-input-group>
+          <b-form-input
+            id="filter-input"
+            v-model="filter"
+            type="search"
+            placeholder="Type to Search"
+          ></b-form-input>
+
+          <b-input-group-append>
+            <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form-group>
     </b-card-body>
+    <b-card-body class="p-0">
+      <b-alert class="m-3 font-italic" show>
+        Silahkan pilih permission untuk user {{data_user.nama}} dengan cara mengklik baris dalam tabel di bawah ini.
+      </b-alert>                
+      <b-table
+        id="datatable"
+        primary-key="id"
+        :items="datatable"
+        :fields="fields"
+        :per-page="perPage"
+        :current-page="currentPage"
+        @row-clicked="rowClicked"
+        :tbody-tr-class="tbodyRowClass"
+        :busy="datatableLoading"
+        :filter="filter"
+        :filter-included-fields="filterOn"
+        @filtered="onFiltered"
+        outlined
+        hover
+        show-empty
+        responsive
+      >
+        <template #table-busy>
+          <div class="text-center text-danger my-2">
+            <b-spinner class="align-middle"></b-spinner>
+            <strong>Loading...</strong>
+          </div>
+        </template>
+        <template v-slot:cell(selected)="{ item, field: { key } }" >
+          <b-checkbox v-model="item[key]"></b-checkbox>
+        </template>
+      </b-table>              
+    </b-card-body>
+    <template #footer>
+      <b-pagination
+        aria-controls="datatable"
+        :per-page="perPage"
+        v-model="currentPage"
+        :total-rows="totalRows"
+        class="pagination-sm m-0 float-right"  
+        responsive
+        pills
+      >
+      </b-pagination>
+    </template>
   </b-card>  
 </template>
 <script>
@@ -48,10 +113,7 @@
       },
       user_id: {        
         required: true,
-      },
-      role_id: {        
-        required: true,
-      },
+      },      
     },
     mounted() {
       this.initialize()
@@ -59,7 +121,7 @@
     data: () => ({
       datatableLoading: false,
       btnLoading: false,
-
+      data_user: {},
       //setting table 
       fields: [        
         {
@@ -116,7 +178,7 @@
       },
       async initialize() {
         this.datatableLoading = true        
-        var url = '/system/setting/roles/' + this.role_id
+        var url = '/system/users/' + this.user_id + '/rolepermission'
 
         //load data role beserta permissions-nya
         await this.$ajax.get(url, {
@@ -124,25 +186,47 @@
             Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
           }
         })
-        .then(({ data }) => {          
-          this.data_role = data.role
+        .then(({ data }) => {
+          this.data_user = data.user
+          this.datatable = data.permissions
+          this.totalRows = this.datatable.length
+          this.datatableLoading = false     
         })
-        
-        //load data permissions secara keseluruhan
-        // await this.$ajax
-        // .get('/system/setting/roles/' + this.role_id + '/allpermissions', {
-        //   headers: {
-        //     Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
-        //   },
-        // })
-        // .then(({ data }) => {        
-        //   this.datatable = data.permissions
-        //   this.totalRows = this.datatable.length
-        //   this.datatableLoading = false          
-        // })
-        // .catch(() => {
-        //   this.datatableLoading = false
-        // })                
+        .catch(() => {
+          this.datatableLoading = false
+        })
+      },
+      async save() {        
+        if (this.selectedPermissions.length > 0) {
+          this.btnLoading = true
+          await this.$ajax
+            .post(
+              "/system/users/storeuserpermissions",
+              {
+                userid: this.user_id,
+                chkpermission: this.selectedPermissions
+              },
+              {
+                headers: {
+                  Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+                }
+              }
+            )
+            .then(() => {
+              this.btnLoading = false
+              this.$router.go()
+            })
+            .catch(() => {
+              this.btnLoading = false
+            })
+        } else {
+          this.$bvToast.toast('Simpan permission dari user ' + this.data_user.nama + ' gagal karena jumlah permissionnya 0' , {
+            title: 'Pesan Sistem',
+            variant: 'warning',
+            autoHideDelay: 5000,
+            appendToast: false
+          })
+        }        
       },
     },
     computed: {

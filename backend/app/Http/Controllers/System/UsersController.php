@@ -65,7 +65,7 @@ class UsersController extends Controller
 										'pid'=>'fetchdata',                
 										'roles'=>$roles,                                                        
 										'message'=>"daftar roles user ($user->username) berhasil diperoleh"
-									],200); 
+									], 200); 
 		}
 	}
 	/**
@@ -263,8 +263,59 @@ class UsersController extends Controller
 									'status'=>1,
 									'pid'=>'update',                                                                                                     
 									'message'=>"Permission seluruh user role ($role_name) berhasil disinkronisasi."
-								],200); 
-	}    
+								], 200); 
+	}
+	/**
+	 * @return daftar role permission beserta permission users
+	 */
+	public function userrolepermission(Request $request, $id) {
+		
+		$user = User::find($id);
+
+		if (is_null($user))
+		{
+			return Response()->json([
+				'status'=>0,
+				'pid'=>'fetchdata',                
+				'message'=>["User ID ($id) gagal diperoleh"]
+			], 422); 
+		}
+		else
+		{
+			$role_id = $user->roles()->first()->id;
+			$subquery=\DB::table('model_has_permissions')
+			->select(\DB::raw('
+				permission_id				
+			'))
+			->where('model_id', $user->userid); 
+
+			$permissions=\DB::table('role_has_permissions AS A')
+				->select(\DB::raw('
+					B.id,
+					B.name,    
+					B.guard_name,
+					CASE 
+						WHEN user_permission.permission_id IS NOT NULL THEN							
+							"true"
+					END AS selected
+				'))
+				->join('permissions AS B', 'A.permission_id', 'B.id')
+				->leftJoinSub($subquery,'user_permission',function($join) {
+					$join->on('user_permission.permission_id','=','A.permission_id');
+				})
+				->where('A.role_id', $role_id)
+				->orderByRaw('CASE WHEN  selected IS NULL THEN 1 ELSE 0 END')
+				->get();
+
+			return Response()->json([
+				'status'=>1,
+				'pid'=>'fetchdata',
+				'user' => $user,
+				'permissions' => $permissions,
+				'message'=>'Permission dari user '.$user->username.' berhasil diperoleh.'
+			], 200); 
+		}
+	}
 	/**
 	 * Store user permissions resource in storage.
 	 *
@@ -274,30 +325,28 @@ class UsersController extends Controller
 	public function storeuserpermissions(Request $request)
 	{      
 		$this->hasPermissionTo('USER_STOREPERMISSIONS');
-
+		
+		$this->validate($request, [
+			'userid'=>'required|exists:user,userid',						
+		]);
 		$post = $request->all();
+		$user_id = $post['userid'];
+		$user = User::find($user_id);
+		
 		$permissions = isset($post['chkpermission'])?$post['chkpermission']:[];
-		$user_id = $post['user_id'];
-
+		
 		foreach($permissions as $k=>$v)
 		{
 			$records[]=$v['name'];
-		}        
+		}       
 		
-		$user = User::find($user_id);
 		$user->givePermissionTo($records);
 
-		\App\Models\System\ActivityLog::log($request,[
-														'object' => $this->guard()->user(), 
-														'object_id' => $this->guard()->user()->id, 
-														'user_id' => $this->getUserid(), 
-														'message' => 'Mensetting permission user ('.$user->username.') berhasil'
-													]);
 		return Response()->json([
-									'status'=>1,
-									'pid'=>'store',
-									'message'=>'Permission user '.$user->username.' berhasil disimpan.'
-								],200); 
+			'status'=>1,
+			'pid'=>'store',
+			'message'=>'Permission user '.$user->nama.' berhasil disimpan.'
+		], 200); 
 	}
 	/**
 	 * Store user permissions resource in storage.
@@ -327,7 +376,7 @@ class UsersController extends Controller
 									'status'=>1,
 									'pid'=>'destroy',
 									'message'=>'Role user '.$user->username.' berhasil di revoke.'
-								],200); 
+								], 200); 
 	}
 	/**
 	 * Update the specified resource in storage.
@@ -437,7 +486,7 @@ class UsersController extends Controller
 											'pid'=>'update',
 											'user'=>$user,                                    
 											'message'=>'Data user '.$user->username.' berhasil diubah.'
-										],200); 
+										], 200); 
 			});
 		}
 	}
@@ -481,7 +530,7 @@ class UsersController extends Controller
 										'pid'=>'update',
 										'user'=>$user,                                    
 										'message'=>'Password user '.$user->username.' berhasil diubah.'
-									],200); 
+									], 200); 
 		}
 	}
 	/**
@@ -557,7 +606,7 @@ class UsersController extends Controller
 									'pid'=>'destroy',  
 									'user'=>$user,              
 									'message'=>"User ($username) berhasil dihapus"
-								],200);    
+								], 200);    
 		}
 			 
 				  
@@ -605,7 +654,7 @@ class UsersController extends Controller
 											'pid'=>'store',
 											'user'=>$user,                
 											'message'=>"Foto User ($username)  berhasil diupload"
-										],200);    
+										], 200);    
 			}
 			else
 			{
@@ -652,7 +701,7 @@ class UsersController extends Controller
 										'pid'=>'store',
 										'user'=>$user,                
 										'message'=>"Foto User ($username)  berhasil direset"
-									],200); 
+									], 200); 
 		}
 	}
 	public function usersprodi (Request $request,$id)
@@ -676,7 +725,7 @@ class UsersController extends Controller
 										'pid'=>'fetchdata',
 										'daftar_prodi'=>$prodi,                
 										'message'=>"Daftar Prodi dari username ($username)  berhasil diperoleh"
-									],200); 
+									], 200); 
 		}
 	}
 }
