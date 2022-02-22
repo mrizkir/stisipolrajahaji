@@ -33,12 +33,10 @@ class UsersController extends Controller
 		else
 		{
 			$user->detail;
-			$user->permissions;
-			$role_id = $user->roles->first()->id;
+			$user->permissions;			
 			return Response()->json([
 				'status'=>1,
-				'user'=>$user,				
-				'role_id'=>$role_id,				
+				'user'=>$user,
 				'message'=>["User ID ($id) berhasil diperoleh"]
 			], 200); 
 		}
@@ -279,6 +277,13 @@ class UsersController extends Controller
 				'pid'=>'fetchdata',                
 				'message'=>["User ID ($id) gagal diperoleh"]
 			], 422); 
+		}
+		else if (is_null($user->roles()->first())) {
+			return Response()->json([
+				'status'=>0,
+				'pid'=>'fetchdata',                
+				'message'=>["User a.n {$user->nama} belum terdaftar di role manapun silahkan daftarkan"]
+			], 422);
 		}
 		else
 		{
