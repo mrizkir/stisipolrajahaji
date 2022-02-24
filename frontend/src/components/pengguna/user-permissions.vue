@@ -100,17 +100,17 @@
             v-if="$store.getters['auth/can']('USER_REVOKEPERMISSIONS') && item.selected == 'true'"
           >
             <b-icon icon="trash" class="p-0 m-0"></b-icon>
+            <b-tooltip
+              :target="'btDelete' + item.userid"
+              variant="danger"
+              v-if="$store.getters['auth/can']('USER_REVOKEPERMISSIONS') && item.selected == 'true'"
+            >
+              Hapus Permission Pengguna
+            </b-tooltip>
           </b-button>
           <span v-else>
             N.A
-          </span>
-          <b-tooltip
-            :target="'btDelete' + item.userid"
-            variant="danger"
-            v-if="$store.getters['auth/can']('USER_REVOKEPERMISSIONS') && item.selected == 'true'"
-          >
-            Hapus Permission Pengguna
-          </b-tooltip>
+          </span>          
         </template>
       </b-table>              
     </b-card-body>
@@ -200,11 +200,13 @@
         }
       },
       rowClicked(item) {
-        if (typeof item !== 'undefined' && item !== null) {          
-          if (item.selected) {      
-            this.$set(item, 'selected', false)
-          } else {
-            this.$set(item, 'selected', true)
+        if (typeof item !== 'undefined' && item !== null) {     
+          if (item.selected2 == null) {     
+            if (item.selected) {      
+              this.$set(item, 'selected', false)
+            } else {
+              this.$set(item, 'selected', true)
+            }
           }
         }
       },
