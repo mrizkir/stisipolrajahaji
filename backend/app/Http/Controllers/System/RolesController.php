@@ -9,7 +9,9 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use App\Models\User;
 
-class RolesController extends Controller {    
+class RolesController extends Controller
+{  
+	const LOG_CHANNEL = 'system-user';  
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -116,6 +118,9 @@ class RolesController extends Controller {
 		
 		$role = Role::find($role_id);
 		$role->syncPermissions($records);
+
+		\Log::channel(self::LOG_CHANNEL)->error("Permission role dengan id ($user_id)  berhasil disimpan oleh {$this->getUsername()}");
+
 		return Response()->json([
 									'status'=>1,
 									'pid'=>'store',
@@ -131,6 +136,11 @@ class RolesController extends Controller {
 	public function revokerolepermissions(Request $request)
 	{      
 		$this->hasPermissionTo('SYSTEM-SETTING-ROLES_DESTROY');
+		
+		$this->validate($request, [
+			'role_id'=>'required|exists:roles,id',
+			'name'=>'required|exists:permissions,name',
+		]);
 
 		$role = \DB::transaction(function () use ($request) {
 			$post = $request->all();
@@ -139,13 +149,8 @@ class RolesController extends Controller {
 			
 			$role = Role::find($role_id);
 			$role->revokePermissionTo($name);
-
-			\App\Models\System\ActivityLog::log($request,[
-				'object' => $this->guard()->user(), 
-				'object_id' => $this->guard()->user()->id, 
-				'user_id' => $this->getUserid(), 
-				'message' => 'Menghilangkan permission('.$name.') role ('.$role->name.') berhasil'
-			]);
+			
+			\Log::channel(self::LOG_CHANNEL)->error("Permission role dengan id ($role_id) berhasil dihapus oleh {$this->getUsername()}");
 
 			return $role;
 		});
@@ -219,7 +224,11 @@ class RolesController extends Controller {
 					CASE 
 						WHEN B.permission_id IS NOT NULL THEN							
 							"true"
-					END AS selected
+					END AS selected,
+					CASE 
+						WHEN B.permission_id IS NOT NULL THEN							
+							"true"
+					END AS selected2
 				'))   
 				->leftJoinSub($subquery,'B',function($join) {
 					$join->on('B.permission_id','=','A.id');

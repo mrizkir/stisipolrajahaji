@@ -141,8 +141,31 @@
                       <strong>Loading...</strong>
                     </div>
                   </template>
-                  <template v-slot:cell(selected)="{ item, field: { key } }" >
-                    <b-checkbox v-model="item[key]"></b-checkbox>
+                  <template v-slot:cell(selected)="{ item, field: { key } }">
+                    <b-form-checkbox
+                      v-model="item[key]"
+                      v-if="$store.getters['auth/can']('USER_STOREPERMISSIONS') && item.selected2 === null"
+                      switch
+                    />
+                    <span v-else>
+                      N.A
+                    </span>
+                  </template>
+                  <template #cell(aksi)="{ item }">
+                    <b-button
+                      :id="'btDelete' + item.id"
+                      variant="outline-danger p-1"
+                      size="xs"
+                      @click.stop="revokePermission(item)"
+                      :disabled="btnLoading"
+                      v-if="$store.getters['auth/can']('ROLE_REVOKEPERMISSIONS') && item.selected == 'true'"
+                    >
+                      <b-icon icon="trash" class="p-0 m-0"></b-icon>
+                    </b-button>
+                    <span v-else>
+                      N.A
+                    </span>
+                    <b-tooltip :target="'btDelete' + item.id" variant="danger">Hapus Permission Role</b-tooltip>
                   </template>
                 </b-table>              
               </b-card-body>
@@ -195,6 +218,11 @@
           label: 'Pilihan',          
           thStyle: 'width: 100px',
         },
+        {
+          label: 'Aksi',
+          key: 'aksi',
+          thStyle: 'width: 100px',
+        },
       ],
       totalRows: 1,  
       perPage: 10,
@@ -208,7 +236,9 @@
     methods: {
       clearSelected() {
         this.selectedPermissions.forEach((item) => {
-          this.$delete(item, 'selected')
+          if (item.selected2 == null) {
+            this.$delete(item, 'selected')
+          }
         })
       },
       tbodyRowClass(item) {
@@ -294,6 +324,27 @@
             appendToast: false
           })
         }        
+      },
+      async revokePermission(item) {
+        this.btnLoading = true
+        await this.$ajax
+          .post('/system/setting/roles/revokerolepermissions',
+            {
+              role_id: this.role.id,
+							name: item.name,
+            },
+            {
+              headers: {
+                Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+              }
+            }
+        )
+        .then(() => {
+          this.$router.go()
+        })
+        .catch(() => {
+          this.btnLoading = false
+        })
       },
     },
     computed: {

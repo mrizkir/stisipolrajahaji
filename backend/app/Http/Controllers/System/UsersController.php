@@ -10,6 +10,7 @@ use App\Models\DetailUser;
 
 class UsersController extends Controller
 {	
+	const LOG_CHANNEL = 'system-user';
 	/**
 	 * digunakan untuk mendapatkan detail user
 	 */
@@ -50,10 +51,10 @@ class UsersController extends Controller
 		if (is_null($user))
 		{
 			return Response()->json([
-									'status'=>0,
-									'pid'=>'fetchdata',                
-									'message'=>["User ID ($id) gagal diperoleh"]
-								],422); 
+				'status'=>0,
+				'pid'=>'fetchdata',                
+				'message'=>["User ID ($id) gagal diperoleh"]
+			], 422); 
 		}
 		else
 		{
@@ -272,6 +273,8 @@ class UsersController extends Controller
 
 		if (is_null($user))
 		{
+			\Log::channel(self::LOG_CHANNEL)->error("User dengan id ($id) gagal diperoleh oleh {$this->getUsername()} karena var user=null");
+
 			return Response()->json([
 				'status'=>0,
 				'pid'=>'fetchdata',                
@@ -279,6 +282,9 @@ class UsersController extends Controller
 			], 422); 
 		}
 		else if (is_null($user->roles()->first())) {
+			
+			\Log::channel(self::LOG_CHANNEL)->error("User dengan id ($id) gagal diperoleh oleh {$this->getUsername()} karena belum terdaftar dimanapun");
+
 			return Response()->json([
 				'status'=>0,
 				'pid'=>'fetchdata',                
@@ -302,7 +308,11 @@ class UsersController extends Controller
 					CASE 
 						WHEN user_permission.permission_id IS NOT NULL THEN							
 							"true"
-					END AS selected
+					END AS selected,
+					CASE 
+						WHEN user_permission.permission_id IS NOT NULL THEN							
+							"true"
+					END AS selected2
 				'))
 				->join('permissions AS B', 'A.permission_id', 'B.id')
 				->leftJoinSub($subquery,'user_permission',function($join) {
@@ -318,7 +328,7 @@ class UsersController extends Controller
 				'user' => $user,
 				'permissions' => $permissions,
 				'message'=>'Permission dari user '.$user->username.' berhasil diperoleh.'
-			], 200); 
+			], 200)->setEncodingOptions(FILTER_VALIDATE_BOOLEAN); 
 		}
 	}
 	/**
@@ -347,6 +357,8 @@ class UsersController extends Controller
 		
 		$user->givePermissionTo($records);
 
+		\Log::channel(self::LOG_CHANNEL)->error("Permission user dengan id ($user_id)  berhasil disimpan oleh {$this->getUsername()}");
+
 		return Response()->json([
 			'status'=>1,
 			'pid'=>'store',
@@ -363,25 +375,25 @@ class UsersController extends Controller
 	{      
 		$this->hasPermissionTo('USER_REVOKEPERMISSIONS');
 
+		$this->validate($request, [
+			'user_id'=>'required|exists:user,userid',
+			'name'=>'required|exists:permissions,name',
+		]);
+
 		$post = $request->all();
 		$name = $post['name'];
 		$user_id = $post['user_id'];
 	  
-		
 		$user = User::find($user_id);
 		$user->revokePermissionTo($name);
+		
+		\Log::channel(self::LOG_CHANNEL)->error("Permission user dengan id ($user_id) berhasil dihapus oleh {$this->getUsername()}");
 
-		\App\Models\System\ActivityLog::log($request,[
-										'object' => $this->guard()->user(), 
-										'object_id' => $this->guard()->user()->id, 
-										'user_id' => $this->getUserid(), 
-										'message' => 'Menghilangkan permission('.$name.') user ('.$user->username.') berhasil'
-									]);
 		return Response()->json([
-									'status'=>1,
-									'pid'=>'destroy',
-									'message'=>'Role user '.$user->username.' berhasil di revoke.'
-								], 200); 
+			'status'=>1,
+			'pid'=>'destroy',
+			'message'=>'Role user '.$user->username.' berhasil di revoke.'
+		], 200); 
 	}
 	/**
 	 * Update the specified resource in storage.
@@ -398,10 +410,10 @@ class UsersController extends Controller
 		if (is_null($user))
 		{
 			return Response()->json([
-									'status'=>0,
-									'pid'=>'update',                
-									'message'=>["User ID ($id) gagal diupdate"]
-								],422); 
+				'status'=>0,
+				'pid'=>'update',                
+				'message'=>["User ID ($id) gagal diupdate"]
+			], 422); 
 		}
 		else
 		{
@@ -512,7 +524,7 @@ class UsersController extends Controller
 									'status'=>0,
 									'pid'=>'update',                
 									'message'=>["Password User ID ($id) gagal diupdate"]
-								],422); 
+								], 422); 
 		}
 		else
 		{
@@ -592,7 +604,7 @@ class UsersController extends Controller
 									'status'=>0,
 									'pid'=>'destroy',                                      
 									'message'=>["User dengan id ($id) gagal dihapus"]
-								],422);    
+								], 422);    
 		}
 		else
 		{
@@ -626,7 +638,7 @@ class UsersController extends Controller
 									'status'=>0,
 									'pid'=>'store',                
 									'message'=>["Data User tidak ditemukan."]
-								],422);         
+								], 422);         
 		}
 		else
 		{
@@ -667,7 +679,7 @@ class UsersController extends Controller
 										'status'=>1,
 										'pid'=>'store',
 										'message'=>["Extensi file yang diupload bukan jpg atau png."]
-									],422); 
+									], 422); 
 				
 
 			}
@@ -683,7 +695,7 @@ class UsersController extends Controller
 									'status'=>0,
 									'pid'=>'store',                
 									'message'=>["Data User tidak ditemukan."]
-								],422);         
+								], 422);         
 		}
 		else
 		{
@@ -719,7 +731,7 @@ class UsersController extends Controller
 									'status'=>0,
 									'pid'=>'store',                
 									'message'=>["Data User tidak ditemukan."]
-								],422);         
+								], 422);         
 		}
 		else
 		{
