@@ -85,8 +85,18 @@
                     @click="clearSelected"
                     v-b-tooltip.hover
                     title="Kosongkan pilihan permission"
+                    class="mr-1"
                   >
                     Kosongkan
+                  </b-btn>
+                  <b-btn
+                    size="xs"
+                    variant="outline-primary"          
+                    @click="setAllSelected"
+                    v-b-tooltip.hover
+                    title="Pilih semua permission"          
+                  >
+                    Pilih Semua
                   </b-btn>
                 </div>
               </template>
@@ -234,6 +244,13 @@
       filterOn: [],
     }),
     methods: {
+      setAllSelected() {
+        this.datatable.forEach((item) => {
+          if (item.selected2 == null) {
+            this.$set(item, 'selected', true)
+          }
+        })
+      },
       clearSelected() {
         this.selectedPermissions.forEach((item) => {
           if (item.selected2 == null) {
