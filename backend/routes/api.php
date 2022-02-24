@@ -83,7 +83,14 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	$router->put('/system/userspmb/{id}',['middleware'=>['role:superadmin|pmb'],'uses'=>'System\UsersPMBController@update','as'=>'userspmb.update']);
 	$router->delete('/system/userspmb/{id}',['middleware'=>['role:superadmin|pmb'],'uses'=>'System\UsersPMBController@destroy','as'=>'userspmb.destroy']);
 
-	//setting - users akademik
+	//setting - users superadmin
+	$router->get('/system/userssuperadmin',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersSuperadminController@index','as'=>'userssuperadmin.index']);
+	$router->get('/system/userssuperadmin/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersSuperadminController@show','as'=>'userssuperadmin.show']);
+	$router->post('/system/userssuperadmin/store',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersSuperadminController@store','as'=>'userssuperadmin.store']);
+	$router->put('/system/userssuperadmin/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersSuperadminController@update','as'=>'userssuperadmin.update']);
+	$router->delete('/system/userssuperadmin/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersSuperadminController@destroy','as'=>'userssuperadmin.destroy']);
+	
+	//setting - users akademik / manajemen
 	$router->get('/system/usersmanajemen',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersManajemenController@index','as'=>'usersmanajemen.index']);
 	$router->get('/system/usersmanajemen/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersManajemenController@show','as'=>'usersmanajemen.show']);
 	$router->post('/system/usersmanajemen/store',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersManajemenController@store','as'=>'usersmanajemen.store']);

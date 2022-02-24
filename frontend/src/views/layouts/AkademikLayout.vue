@@ -29,41 +29,12 @@
           >
             <b-nav-item
               to="/sistem-pengguna"
-              v-if="$store.getters['auth/can']('SYSTEM-USERS-GROUP')"
+              v-if="$store.getters['auth/can']('AKADEMIK-GROUP')"
             >
               <b-icon icon="arrow-right" />
               DASHBOARD
             </b-nav-item>
-            <li class="nav-header">KONFIGURASI</li>
-            <b-nav-item
-              to="/sistem-pengguna/permission"
-              v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_BROWSE')"
-            >
-              <b-icon icon="arrow-right" />
-              PERMISSION
-            </b-nav-item>
-            <b-nav-item
-              to="/sistem-pengguna/roles"
-              v-if="$store.getters['auth/can']('SYSTEM-SETTING-ROLES_BROWSE')"
-            >
-              <b-icon icon="arrow-right" />
-              ROLE
-            </b-nav-item>
-            <li class="nav-header">PENGGUNA</li>
-            <b-nav-item
-              to="/sistem-pengguna/superadmin"
-              v-if="$store.getters['auth/can']('SYSTEM-USERS-SUPERADMIN_BROWSE')"
-            >
-              <b-icon icon="arrow-right" />
-              SUPERADMIN
-            </b-nav-item>
-            <b-nav-item
-              to="/sistem-pengguna/manajemen"
-              v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_BROWSE')"
-            >
-              <b-icon icon="arrow-right" />
-              MANAJEMEN
-            </b-nav-item>            
+            <li class="nav-header">PERKULIAHAN</li>            
           </b-nav>
         </nav>
         
@@ -101,7 +72,7 @@
 <script>
   import navbar from '@/components/panels/navbaradmin.vue'
   export default {
-    name: 'PenggunaSistemLayout',
+    name: 'AkademikLayout',
      data: () => ({
       //sidebar
 			sidebar_visible: true,

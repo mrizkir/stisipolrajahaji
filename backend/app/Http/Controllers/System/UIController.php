@@ -232,9 +232,9 @@ class UIController extends Controller {
     else
     {
       return Response()->json([
-                    'status'=>0,
-                    'message'=>'Fetch data ui gagal karena roles kosong.'
-                  ], 422);
+        'status'=>0,
+        'message'=>'Fetch data ui gagal karena roles kosong.'
+      ], 422);
     }
   }
 }

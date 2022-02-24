@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
+use App\Models\User; 
+
 class Controller extends BaseController
 {
 	/**

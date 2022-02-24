@@ -3,17 +3,28 @@
     <navbar classBNavbar="none" />
     <b-container fluid>
       <b-row class="mt-2">
-        <b-col md="3" sm="6" xs="12">
+        <b-col md="3" sm="6" xs="12" v-if="$store.getters['auth/can']('SYSTEM-USERS-GROUP')">
           <b-card
             bg-variant="dark"
             text-variant="white"
-            title="Pengguna Sistem"
-            v-if="$store.getters['auth/can']('SYSTEM-USERS-GROUP')"
+            title="Pengguna Sistem"            
           >
             <b-card-text>
               Mengatur roles, permission, dan pengguna
             </b-card-text>
             <b-button variant="primary" to="/sistem-pengguna">GO</b-button>
+          </b-card>
+        </b-col>
+        <b-col md="3" sm="6" xs="12" v-if="$store.getters['auth/can']('AKADEMIK-GROUP')">
+          <b-card
+            bg-variant="dark"
+            text-variant="white"
+            title="Akademik"            
+          >
+            <b-card-text>
+              Mengelola data akademik
+            </b-card-text>
+            <b-button variant="primary" to="/akademik">GO</b-button>
           </b-card>
         </b-col>
       </b-row>

@@ -35,6 +35,17 @@ const routes = [
 		},
 		component: () => import('../views/pages/admin/Dashboard.vue'),
 	},
+	//akademik
+	{
+		path: '/akademik',
+		name: 'Akademik',
+		meta: {
+			title: 'AKADEMIK',
+			bodyClass: 'sidebar-mini layout-fixed',
+			requiresAuth: true,
+		},
+		component: () => import('../views/pages/admin/akademik/Akademik.vue'),
+	},
 	//system - users
 	{
 		path: '/sistem-pengguna',
@@ -76,6 +87,44 @@ const routes = [
 		},
 		component: () => import("../views/pages/admin/pengguna/pengguna-roles/Pengguna-Roles-Show.vue"),
 	},
+	//pengguna superadmin
+	{
+		path: "/sistem-pengguna/superadmin",
+		name: "PenggunaSuperadmin",
+		meta: {
+			title: "PENGGUNA - SUPERADMIN",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/pengguna/pengguna-sa/Pengguna-Superadmin-Index.vue"),
+	},
+	{
+		path: "/sistem-pengguna/superadmin/create",
+		name: "PenggunaSuperadminCreate",
+		meta: {
+			title: "PENGGUNA - SUPERADMIN",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/pengguna/pengguna-sa/Pengguna-Superadmin-Create.vue"),
+	},
+	{
+		path: "/sistem-pengguna/superadmin/:user_id/edit",
+		name: "PenggunaSuperadminEdit",
+		meta: {
+			title: "PENGGUNA - SUPERADMIN",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/pengguna/pengguna-sa/Pengguna-Superadmin-Edit.vue"),
+	},
+	{
+		path: "/sistem-pengguna/superadmin/:user_id/detail",
+		name: "PenggunaSuperadminDetail",
+		meta: {
+			title: "PENGGUNA - SUPERADMIN",
+			requiresAuth: true,
+		},
+		component: () => import("../views/pages/admin/pengguna/pengguna-sa/Pengguna-Superadmin-Detail.vue"),
+	},
+	//pengguna manajemen
 	{
 		path: "/sistem-pengguna/manajemen",
 		name: "PenggunaManajemen",
@@ -112,6 +161,7 @@ const routes = [
 		},
 		component: () => import("../views/pages/admin/pengguna/pengguna-manajemen/Pengguna-Manajemen-Detail.vue"),
 	},
+	
 	{
 		path: '/404',
 		name: 'NotFoundComponent',
