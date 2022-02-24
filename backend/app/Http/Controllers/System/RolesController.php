@@ -119,7 +119,7 @@ class RolesController extends Controller
 		$role = Role::find($role_id);
 		$role->syncPermissions($records);
 
-		\Log::channel(self::LOG_CHANNEL)->error("Permission role dengan id ($user_id)  berhasil disimpan oleh {$this->getUsername()}");
+		\Log::channel(self::LOG_CHANNEL)->error("Permission role dengan id ($role_id)  berhasil disimpan oleh {$this->getUsername()}");
 
 		return Response()->json([
 									'status'=>1,
