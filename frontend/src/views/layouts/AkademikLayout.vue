@@ -28,16 +28,27 @@
             vertical
           >
             <b-nav-item
-              to="/sistem-pengguna"
+              to="/akademik"
               v-if="$store.getters['auth/can']('AKADEMIK-GROUP')"
             >
               <b-icon icon="arrow-right" />
               DASHBOARD
             </b-nav-item>
-            <li class="nav-header">PERKULIAHAN</li>            
+            <li class="nav-header">PERKULIAHAN</li>
+            <li>
+              <b-button v-b-toggle.collapse-perkuliahan variant="primary">Aktivitas Mahasiswa</b-button>
+              <b-collapse id="collapse-perkuliahan" class="mt-2" tag="ul" is-nav>
+                <b-nav-item
+                  to="/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas"
+                  v-if="$store.getters['auth/can']('AKADEMIK-KEMAHASISWAAN-AKTIVITAS_BROWSE')"
+                >
+                  <b-icon icon="arrow-right" />
+                  JENIS AKTIVITAS
+                </b-nav-item>
+              </b-collapse>
+            </li>            
           </b-nav>
-        </nav>
-        
+        </nav>        
       </template>
     </b-sidebar>
     <!-- main content -->

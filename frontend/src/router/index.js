@@ -46,6 +46,35 @@ const routes = [
 		},
 		component: () => import('../views/pages/admin/akademik/Akademik.vue'),
 	},
+	//akademik - perkuliahan - aktivitas mahasiswa - jenis aktivitas
+	{
+		path: '/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas',
+		name: 'AkademikJenisAktivitas',
+		meta: {
+			title: "AKTIVITAS MAHASISWA - JENIS AKTIVITAS",
+			bodyClass: 'sidebar-mini layout-fixed',
+			requiresAuth: true,
+		},
+		component: () => import('../views/pages/admin/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas/JenisAktivitas-Index.vue'),
+	},
+	{
+		path: '/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas/create',
+		name: "AkademikJenisAktivitasCreate",
+		meta: {
+			title: "AKTIVITAS MAHASISWA - JENIS AKTIVITAS",
+			requiresAuth: true,
+		},		
+		component: () => import('../views/pages/admin/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas/JenisAktivitas-Create.vue'),
+	},
+	{
+		path: "/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas/:idjenis/edit",
+		name: "AkademikJenisAktivitasEdit",
+		meta: {
+			title: "AKTIVITAS MAHASISWA - JENIS AKTIVITAS",
+			requiresAuth: true,
+		},		
+		component: () => import('../views/pages/admin/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas/JenisAktivitas-Edit.vue'),
+	},
 	//system - users
 	{
 		path: '/sistem-pengguna',

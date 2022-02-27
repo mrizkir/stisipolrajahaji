@@ -114,6 +114,14 @@ return [
 			'path' => storage_path('logs/laravel.log'),
 		],
 
+		'perkuliahan-aktivitas-mahasiswa' => [
+			'driver' => 'daily',
+			'tap' => [App\Helpers\HelperFormatBarisLog::class],
+			'path' => storage_path('logs/akademik/perkuliahan/aktivitas-mahasiswa.log'),
+			'level' => env('LOG_LEVEL', 'debug'),
+			'days' => 7,
+		],
+
 		'system-user' => [
 			'driver' => 'daily',
 			'tap' => [App\Helpers\HelperFormatBarisLog::class],

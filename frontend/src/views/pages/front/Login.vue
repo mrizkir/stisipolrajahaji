@@ -27,7 +27,7 @@
         </b-form-group>
         
         <b-form-group
-          label="Username:"
+          label="Password:"
           label-for="txtPassword"
         >      
           <b-form-input

@@ -1,7 +1,10 @@
-<template>  
+<template>
   <AkademikLayout>
+    <template v-slot:page-header>
+      Akademik
+    </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item active>Pengguna Sistem</b-breadcrumb-item>      
+      <b-breadcrumb-item active>Akademik</b-breadcrumb-item>      
     </template>
     <template v-slot:page-content>
       page-content
@@ -11,7 +14,7 @@
 <script>
   import AkademikLayout from '@/views/layouts/AkademikLayout'
   export default {
-    name: 'AkademikLayout',
+    name: 'Akademik',
     components: {
 			AkademikLayout,
 		},    

@@ -163,8 +163,8 @@
 						this.$router.push(this.urlfront)
 					})
           .catch(() => {
-						this.btnLoading = false;
-					});
+						this.btnLoading = false
+					})
         }
       },
     },    

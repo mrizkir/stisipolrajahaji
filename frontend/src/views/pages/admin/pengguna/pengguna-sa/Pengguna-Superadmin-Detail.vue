@@ -9,7 +9,7 @@
       <b-breadcrumb-item active>Detail</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
-      <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_SHOW')">
+      <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-USERS-SUPERADMIN_SHOW')">
         <b-row>
           <b-col>
             <DetailUser :data_user="data_user" urlfront="/sistem-pengguna/superadmin" />
