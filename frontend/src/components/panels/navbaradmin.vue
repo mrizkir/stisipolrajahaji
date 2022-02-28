@@ -13,7 +13,7 @@
       <!-- geser ke kanan -->
       <b-navbar-nav class="ml-auto">
          <b-navbar-nav>
-           <b-nav-item @click="logout">Logout</b-nav-item>
+           <b-nav-item @click.stop="logout">Logout</b-nav-item>
          </b-navbar-nav>
       </b-navbar-nav>
     </b-collapse>

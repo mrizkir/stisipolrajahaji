@@ -65,6 +65,7 @@ const routes = [
     name: 'AkademikJenisAktivitasCreate',
     meta: {
       title: 'AKTIVITAS MAHASISWA - JENIS AKTIVITAS',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -77,6 +78,7 @@ const routes = [
     name: 'AkademikJenisAktivitasEdit',
     meta: {
       title: 'AKTIVITAS MAHASISWA - JENIS AKTIVITAS',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -138,6 +140,7 @@ const routes = [
     name: 'PenggunaSuperadmin',
     meta: {
       title: 'PENGGUNA - SUPERADMIN',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -150,6 +153,7 @@ const routes = [
     name: 'PenggunaSuperadminCreate',
     meta: {
       title: 'PENGGUNA - SUPERADMIN',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -162,6 +166,7 @@ const routes = [
     name: 'PenggunaSuperadminEdit',
     meta: {
       title: 'PENGGUNA - SUPERADMIN',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -174,6 +179,7 @@ const routes = [
     name: 'PenggunaSuperadminDetail',
     meta: {
       title: 'PENGGUNA - SUPERADMIN',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -187,6 +193,7 @@ const routes = [
     name: 'PenggunaManajemen',
     meta: {
       title: 'PENGGUNA - MANAJEMEN',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -199,6 +206,7 @@ const routes = [
     name: 'PenggunaManajemenCreate',
     meta: {
       title: 'PENGGUNA - MANAJEMEN',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -211,6 +219,7 @@ const routes = [
     name: 'PenggunaManajemenEdit',
     meta: {
       title: 'PENGGUNA - MANAJEMEN',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -223,6 +232,7 @@ const routes = [
     name: 'PenggunaManajemenDetail',
     meta: {
       title: 'PENGGUNA - MANAJEMEN',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -236,6 +246,7 @@ const routes = [
     name: 'PenggunaDosen',
     meta: {
       title: 'PENGGUNA - DOSEN',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -248,6 +259,7 @@ const routes = [
     name: 'PenggunaDosenEdit',
     meta: {
       title: 'PENGGUNA - DOSEN',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
@@ -260,6 +272,7 @@ const routes = [
     name: 'PenggunaDosenDetail',
     meta: {
       title: 'PENGGUNA - DOSEN',
+      bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>

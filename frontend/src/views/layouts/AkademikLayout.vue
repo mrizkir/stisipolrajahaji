@@ -2,17 +2,17 @@
   <div class="wrapper">
     <navbar>
       <template v-slot:sidebartoggle>
-        <b-button variant="dark" v-b-toggle.left-sidebar>
-          <b-icon icon="layout-text-sidebar"></b-icon>
-        </b-button>
+        <b-button variant="link" @click.stop="sidebar_visible = !sidebar_visible">
+          <font-awesome-icon :icon="['fas', 'bars']" />
+        </b-button>        
       </template>
     </navbar>
 
     <b-sidebar
       id="left-sidebar"
       aria-labelledby="sidebar-header-title"
-      :visible="sidebar_visible"
-      width="250px"         
+      v-model="sidebar_visible"      
+      width="250px"
     >
       <template #header>
         <div class="d-flex align-items-center flex-column">
@@ -78,18 +78,37 @@
         <slot name="page-content" />
       </section>
     </div>
+    <footerportal />
+    <div v-b-visible="handleVisible" class="d-xs-none"></div>
   </div>
 </template>
 <script>
   import navbar from '@/components/panels/navbaradmin.vue'
+  import footerportal from '@/components/panels/footeradmin.vue'
   export default {
     name: 'AkademikLayout',
      data: () => ({
       //sidebar
-			sidebar_visible: true,
+			sidebar_visible: true,      
 		}),
     components: {
-      navbar
+      navbar,
+      footerportal,
+    },
+    methods: {
+      handleVisible(isVisible) {        
+        this.sidebar_visible = isVisible
+      }
+    },
+    watch: {
+      sidebar_visible(val) {
+        const el = document.body
+        if(val) {
+          el.classList.remove('sidebar-collapse')
+        } else {
+          el.classList.add('sidebar-collapse')
+        }
+      }
     },
   }
 </script>
