@@ -12,7 +12,7 @@
           </button>
         </div>
       </template>
-      <b-card-body>              
+      <b-card-body>      
         <b-form-group
           label="Nama:"
           label-for="txtNama"
@@ -76,14 +76,14 @@
           />
         </b-form-group>
       </b-card-body>
-      <template #footer>            
+      <template #footer>    
         <b-button
           type="submit"
           :disabled="v$.formdata.$invalid || btnLoading"
           variant="primary"
         >
           Simpan
-        </b-button>              
+        </b-button>      
       </template>
     </b-card>
   </b-form>       

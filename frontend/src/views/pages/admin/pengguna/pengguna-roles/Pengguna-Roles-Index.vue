@@ -4,7 +4,7 @@
       Roles
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>      
+      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>
       <b-breadcrumb-item active>Roles</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
@@ -27,9 +27,9 @@
                   >
                     <b-icon icon="trash2" />
                   </b-button>
-                </div>              
-              </template>              
-              <b-card-body class="p-0">                
+                </div>
+              </template>
+              <b-card-body class="p-0">  
                 <b-table
                   id="datatable"
                   primary-key="id"
@@ -50,7 +50,7 @@
                       &nbsp;
                     </div>
                   </template>
-                  <template #cell(No)="data">                    
+                  <template #cell(No)="data">      
                     {{ data.index + 1 }}
                   </template>
                   <template #cell(aksi)="{ item }">
@@ -69,7 +69,7 @@
                     tidak ada data yang bisa ditampilkan
                   </template>
                 </b-table>
-              </b-card-body>              
+              </b-card-body>
             </b-card>
           </b-col>
         </b-row>
@@ -78,7 +78,7 @@
   </PenggunaSistemLayout>
 </template>
 <script>
-  import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'  
+  import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'
   export default {
     name: 'PenggunaRolesIndex',    
     created() {
@@ -163,7 +163,7 @@
             Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
           }
         })
-        .then(({ data }) => {          
+        .then(({ data }) => {    
           this.datatable = data.roles
           page.loaded = true
           this.$store.dispatch('uiadmin/updatePage', page)

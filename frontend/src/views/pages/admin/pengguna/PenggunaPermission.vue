@@ -4,7 +4,7 @@
       Permission
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>      
+      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>
       <b-breadcrumb-item active>Permission</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
@@ -42,7 +42,7 @@
               </template>
               <b-card-body>
                 <div class="input-group input-group-sm">
-                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />                    
+                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />      
                   <div class="input-group-append">
                     <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
                       <b-icon icon="search" />
@@ -50,7 +50,7 @@
                   </div>
                 </div>
               </b-card-body>
-              <b-card-body class="p-0">                
+              <b-card-body class="p-0">  
                 <b-table
                   id="datatable"
                   primary-key="id"
@@ -128,7 +128,7 @@
               <b-form-group
                 label="Nama Permission:"
                 label-for="txtName"
-              >      
+              >
                 <b-form-input
                   id="txtName"
                   v-model="v$.formdata.name.$model"
@@ -155,7 +155,7 @@
             </b-form>
           </div>
         </b-modal>
-      </b-container>      
+      </b-container>
     </template>
   </PenggunaSistemLayout>
 </template>
@@ -278,7 +278,7 @@
           this.datatable = data.permissions.data
           page.loaded = true
           this.$store.dispatch('uiadmin/updatePage', page)
-          this.$nextTick(() => {            
+          this.$nextTick(() => {      
             this.currentPage = page.currentPage        
           });
           this.datatableLoading = false
@@ -294,7 +294,7 @@
         this.updatesettingpage()
         this.initialize()
       },
-      showModalAdd() {        
+      showModalAdd() {  
         this.$bvModal.show('modal-add-permission')
       },      
       showModalDelete(item) {

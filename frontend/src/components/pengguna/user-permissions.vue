@@ -65,7 +65,7 @@
     <b-card-body class="p-0">
       <b-alert class="m-3 font-italic" show>
         Silahkan pilih permission untuk user {{data_user.nama}} dengan cara mengklik baris dalam tabel di bawah ini.
-      </b-alert>                
+      </b-alert>        
       <b-table
         id="datatable"
         primary-key="id"
@@ -120,9 +120,9 @@
           </b-button>
           <span v-else>
             N.A
-          </span>          
+          </span>  
         </template>
-      </b-table>              
+      </b-table>      
     </b-card-body>
     <template #footer>
       <b-pagination

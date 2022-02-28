@@ -4,8 +4,8 @@
       Pengguna Superadmin
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>      
-      <b-breadcrumb-item to="/sistem-pengguna/superadmin">Pengguna Superadmin</b-breadcrumb-item>      
+      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>
+      <b-breadcrumb-item to="/sistem-pengguna/superadmin">Pengguna Superadmin</b-breadcrumb-item>
       <b-breadcrumb-item active>Ubah</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
@@ -20,13 +20,13 @@
   </PenggunaSistemLayout>
 </template>
 <script>
-  import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'  
+  import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'
   import EditForm from '@/components/pengguna/user-edit'
   export default {
     name: 'PenggunaSuperadminEdit',
     
     created() {
-      this.user_id =this.$route.params.user_id
+      this.user_id = this.$route.params.user_id
       this.initialize()
     },
 
@@ -35,7 +35,7 @@
       formdata: {},
     }),
 
-    methods: {      
+    methods: {
       async initialize() {
         var url = '/system/userssuperadmin/' + this.user_id;
         await this.$ajax.get(url, {

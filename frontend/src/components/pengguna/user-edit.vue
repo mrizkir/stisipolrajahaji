@@ -81,17 +81,17 @@
           <b-form-select
             v-model="datauser.active"
             :options="[{value: 0, text: 'TIDAK AKTIF'}, {value: 1, text: 'AKTIF'}]"
-          />                  
+          />          
         </b-form-group>
       </b-card-body>
-      <template #footer>            
+      <template #footer>    
         <b-button
           type="submit"
           :disabled="v$.datauser.$invalid || btnLoading"
           variant="primary"
         >
           Simpan
-        </b-button>              
+        </b-button>      
       </template>
     </b-card>
   </b-form>  

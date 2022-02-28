@@ -4,8 +4,8 @@
       Jenis Aktivitas
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/akademik">Akademik</b-breadcrumb-item>                  
-      <b-breadcrumb-item to="/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas">Jenis Aktivitas</b-breadcrumb-item>                  
+      <b-breadcrumb-item to="/akademik">Akademik</b-breadcrumb-item>          
+      <b-breadcrumb-item to="/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas">Jenis Aktivitas</b-breadcrumb-item>          
       <b-breadcrumb-item active>Tambah</b-breadcrumb-item>      
     </template>
     <template v-slot:page-content>   
@@ -22,7 +22,7 @@
               </button>
             </div>
           </template>
-          <b-card-body>              
+          <b-card-body>      
             <b-form-group
               label="Nama Jenis Aktivitas:"
               label-for="txtNama"
@@ -41,14 +41,14 @@
               </b-form-invalid-feedback>
             </b-form-group>
           </b-card-body>
-          <template #footer>            
+          <template #footer>    
             <b-button
               type="submit"
               :disabled="v$.formdata.$invalid || btnLoading"
               variant="primary"
             >
               Simpan
-            </b-button>              
+            </b-button>      
           </template>
         </b-card>
       </b-form>

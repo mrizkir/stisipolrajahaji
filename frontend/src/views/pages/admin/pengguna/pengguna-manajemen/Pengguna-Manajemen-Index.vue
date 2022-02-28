@@ -4,7 +4,7 @@
       Pengguna Manajemen
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>      
+      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>
       <b-breadcrumb-item active>Pengguna Manajemen</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
@@ -42,7 +42,7 @@
               </template>
               <b-card-body>
                 <div class="input-group input-group-sm">
-                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />                    
+                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />      
                   <div class="input-group-append">
                     <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
                       <b-icon icon="search" />
@@ -50,7 +50,7 @@
                   </div>
                 </div>
               </b-card-body>
-              <b-card-body class="p-0">                
+              <b-card-body class="p-0">  
                 <b-table
                   id="datatable"
                   primary-key="id"
@@ -141,13 +141,13 @@
           <div class="d-block">
             User dengan username "{{dataItem.username}}" akan dihapus ?
           </div>
-        </b-modal>        
+        </b-modal>
       </b-container>
     </template>
   </PenggunaSistemLayout>
 </template>
 <script>
-  import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'  
+  import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'
   export default {
     name: 'PenggunaManajemenIndex',
     created() {
@@ -251,7 +251,7 @@
           this.datatable = data.result.data
           page.loaded = true
           this.$store.dispatch('uiadmin/updatePage', page)
-          this.$nextTick(() => {            
+          this.$nextTick(() => {      
             this.currentPage = page.currentPage        
           });
           this.datatableLoading = false

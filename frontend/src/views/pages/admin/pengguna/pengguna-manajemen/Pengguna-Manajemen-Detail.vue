@@ -4,8 +4,8 @@
       Pengguna Manajemen
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>      
-      <b-breadcrumb-item to="/sistem-pengguna/manajemen">Pengguna Manajemen</b-breadcrumb-item>      
+      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>
+      <b-breadcrumb-item to="/sistem-pengguna/manajemen">Pengguna Manajemen</b-breadcrumb-item>
       <b-breadcrumb-item active>Detail</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
@@ -25,20 +25,20 @@
   </PenggunaSistemLayout>
 </template>
 <script>
-  import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'  
+  import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'
   import DetailUser from '@/components/pengguna/user-detail'
   import UserPermissions from '@/components/pengguna/user-permissions'
   export default {
     name: 'PenggunaManajemenDetail',
     created() {
-      this.user_id =this.$route.params.user_id
+      this.user_id = this.$route.params.user_id
       this.initialize()
     },
     data: () => ({
       user_id: null,      
       data_user: {},
     }),
-    methods: {      
+    methods: {
       async initialize() {
         var url = '/system/usersmanajemen/' + this.user_id;
         await this.$ajax.get(url, {

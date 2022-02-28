@@ -4,7 +4,7 @@
       Jenis Aktivitas
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/akademik">Akademik</b-breadcrumb-item>                  
+      <b-breadcrumb-item to="/akademik">Akademik</b-breadcrumb-item>          
       <b-breadcrumb-item active>Jenis Aktivitas</b-breadcrumb-item>      
     </template>
     <template v-slot:page-content>
@@ -42,7 +42,7 @@
               </template>
               <b-card-body>
                 <div class="input-group input-group-sm">
-                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />                    
+                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />            
                   <div class="input-group-append">
                     <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
                       <b-icon icon="search" />
@@ -50,7 +50,7 @@
                   </div>
                 </div>
               </b-card-body>
-              <b-card-body class="p-0">                
+              <b-card-body class="p-0">        
                 <b-table
                   id="datatable"
                   primary-key="idjenis"
@@ -75,7 +75,7 @@
                   <template #cell(active)="{ item }">
                     <b-badge :variant="item.active == 1 ? 'primary' : 'secondary'">{{ item.active == 1 ? 'aktif' : 'tidak aktif' }}</b-badge>
                   </template>
-                  <template #cell(aksi)="{ item }">                    
+                  <template #cell(aksi)="{ item }">            
                     <b-button
                       :id="'btEdit' + item.idjenis" variant="outline-primary p-1 mr-1"
                       size="xs"
@@ -132,7 +132,7 @@
           <div class="d-block">
             Nama Aktivitas "{{dataItem.nama_aktivitas}}" akan dihapus ?
           </div>
-        </b-modal>        
+        </b-modal>
       </b-container>
     </template>
   </AkademikLayout>

@@ -12,21 +12,18 @@
       id="left-sidebar"
       aria-labelledby="sidebar-header-title"
       :visible="sidebar_visible"
-      width="250px"         
+      width="250px"
     >
       <template #header>
         <div class="d-flex align-items-center flex-column">
-          <b-avatar variant="primary" text="BV" class="mb-3 mt-2" size="5rem"></b-avatar>
+          <b-avatar variant="primary" text="BV" class="mb-3 mt-2" size="5rem" />
           <h5 id="sidebar-header-title">ADMIN</h5>
           <div class="divider"></div>
         </div>
       </template>
-      <template #default>        
+      <template #default>
         <nav>
-          <b-nav
-            class="nav-pills nav-sidebar"
-            vertical
-          >
+          <b-nav class="nav-pills nav-sidebar" vertical>
             <b-nav-item
               to="/sistem-pengguna"
               v-if="$store.getters['auth/can']('SYSTEM-USERS-GROUP')"
@@ -37,7 +34,9 @@
             <li class="nav-header">KONFIGURASI</li>
             <b-nav-item
               to="/sistem-pengguna/permission"
-              v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_BROWSE')"
+              v-if="
+                $store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_BROWSE')
+              "
             >
               <b-icon icon="arrow-right" />
               PERMISSION
@@ -52,7 +51,9 @@
             <li class="nav-header">PENGGUNA</li>
             <b-nav-item
               to="/sistem-pengguna/superadmin"
-              v-if="$store.getters['auth/can']('SYSTEM-USERS-SUPERADMIN_BROWSE')"
+              v-if="
+                $store.getters['auth/can']('SYSTEM-USERS-SUPERADMIN_BROWSE')
+              "
             >
               <b-icon icon="arrow-right" />
               SUPERADMIN
@@ -63,10 +64,16 @@
             >
               <b-icon icon="arrow-right" />
               MANAJEMEN
-            </b-nav-item>            
+            </b-nav-item>
+            <b-nav-item
+              to="/sistem-pengguna/dosen"
+              v-if="$store.getters['auth/can']('SYSTEM-USERS-DOSEN_BROWSE')"
+            >
+              <b-icon icon="arrow-right" />
+              DOSEN
+            </b-nav-item>
           </b-nav>
         </nav>
-        
       </template>
     </b-sidebar>
     <!-- main content -->
@@ -83,10 +90,15 @@
                 <b-breadcrumb-item
                   :to="'/dashboard/' + $store.getters['auth/AccessToken']"
                 >
-                  <b-icon icon="house-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                  <b-icon
+                    icon="house-fill"
+                    scale="1.25"
+                    shift-v="1.25"
+                    aria-hidden="true"
+                  />
                   Home
-                </b-breadcrumb-item>            
-                <slot name="page-breadcrumb" />          
+                </b-breadcrumb-item>
+                <slot name="page-breadcrumb" />
               </b-breadcrumb>
             </b-col>
           </b-row>
@@ -102,12 +114,12 @@
   import navbar from '@/components/panels/navbaradmin.vue'
   export default {
     name: 'PenggunaSistemLayout',
-     data: () => ({
+    data: () => ({
       //sidebar
-			sidebar_visible: true,
-		}),
+      sidebar_visible: true,
+    }),
     components: {
-      navbar
+      navbar,
     },
   }
 </script>

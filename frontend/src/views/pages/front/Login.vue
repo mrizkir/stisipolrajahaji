@@ -58,7 +58,7 @@
           >
             Silahkan pilih akan mengakses halaman apa ?
           </b-form-invalid-feedback>
-        </b-form-group>        
+        </b-form-group>
         <div class="buttons-w">
           <b-button
             type="submit"
@@ -67,7 +67,7 @@
             block
           >
             Login
-          </b-button>          
+          </b-button>  
           <b-alert
             :show="form_error"
             variant="danger"

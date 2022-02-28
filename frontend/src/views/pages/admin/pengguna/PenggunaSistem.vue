@@ -1,7 +1,7 @@
 <template>  
   <PenggunaSistemLayout>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item active>Pengguna Sistem</b-breadcrumb-item>      
+      <b-breadcrumb-item active>Pengguna Sistem</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
       page-content

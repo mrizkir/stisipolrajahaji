@@ -4,8 +4,8 @@
       Pengguna Superadmin
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>      
-      <b-breadcrumb-item to="/sistem-pengguna/superadmin">Pengguna Superadmin</b-breadcrumb-item>      
+      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>
+      <b-breadcrumb-item to="/sistem-pengguna/superadmin">Pengguna Superadmin</b-breadcrumb-item>
       <b-breadcrumb-item active>Tambah</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>

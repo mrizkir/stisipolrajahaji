@@ -7,7 +7,7 @@
           <h2>404 Not Found</h2>
           <div class="error-details">
             Maaf, halaman yang Anda minta, tidak ada.
-          </div>          
+          </div>  
         </div>
       </div>
     </div>

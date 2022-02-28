@@ -51,7 +51,7 @@
             <b-col>
               <dl class="row">
                 <dt class="col-sm-3">Status</dt>
-                <dd class="col-sm-9">              
+                <dd class="col-sm-9">      
                   <b-badge :variant="data_user.active == 1 ? 'primary' : 'secondary'">{{ data_user.active == 1 ? 'aktif' : 'tidak aktif' }}</b-badge>
                 </dd>
               </dl>

@@ -21,7 +21,7 @@
           <div class="divider"></div>
         </div>
       </template>
-      <template #default>        
+      <template #default>
         <nav>
           <b-nav
             class="nav-pills nav-sidebar"
@@ -46,9 +46,9 @@
                   JENIS AKTIVITAS
                 </b-nav-item>
               </b-collapse>
-            </li>            
+            </li>    
           </b-nav>
-        </nav>        
+        </nav>
       </template>
     </b-sidebar>
     <!-- main content -->
@@ -67,8 +67,8 @@
                 >
                   <b-icon icon="house-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
                   Home
-                </b-breadcrumb-item>            
-                <slot name="page-breadcrumb" />          
+                </b-breadcrumb-item>    
+                <slot name="page-breadcrumb" />  
               </b-breadcrumb>
             </b-col>
           </b-row>
