@@ -9,7 +9,7 @@
       <b-breadcrumb-item active>Tambah</b-breadcrumb-item>      
     </template>
     <template v-slot:page-content>   
-      <b-form @submit.prevent="onSubmit" name="frmdata" id="frmdata">
+      <b-form @submit.prevent="onSubmit" name="frmdata" id="frmdata" v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_STORE')">
         <b-card
           no-body
           class="card-primary card-outline"
@@ -52,6 +52,9 @@
           </template>
         </b-card>
       </b-form>
+      <b-alert class="m-3 font-italic" variant="warning" show v-else>
+        Saudara tidak memiliki akses ke halaman ini
+      </b-alert>
     </template>
   </KemahasiswaanLayout>
 </template>

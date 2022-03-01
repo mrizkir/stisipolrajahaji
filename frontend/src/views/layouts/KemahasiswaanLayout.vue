@@ -34,10 +34,10 @@
               <b-icon icon="arrow-right" />
               DASHBOARD
             </b-nav-item>
-            <li class="nav-header" v-if="$store.getters['auth/can']('KEMAHASISWAAN-KEMAHASISWAAN-AKTIVITAS_BROWSE')">AKTIVITAS MAHASISWA</li>
+            <li class="nav-header" v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_BROWSE')">AKTIVITAS MAHASISWA</li>
             <b-nav-item
               to="/kemahasiswaan/jenisaktivitas"
-              v-if="$store.getters['auth/can']('KEMAHASISWAAN-KEMAHASISWAAN-JENIS-AKTIVITAS_BROWSE')"
+              v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_BROWSE')"
             >
               <b-icon icon="arrow-right" />
               JENIS AKTIVITAS

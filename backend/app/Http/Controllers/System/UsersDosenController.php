@@ -142,6 +142,7 @@ class UsersDosenController extends UsersController
 					],           
 				'nama'=>'required',
 				'email'=>'required|string|email|unique:user,email,'.$user->userid.',userid,page,m',				
+				'active'=>'required',
 			]); 
 			
 			$user = \DB::transaction(function () use ($request, $user) {
@@ -153,7 +154,8 @@ class UsersDosenController extends UsersController
 					$password = HelperAuth::createHashPassword($request->input('password'));
 					$user->salt = $password['salt'];
 					$user->userpassword = $password['password'];
-				}
+				}				
+				$user->active = $request->input('active');
 				$user->save();
 
 				$user->assignRole('dosen'); 

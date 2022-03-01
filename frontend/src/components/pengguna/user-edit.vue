@@ -157,7 +157,8 @@
 							nama: this.datauser.nama,
 							email: this.datauser.email,
 							username: this.datauser.username,
-							password: this.datauser.password,							
+							password: this.datauser.password,
+							active: this.datauser.active,
 						},
 						{
 							headers: {

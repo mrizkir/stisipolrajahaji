@@ -8,7 +8,7 @@
       <b-breadcrumb-item active>Jenis Aktivitas</b-breadcrumb-item>      
     </template>
     <template v-slot:page-content>
-      <b-container fluid v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_BROWSE')">
+      <b-container fluid v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_BROWSE')">
         <b-row>
           <b-col>
             <b-card
@@ -32,7 +32,7 @@
                     size="xs"
                     variant="outline-primary"
                     @click.stop="$router.push(url + '/create')"
-                    v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_STORE')"
+                    v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_STORE')"
                     v-b-tooltip.hover
                     title="Tambah Jenis Aktivitas"
                   >
@@ -81,7 +81,7 @@
                       size="xs"
                       :to="url + '/' + item.idjenis + '/edit'"
                       :disabled="btnLoading"
-                      v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_UPDATE')"
+                      v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_UPDATE')"
                     >
                       <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>                      
                     </b-button>                    
@@ -92,7 +92,7 @@
                       size="xs"
                       @click.stop="showModalDelete(item)"
                       :disabled="btnLoading"
-                      v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_DESTROY')"
+                      v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_DESTROY')"
                     >
                       <b-icon icon="trash" class="p-0 m-0"></b-icon>
                     </b-button>
