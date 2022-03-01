@@ -1,14 +1,14 @@
 <template>
-  <AkademikLayout>
+  <KemahasiswaanLayout>
     <template v-slot:page-header>
       Jenis Aktivitas
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/akademik">Akademik</b-breadcrumb-item>          
+      <b-breadcrumb-item to="/kemahasiswaan">Kemahasiswaan</b-breadcrumb-item>          
       <b-breadcrumb-item active>Jenis Aktivitas</b-breadcrumb-item>      
     </template>
     <template v-slot:page-content>
-      <b-container fluid v-if="$store.getters['auth/can']('AKADEMIK-KEMAHASISWAAN-AKTIVITAS_BROWSE')">
+      <b-container fluid v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_BROWSE')">
         <b-row>
           <b-col>
             <b-card
@@ -32,7 +32,7 @@
                     size="xs"
                     variant="outline-primary"
                     @click.stop="$router.push(url + '/create')"
-                    v-if="$store.getters['auth/can']('AKADEMIK-KEMAHASISWAAN-AKTIVITAS_STORE')"
+                    v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_STORE')"
                     v-b-tooltip.hover
                     title="Tambah Jenis Aktivitas"
                   >
@@ -75,28 +75,28 @@
                   <template #cell(active)="{ item }">
                     <b-badge :variant="item.active == 1 ? 'primary' : 'secondary'">{{ item.active == 1 ? 'aktif' : 'tidak aktif' }}</b-badge>
                   </template>
-                  <template #cell(aksi)="{ item }">            
+                  <template #cell(aksi)="{ item, index }">
                     <b-button
-                      :id="'btEdit' + item.idjenis" variant="outline-primary p-1 mr-1"
+                      :id="'btEdit' + index" variant="outline-primary p-1 mr-1"
                       size="xs"
                       :to="url + '/' + item.idjenis + '/edit'"
                       :disabled="btnLoading"
-                      v-if="$store.getters['auth/can']('AKADEMIK-KEMAHASISWAAN-AKTIVITAS_UPDATE')"
+                      v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_UPDATE')"
                     >
-                      <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>
-                    </b-button>
-                    <b-tooltip :target="'btEdit' + item.idjenis" variant="primary">Ubah Jenis Aktivitas</b-tooltip>
+                      <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>                      
+                    </b-button>                    
+                    <b-tooltip :target="'btEdit' + index" variant="primary" placement="rightbottom">Ubah Jenis Aktivitas</b-tooltip>
                     <b-button
-                      :id="'btDelete' + item.idjenis"
+                      :id="'btDelete' + index"
                       variant="outline-danger p-1"
                       size="xs"
                       @click.stop="showModalDelete(item)"
                       :disabled="btnLoading"
-                      v-if="$store.getters['auth/can']('AKADEMIK-KEMAHASISWAAN-AKTIVITAS_DESTROY')"
+                      v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_DESTROY')"
                     >
                       <b-icon icon="trash" class="p-0 m-0"></b-icon>
                     </b-button>
-                    <b-tooltip :target="'btDelete' + item.idjenis" variant="danger">Hapus Jenis Aktivitas</b-tooltip>
+                    <b-tooltip :target="'btDelete' + index" variant="danger" placement="rightbottom">Hapus Jenis Aktivitas</b-tooltip>
                   </template>
                   <template #emptytext>
                     tidak ada data yang bisa ditampilkan
@@ -135,10 +135,10 @@
         </b-modal>
       </b-container>
     </template>
-  </AkademikLayout>
+  </KemahasiswaanLayout>
 </template>
 <script>
-  import AkademikLayout from '@/views/layouts/AkademikLayout'
+  import KemahasiswaanLayout from '@/views/layouts/KemahasiswaanLayout'
   export default {
     name: 'JenisAktivtas',
     created() {
@@ -154,7 +154,7 @@
     },
     setup() {
       return {         
-        url: '/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas',       
+        url: '/kemahasiswaan/jenisaktivitas',       
       }
     },
     mounted() {
@@ -215,7 +215,7 @@
       async initialize() {
         this.datatableLoading = true
         var page = this.$store.getters['uiadmin/Page']('jenisaktivitas')
-        var url = '/akademik/perkuliahan/jenisaktivitas?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
+        var url = '/kemahasiswaan/jenisaktivitas?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
 
         if (page.loaded && page.search != null) {
           this.search = page.search
@@ -259,7 +259,7 @@
         event.preventDefault()
         this.btnLoading = true        
         this.$ajax.post(
-          '/akademik/perkuliahan/jenisaktivitas/' + this.dataItem.idjenis,
+          '/kemahasiswaan/jenisaktivitas/' + this.dataItem.idjenis,
             {
               _method: 'DELETE',
             },
@@ -285,7 +285,7 @@
       },
     },
     components: {
-			AkademikLayout,
+			KemahasiswaanLayout,
 		},    
   }
 </script>

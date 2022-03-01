@@ -1,11 +1,11 @@
 <template>
-  <AkademikLayout>
+  <KemahasiswaanLayout>
     <template v-slot:page-header>
       Jenis Aktivitas
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/akademik">Akademik</b-breadcrumb-item>          
-      <b-breadcrumb-item to="/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas">Jenis Aktivitas</b-breadcrumb-item>          
+      <b-breadcrumb-item to="/kemahasiswaan">Kemahasiswaan</b-breadcrumb-item>          
+      <b-breadcrumb-item to="/kemahasiswaan/jenisaktivitas">Jenis Aktivitas</b-breadcrumb-item>          
       <b-breadcrumb-item active>Tambah</b-breadcrumb-item>      
     </template>
     <template v-slot:page-content>   
@@ -15,7 +15,7 @@
           class="card-primary card-outline"
         >
           <template #header>
-            <h3 class="card-title">Ubah Jenis Aktivitas</h3>
+            <h3 class="card-title">Tambah Jenis Aktivitas</h3>
             <div class="card-tools">
               <button type="button" class="btn btn-tool" v-b-tooltip.hover title="Keluar" @click.stop="$router.push(url)">
                 <b-icon icon="x-square"></b-icon>
@@ -53,26 +53,21 @@
         </b-card>
       </b-form>
     </template>
-  </AkademikLayout>
+  </KemahasiswaanLayout>
 </template>
 <script>
   import useVuelidate from '@vuelidate/core'
   import { required } from '@vuelidate/validators'  
-  import AkademikLayout from '@/views/layouts/AkademikLayout'  
+  import KemahasiswaanLayout from '@/views/layouts/KemahasiswaanLayout'  
   export default {
-    name: 'JenisAktivtasEdit',  
-    created() {
-      this.idjenis =this.$route.params.idjenis
-      this.initialize()
-    },
+    name: 'JenisAktivtasCreate',  
     setup() {
       return { 
         v$: useVuelidate(), 
-        url: '/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas',       
+        url: '/kemahasiswaan/jenisaktivitas',       
       }
     },
-    data: () => ({  
-      idjenis: null,    
+    data: () => ({      
       btnLoading: false,      
       formdata: {
         nama_aktivitas: null,               
@@ -91,25 +86,13 @@
       validateState(name) {
         const { $dirty, $error } = this.v$.formdata[name]
         return $dirty ? !$error : null
-      },
-      async initialize() {
-        var url = '/akademik/perkuliahan/jenisaktivitas/' + this.idjenis;
-        await this.$ajax.get(url, {
-          headers: {
-            Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
-          }
-        })
-        .then(({ data }) => {
-          this.formdata = data.result
-        })
-      },
+      },      
       async onSubmit() {
         if (!this.v$.formdata.$invalid) {
           this.btnLoading = true
           
-          this.$ajax.post('/akademik/perkuliahan/jenisaktivitas/' + this.idjenis,
+          this.$ajax.post('/kemahasiswaan/jenisaktivitas/store',
 						{
-              _method: 'PUT',
 							nama_aktivitas: this.formdata.nama_aktivitas,							
 						},
 						{
@@ -129,7 +112,7 @@
       },
     },
     components: {
-			AkademikLayout,
+			KemahasiswaanLayout,
 		},
   }
 </script>

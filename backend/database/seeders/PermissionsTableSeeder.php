@@ -129,19 +129,19 @@ class PermissionsTableSeeder extends Seeder
 
 		//akademik - kemahasiswaan
 		\DB::table('permissions')->insert([
-			'name'=>"AKADEMIK-KEMAHASISWAAN-STATUS_BROWSE",
+			'name'=>"KEMAHASISWAAN-STATUS_BROWSE",
 			'guard_name'=>'api',
 			'created_at'=>Carbon::now(),
 			'updated_at'=>Carbon::now()
 		]);
 		\DB::table('permissions')->insert([
-			'name'=>"AKADEMIK-KEMAHASISWAAN-STATUS_UPDATE",
+			'name'=>"KEMAHASISWAAN-STATUS_UPDATE",
 			'guard_name'=>'api',
 			'created_at'=>Carbon::now(),
 			'updated_at'=>Carbon::now()
 		]);
 		\DB::table('permissions')->insert([
-			'name'=>"AKADEMIK-KEMAHASISWAAN-DAFTAR-MAHASISWA_BROWSE",
+			'name'=>"KEMAHASISWAAN-DAFTAR-MAHASISWA_BROWSE",
 			'guard_name'=>'api',
 			'created_at'=>Carbon::now(),
 			'updated_at'=>Carbon::now()
@@ -307,9 +307,8 @@ class PermissionsTableSeeder extends Seeder
 
 			'KEMAHASISWAAN-PROFIL-MHS',
 			'KEMAHASISWAAN-PINDAH-KELAS',
-			//permission ini digunakan untuk menset dosen wali pada mahasiswa, baik itu tambah atau ubah
-			"AKADEMIK-KEMAHASISWAAN-DW",           
-			"AKADEMIK-KEMAHASISWAAN-AKTIVITAS",           
+			'KEMAHASISWAAN-JENIS-AKTIVITAS',
+			'KEMAHASISWAAN-AKTIVITAS',			
 
 			"KEPEGAWAIAN-DOSEN",           
 

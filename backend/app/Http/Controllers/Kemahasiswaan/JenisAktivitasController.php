@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Perkuliahan;
+namespace App\Http\Controllers\Kemahasiswaan;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Ramsey\Uuid\Uuid;
 
-use App\Models\Akademik\JenisAktivitasModel;
+use App\Models\Kemahasiswaan\JenisAktivitasModel;
 
 class JenisAktivitasController extends Controller
 {      
@@ -19,7 +19,7 @@ class JenisAktivitasController extends Controller
 	 */
 	public function index(Request $request)
 	{ 
-		$this->hasPermissionTo('AKADEMIK-KEMAHASISWAAN-AKTIVITAS_BROWSE');
+		$this->hasPermissionTo('KEMAHASISWAAN-JENIS-AKTIVITAS_BROWSE');
 
 		$sortdesc = $request->filled('sortdesc') ? $request->query('sortdesc', false) : false;
 		$orderby = $sortdesc == 'true' ? 'desc' : 'asc';
@@ -50,7 +50,7 @@ class JenisAktivitasController extends Controller
 	 */
 	public function show(Request $request, $id)
 	{			
-		$this->hasPermissionTo('AKADEMIK-KEMAHASISWAAN-AKTIVITAS_BROWSE');
+		$this->hasPermissionTo('KEMAHASISWAAN-JENIS-AKTIVITAS_BROWSE');
 
 		$jenisaktivitas = JenisAktivitasModel::find($id);
 		if (is_null($jenisaktivitas))
@@ -79,7 +79,7 @@ class JenisAktivitasController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		$this->hasPermissionTo('AKADEMIK-KEMAHASISWAAN-AKTIVITAS_STORE');
+		$this->hasPermissionTo('KEMAHASISWAAN-JENIS-AKTIVITAS_STORE');
 
 		$rule=[            
 			'nama_aktivitas'=>'required|string|unique:pe3_jenis_aktivitas,nama_aktivitas',      
@@ -108,7 +108,7 @@ class JenisAktivitasController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{			
-		$this->hasPermissionTo('AKADEMIK-KEMAHASISWAAN-AKTIVITAS_UPDATE');
+		$this->hasPermissionTo('KEMAHASISWAAN-JENIS-AKTIVITAS_UPDATE');
 
 		$jenisaktivitas = JenisAktivitasModel::find($id);
 		if (is_null($jenisaktivitas))
@@ -142,7 +142,7 @@ class JenisAktivitasController extends Controller
 	}   
 	public function destroy(Request $request,$id)
 	{
-		$this->hasPermissionTo('AKADEMIK-KEMAHASISWAAN-AKTIVITAS_DESTROY');
+		$this->hasPermissionTo('KEMAHASISWAAN-JENIS-AKTIVITAS_DESTROY');
 
 		$jenisaktivitas = JenisAktivitasModel::find($id); 
 		

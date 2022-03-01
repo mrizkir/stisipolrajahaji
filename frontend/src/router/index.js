@@ -46,9 +46,20 @@ const routes = [
     },
     component: () => import('../views/pages/admin/akademik/Akademik.vue'),
   },
-  //akademik - perkuliahan - aktivitas mahasiswa - jenis aktivitas
+  //kemahasiswaan
   {
-    path: '/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas',
+    path: '/kemahasiswaan',
+    name: 'Kemahasiswaan',
+    meta: {
+      title: 'KEMAHASISWAAN',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () => import('../views/pages/admin/kemahasiswaan/Kemahasiswaan.vue'),
+  },
+  //kemahasiswaan - jenis aktivitas
+  {
+    path: '/kemahasiswaan/jenisaktivitas',
     name: 'AkademikJenisAktivitas',
     meta: {
       title: 'AKTIVITAS MAHASISWA - JENIS AKTIVITAS',
@@ -57,11 +68,11 @@ const routes = [
     },
     component: () =>
       import(
-        '../views/pages/admin/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas/JenisAktivitas-Index.vue'
+        '../views/pages/admin/kemahasiswaan/jenisaktivitas/JenisAktivitas-Index.vue'
       ),
   },
   {
-    path: '/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas/create',
+    path: '/kemahasiswaan/jenisaktivitas/create',
     name: 'AkademikJenisAktivitasCreate',
     meta: {
       title: 'AKTIVITAS MAHASISWA - JENIS AKTIVITAS',
@@ -70,11 +81,11 @@ const routes = [
     },
     component: () =>
       import(
-        '../views/pages/admin/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas/JenisAktivitas-Create.vue'
+        '../views/pages/admin/kemahasiswaan/jenisaktivitas/JenisAktivitas-Create.vue'
       ),
   },
   {
-    path: '/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas/:idjenis/edit',
+    path: '/kemahasiswaan/jenisaktivitas/:idjenis/edit',
     name: 'AkademikJenisAktivitasEdit',
     meta: {
       title: 'AKTIVITAS MAHASISWA - JENIS AKTIVITAS',
@@ -83,7 +94,7 @@ const routes = [
     },
     component: () =>
       import(
-        '../views/pages/admin/akademik/perkuliahan/aktivitasmahasiswa/jenisaktivitas/JenisAktivitas-Edit.vue'
+        '../views/pages/admin/kemahasiswaan/jenisaktivitas/JenisAktivitas-Edit.vue'
       ),
   },
   //system - users

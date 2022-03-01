@@ -2,7 +2,7 @@
 /**
  * class ini digunakan untuk aktivitas mahasiswa (perkuliahan)
  */
-namespace App\Models\Akademik;
+namespace App\Models\Kemahasiswaan;
 
 use Illuminate\Database\Eloquent\Model;
 

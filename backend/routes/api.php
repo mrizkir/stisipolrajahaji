@@ -26,12 +26,12 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	$router->post('/kemahasiswaan/daftarmhs',['middleware'=>['role:superadmin|manajemen|operator nilai|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@index','as'=>'daftarmhs.index']);
 	$router->get('/kemahasiswaan/daftarmhs/all',['middleware'=>['role:superadmin|manajemen|operator nilai|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@all','as'=>'daftarmhs.all']);
 	
-	//akademik - perkuliahan - aktivitas mahasiswa - jenis aktivitas
-	$router->get('/akademik/perkuliahan/jenisaktivitas',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Perkuliahan\JenisAktivitasController@index','as'=>'perkuliahan-jenisaktivitas.index']);				
-	$router->post('/akademik/perkuliahan/jenisaktivitas/store',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Perkuliahan\JenisAktivitasController@store','as'=>'perkuliahan-jenisaktivitas.store']);
-	$router->get('/akademik/perkuliahan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Perkuliahan\JenisAktivitasController@show','as'=>'perkuliahan-jenisaktivitas.show']);
-	$router->put('/akademik/perkuliahan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Perkuliahan\JenisAktivitasController@update','as'=>'perkuliahan-jenisaktivitas.update']);
-	$router->delete('/akademik/perkuliahan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Perkuliahan\JenisAktivitasController@destroy','as'=>'perkuliahan-jenisaktivitas.destroy']);
+	//kemahasiswaan - jenis aktivitas
+	$router->get('/kemahasiswaan/jenisaktivitas',['middleware'=>['role:superadmin|manajemen|programstudi|dosen'],'uses'=>'Kemahasiswaan\JenisAktivitasController@index','as'=>'kemahasiswaan-jenisaktivitas.index']);				
+	$router->post('/kemahasiswaan/jenisaktivitas/store',['middleware'=>['role:superadmin|manajemen|programstudi|'],'uses'=>'Kemahasiswaan\JenisAktivitasController@store','as'=>'kemahasiswaan-jenisaktivitas.store']);
+	$router->get('/kemahasiswaan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen|programstudi|'],'uses'=>'Kemahasiswaan\JenisAktivitasController@show','as'=>'kemahasiswaan-jenisaktivitas.show']);
+	$router->put('/kemahasiswaan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen|programstudi|'],'uses'=>'Kemahasiswaan\JenisAktivitasController@update','as'=>'kemahasiswaan-jenisaktivitas.update']);
+	$router->delete('/kemahasiswaan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen|programstudi|'],'uses'=>'Kemahasiswaan\JenisAktivitasController@destroy','as'=>'kemahasiswaan-jenisaktivitas.destroy']);
 
 	//setting - permissions
 	$router->get('/system/setting/permissions',['middleware'=>['role:superadmin|akademik|pmb'],'uses'=>'System\PermissionsController@index','as'=>'permissions.index']);

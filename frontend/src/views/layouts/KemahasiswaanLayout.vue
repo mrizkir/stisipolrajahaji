@@ -11,67 +11,37 @@
     <b-sidebar
       id="left-sidebar"
       aria-labelledby="sidebar-header-title"
-      :visible="sidebar_visible"
+      v-model="sidebar_visible"      
       width="250px"
     >
       <template #header>
         <div class="d-flex align-items-center flex-column">
-          <b-avatar variant="primary" text="BV" class="mb-3 mt-2" size="5rem" />
+          <b-avatar variant="primary" text="BV" class="mb-3 mt-2" size="5rem"></b-avatar>
           <h5 id="sidebar-header-title">ADMIN</h5>
           <div class="divider"></div>
         </div>
       </template>
       <template #default>
         <nav>
-          <b-nav class="nav-pills nav-sidebar" vertical>
+          <b-nav
+            class="nav-pills nav-sidebar"
+            vertical
+          >
             <b-nav-item
-              to="/sistem-pengguna"
-              v-if="$store.getters['auth/can']('SYSTEM-USERS-GROUP')"
+              to="/kemahasiswaan"
+              v-if="$store.getters['auth/can']('KEMAHASISWAAN-GROUP')"
             >
               <b-icon icon="arrow-right" />
               DASHBOARD
             </b-nav-item>
-            <li class="nav-header">KONFIGURASI</li>
+            <li class="nav-header" v-if="$store.getters['auth/can']('KEMAHASISWAAN-KEMAHASISWAAN-AKTIVITAS_BROWSE')">AKTIVITAS MAHASISWA</li>
             <b-nav-item
-              to="/sistem-pengguna/permission"
-              v-if="
-                $store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_BROWSE')
-              "
+              to="/kemahasiswaan/jenisaktivitas"
+              v-if="$store.getters['auth/can']('KEMAHASISWAAN-KEMAHASISWAAN-JENIS-AKTIVITAS_BROWSE')"
             >
               <b-icon icon="arrow-right" />
-              PERMISSION
-            </b-nav-item>
-            <b-nav-item
-              to="/sistem-pengguna/roles"
-              v-if="$store.getters['auth/can']('SYSTEM-SETTING-ROLES_BROWSE')"
-            >
-              <b-icon icon="arrow-right" />
-              ROLE
-            </b-nav-item>
-            <li class="nav-header">PENGGUNA</li>
-            <b-nav-item
-              to="/sistem-pengguna/superadmin"
-              v-if="
-                $store.getters['auth/can']('SYSTEM-USERS-SUPERADMIN_BROWSE')
-              "
-            >
-              <b-icon icon="arrow-right" />
-              SUPERADMIN
-            </b-nav-item>
-            <b-nav-item
-              to="/sistem-pengguna/manajemen"
-              v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_BROWSE')"
-            >
-              <b-icon icon="arrow-right" />
-              MANAJEMEN
-            </b-nav-item>
-            <b-nav-item
-              to="/sistem-pengguna/dosen"
-              v-if="$store.getters['auth/can']('SYSTEM-USERS-DOSEN_BROWSE')"
-            >
-              <b-icon icon="arrow-right" />
-              DOSEN
-            </b-nav-item>
+              JENIS AKTIVITAS
+            </b-nav-item>             
           </b-nav>
         </nav>
       </template>
@@ -90,15 +60,10 @@
                 <b-breadcrumb-item
                   :to="'/dashboard/' + $store.getters['auth/AccessToken']"
                 >
-                  <b-icon
-                    icon="house-fill"
-                    scale="1.25"
-                    shift-v="1.25"
-                    aria-hidden="true"
-                  />
+                  <b-icon icon="house-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
                   Home
-                </b-breadcrumb-item>
-                <slot name="page-breadcrumb" />
+                </b-breadcrumb-item>    
+                <slot name="page-breadcrumb" />  
               </b-breadcrumb>
             </b-col>
           </b-row>
@@ -116,11 +81,15 @@
   import navbar from '@/components/panels/navbaradmin.vue'
   import footerportal from '@/components/panels/footeradmin.vue'
   export default {
-    name: 'PenggunaSistemLayout',
-    data: () => ({
+    name: 'KemahasiswaanLayout',
+     data: () => ({
       //sidebar
-      sidebar_visible: true,
-    }),
+			sidebar_visible: true,      
+		}),
+    components: {
+      navbar,
+      footerportal,
+    },
     methods: {
       handleVisible(isVisible) {        
         this.sidebar_visible = isVisible
@@ -135,10 +104,6 @@
           el.classList.add('sidebar-collapse')
         }
       }
-    },
-    components: {
-      navbar,
-      footerportal,
     },
   }
 </script>
