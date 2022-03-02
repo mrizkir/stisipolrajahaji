@@ -25,9 +25,9 @@
   export default {
     name: 'PenggunaSuperadminCreate',   
     components: {
-			PenggunaSistemLayout,
+      PenggunaSistemLayout,
       CreateForm,
-		},
+    }
   }
 </script>
 

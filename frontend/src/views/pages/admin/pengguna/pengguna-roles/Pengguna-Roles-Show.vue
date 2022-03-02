@@ -218,7 +218,7 @@
           key: 'name',
           label: 'Nama Permission',
           sortable: true,
-        },        
+        },
         {
           key: 'guard_name',
           label: 'Guard',
@@ -350,7 +350,7 @@
           .post('/system/setting/roles/revokerolepermissions',
             {
               role_id: this.data_role.id,
-							name: item.name,
+			        name: item.name,
             },
             {
               headers: {
@@ -372,7 +372,7 @@
       }
     },
     components: {
-			PenggunaSistemLayout,
-		},
+      PenggunaSistemLayout,
+    }
   }
 </script>

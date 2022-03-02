@@ -25,9 +25,9 @@
   export default {
     name: 'PenggunaManajemenCreate',   
     components: {
-			PenggunaSistemLayout,
+      PenggunaSistemLayout,
       CreateForm,
-		},
+    }
   }
 </script>
 

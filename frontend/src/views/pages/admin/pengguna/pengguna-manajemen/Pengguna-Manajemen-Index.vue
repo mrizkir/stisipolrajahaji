@@ -21,7 +21,7 @@
                   <b-button
                     size="xs"
                     variant="outline-primary"
-                    @click.stop="clearsettingpage"                    
+                    @click.stop="clearsettingpage"
                     v-b-tooltip.hover
                     title="Hapus Setting Halaman"
                     class="mr-1"
@@ -42,7 +42,7 @@
               </template>
               <b-card-body>
                 <div class="input-group input-group-sm">
-                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />      
+                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />
                   <div class="input-group-append">
                     <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
                       <b-icon icon="search" />
@@ -50,14 +50,14 @@
                   </div>
                 </div>
               </b-card-body>
-              <b-card-body class="p-0">  
+              <b-card-body class="p-0">
                 <b-table
                   id="datatable"
                   primary-key="id"
                   :fields="fields"
                   :items="datatable"
                   :sort-by.sync="sortBy"
-                  :sort-desc.sync="sortDesc" 
+                  :sort-desc.sync="sortDesc"
                   :current-page="currentPage"
                   :busy="datatableLoading"
                   outlined
@@ -71,6 +71,9 @@
                     <div class="text-center text-danger my-2">
                       &nbsp;
                     </div>
+                  </template>
+                  <template #cell(no)="{ index }">
+                    {{ index + from }}
                   </template>
                   <template #cell(active)="{ item }">
                     <b-badge :variant="item.active == 1 ? 'primary' : 'secondary'">{{ item.active == 1 ? 'aktif' : 'tidak aktif' }}</b-badge>
@@ -113,6 +116,7 @@
                 </b-table>
               </b-card-body>
               <template #footer>
+                Total {{ totalRows }} data
                 <b-pagination
                   v-model="currentPage"
                   :total-rows="totalRows"
@@ -139,7 +143,7 @@
             Hapus Data
           </template>
           <div class="d-block">
-            User dengan username "{{dataItem.username}}" akan dihapus ?
+            User dengan username "{{ dataItem.username }}" akan dihapus ?
           </div>
         </b-modal>
       </b-container>
@@ -152,14 +156,14 @@
     name: 'PenggunaManajemenIndex',
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
-				name: 'pengguna-manajemen',
+        name: 'pengguna-manajemen',
         loaded: false,
         perPage: this.perPage,
         currentPage: this.currentPage,
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         search: this.search,
-			})
+      })
     },
     mounted() {
       this.initialize()
@@ -169,17 +173,23 @@
       btnLoading: false,
       
       //setting table
+      from: 1,
       currentPage: 1,
       perPage: 10,
       totalRows: 0,
       datatable: [],
       fields: [
         {
+          label: 'No.',
+          key: 'no',
+          thStyle: 'width: 50px',
+        },
+        {
           key: 'username',
           label: 'Username',
           sortable: true,
           thStyle: 'width: 150px',
-        },        
+        },
         {
           key: 'nama',
           label: 'Nama',
@@ -247,20 +257,21 @@
           }
         })
         .then(({ data }) => {
+          this.from = data.result.from
           this.totalRows = data.result.total
           this.datatable = data.result.data
           page.loaded = true
           this.$store.dispatch('uiadmin/updatePage', page)
-          this.$nextTick(() => {      
-            this.currentPage = page.currentPage        
-          });
+          this.$nextTick(() => {
+            this.currentPage = page.currentPage
+          })
           this.datatableLoading = false
         })
       },
       handleSearch() {
         this.currentPage = 1
         this.updatesettingpage()
-        this.initialize();
+        this.initialize()
       },
       handlePageChange(value) {
         this.currentPage = value
@@ -272,11 +283,11 @@
         this.$bvModal.show('modal-delete')
       },
       resetModal() {
-        this.dataItem = {} 
+        this.dataItem = {}
       },
       handleDelete(event) {
         event.preventDefault()
-        this.btnLoading = true        
+        this.btnLoading = true
         this.$ajax.post(
           '/system/usersmanajemen/' + this.dataItem.userid,
             {
@@ -304,8 +315,8 @@
       },
     },
     components: {
-			PenggunaSistemLayout,
-		},
+      PenggunaSistemLayout,
+    }
   }
 </script>
 

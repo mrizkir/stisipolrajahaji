@@ -21,7 +21,7 @@
                   <b-button
                     size="xs"
                     variant="outline-primary"
-                    @click.stop="clearsettingpage"                    
+                    @click.stop="clearsettingpage"
                     v-b-tooltip.hover
                     title="Hapus Setting Halaman"
                     class="mr-1"
@@ -42,7 +42,7 @@
               </template>
               <b-card-body>
                 <div class="input-group input-group-sm">
-                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />      
+                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />
                   <div class="input-group-append">
                     <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
                       <b-icon icon="search" />
@@ -50,14 +50,14 @@
                   </div>
                 </div>
               </b-card-body>
-              <b-card-body class="p-0">  
+              <b-card-body class="p-0">
                 <b-table
                   id="datatable"
                   primary-key="id"
                   :fields="fields"
                   :items="datatable"
                   :sort-by.sync="sortBy"
-                  :sort-desc.sync="sortDesc" 
+                  :sort-desc.sync="sortDesc"
                   :current-page="currentPage"
                   :busy="datatableLoading"
                   outlined
@@ -172,14 +172,14 @@
     },
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
-				name: 'permission',
+        name: 'permission',
         loaded: false,
         perPage: this.perPage,
         currentPage: this.currentPage,
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         search: this.search,
-			})
+      })
     },
     mounted() {
       this.initialize()      
@@ -198,7 +198,7 @@
           key: 'name',
           label: 'Nama Permission',
           sortable: true,
-        },        
+        },
         {
           key: 'guard_name',
           label: 'Guard',
@@ -227,7 +227,7 @@
         formdata: {
           name: {
             required 
-          },          
+          },  
         },
       }
     },
@@ -278,16 +278,16 @@
           this.datatable = data.permissions.data
           page.loaded = true
           this.$store.dispatch('uiadmin/updatePage', page)
-          this.$nextTick(() => {      
-            this.currentPage = page.currentPage        
-          });
+          this.$nextTick(() => {
+            this.currentPage = page.currentPage
+          })
           this.datatableLoading = false
         })             
       },
       handleSearch() {
         this.currentPage = 1
         this.updatesettingpage()
-        this.initialize();
+        this.initialize()
       },
       handlePageChange(value) {
         this.currentPage = value
@@ -302,7 +302,7 @@
         this.$bvModal.show('modal-delete')
       },
       resetModal() {
-        this.dataItem = {} 
+        this.dataItem = {}
       },
       resetModalAddPermission() {
         this.formdata = Object.assign({}, this.defaultform)
@@ -328,12 +328,12 @@
             this.$router.go();
           }).catch(() => {
             this.btnLoading = false;
-          });     
+          })     
         }
       },
       handleDelete(event) {
         event.preventDefault()
-        this.btnLoading = true        
+        this.btnLoading = true
         this.$ajax.post(
           '/system/setting/permissions/' + this.dataItem.id,
             {
@@ -367,7 +367,7 @@
       }
     },
     components: {
-			PenggunaSistemLayout,
-		},
+      PenggunaSistemLayout,
+    }
   }
 </script>

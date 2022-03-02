@@ -37,7 +37,7 @@
 
     methods: {
       async initialize() {
-        var url = '/system/usersmanajemen/' + this.user_id;
+        var url = '/system/usersmanajemen/' + this.user_id
         await this.$ajax.get(url, {
           headers: {
             Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
@@ -49,8 +49,8 @@
       },
     },
     components: {
-			PenggunaSistemLayout,
-      EditForm
-		},
+      PenggunaSistemLayout,
+      EditForm,
+    },
   }
 </script>

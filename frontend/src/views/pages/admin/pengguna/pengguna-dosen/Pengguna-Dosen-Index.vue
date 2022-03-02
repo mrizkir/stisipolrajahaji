@@ -49,7 +49,9 @@
                   </div>
                 </div>
                 <b-alert class="m-3 font-italic" show>
-                  Menambah dosen dilakukan di halaman dosen, di sini hanya untuk mengelola login dosen; jadi menghapus login dosen hanya membuat dosen tidak bisa login namun datanya tetap ada.
+                  Menambah dosen dilakukan di halaman dosen, di sini hanya untuk
+                  mengelola login dosen; jadi menghapus login dosen hanya
+                  membuat dosen tidak bisa login namun datanya tetap ada.
                 </b-alert>
               </b-card-body>
               <b-card-body class="p-0">
@@ -71,6 +73,9 @@
                 >
                   <template #table-busy>
                     <div class="text-center text-danger my-2">&nbsp;</div>
+                  </template>
+                  <template #cell(no)="{ index }">
+                    {{ index + from }}
                   </template>
                   <template #cell(active)="{ item }">
                     <b-badge
@@ -135,6 +140,7 @@
                 </b-table>
               </b-card-body>
               <template #footer>
+                Total {{ totalRows }} data
                 <b-pagination
                   v-model="currentPage"
                   :total-rows="totalRows"
@@ -188,11 +194,17 @@
       datatableLoading: false,
       btnLoading: false,
       //setting table
+      from: 1,
       currentPage: 1,
       perPage: 10,
       totalRows: 0,
       datatable: [],
       fields: [
+        {
+          label: 'No.',
+          key: 'no',
+          thStyle: 'width: 50px',
+        },
         {
           key: 'username',
           label: 'Username',
@@ -276,6 +288,7 @@
             },
           })
           .then(({ data }) => {
+            this.from = data.result.from
             this.totalRows = data.result.total
             this.datatable = data.result.data
             page.loaded = true

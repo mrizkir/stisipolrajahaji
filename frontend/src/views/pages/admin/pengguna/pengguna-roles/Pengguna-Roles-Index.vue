@@ -21,7 +21,7 @@
                   <b-button
                     size="xs"
                     variant="outline-primary"
-                    @click.stop="clearsettingpage"                    
+                    @click.stop="clearsettingpage"
                     v-b-tooltip.hover
                     title="Hapus Setting Halaman"
                   >
@@ -29,7 +29,7 @@
                   </b-button>
                 </div>
               </template>
-              <b-card-body class="p-0">  
+              <b-card-body class="p-0">
                 <b-table
                   id="datatable"
                   primary-key="id"
@@ -83,13 +83,13 @@
     name: 'PenggunaRolesIndex',    
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
-				name: 'role',
+        name: 'role',
         role_permission: [],
         loaded: false,        
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         search: this.search,
-			})
+      })
     },
     mounted() {
       this.initialize()      
@@ -106,7 +106,7 @@
           key: 'name',
           label: 'Nama Role',
           sortable: true,
-        },        
+        },
         {
           key: 'guard_name',
           label: 'Guard',
@@ -178,7 +178,7 @@
       }
     },
     components: {
-			PenggunaSistemLayout,
-		},
+      PenggunaSistemLayout,
+    }
   }
 </script>

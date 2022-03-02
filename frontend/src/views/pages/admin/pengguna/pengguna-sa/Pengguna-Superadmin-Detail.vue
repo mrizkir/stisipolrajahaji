@@ -35,7 +35,7 @@
     }),
     methods: {
       async initialize() {
-        var url = '/system/userssuperadmin/' + this.user_id;
+        var url = '/system/userssuperadmin/' + this.user_id
         await this.$ajax.get(url, {
           headers: {
             Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
@@ -47,9 +47,9 @@
       },
     },
     components: {
-			PenggunaSistemLayout,
+      PenggunaSistemLayout,
       DetailUser,
-		},
+    }
   }
 </script>
 

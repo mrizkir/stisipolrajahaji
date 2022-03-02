@@ -13,7 +13,7 @@
   export default {
     name: 'PenggunaSistem',
     components: {
-			PenggunaSistemLayout,
-		},    
+      PenggunaSistemLayout,
+    }    
   }
 </script>
