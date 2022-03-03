@@ -30,7 +30,7 @@
       this.initialize()
     },
     data: () => ({
-      user_id: null,      
+      user_id: null,    
       data_user: {},
     }),
     methods: {
@@ -38,7 +38,7 @@
         var url = '/system/userssuperadmin/' + this.user_id
         await this.$ajax.get(url, {
           headers: {
-            Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+            Authorization: this.$store.getters['auth/Token'],
           }
         })
         .then(({ data }) => {

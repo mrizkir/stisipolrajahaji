@@ -155,15 +155,15 @@
 						},
 						{
 							headers: {
-								Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+								Authorization: this.$store.getters['auth/Token'],
 							}
 						}
 					)
           .then(() => {
-						this.$router.push(this.urlfront)
+            this.$router.push(this.urlfront)
 					})
           .catch(() => {
-						this.btnLoading = false
+            this.btnLoading = false
 					})
         }
       },

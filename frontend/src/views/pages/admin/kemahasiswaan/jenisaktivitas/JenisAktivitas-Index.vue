@@ -4,8 +4,8 @@
       Jenis Aktivitas
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/kemahasiswaan">Kemahasiswaan</b-breadcrumb-item>          
-      <b-breadcrumb-item active>Jenis Aktivitas</b-breadcrumb-item>      
+      <b-breadcrumb-item to="/kemahasiswaan">Kemahasiswaan</b-breadcrumb-item>
+      <b-breadcrumb-item active>Jenis Aktivitas</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
       <b-container fluid v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_BROWSE')">
@@ -42,7 +42,7 @@
               </template>
               <b-card-body>
                 <div class="input-group input-group-sm">
-                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />            
+                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />  
                   <div class="input-group-append">
                     <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
                       <b-icon icon="search" />
@@ -50,7 +50,7 @@
                   </div>
                 </div>
               </b-card-body>
-              <b-card-body class="p-0">        
+              <b-card-body class="p-0">
                 <b-table
                   id="datatable"
                   primary-key="idjenis"
@@ -72,6 +72,9 @@
                       &nbsp;
                     </div>
                   </template>
+                  <template #cell(no)="{ index }">
+                    {{ index + from }}
+                  </template>
                   <template #cell(active)="{ item }">
                     <b-badge :variant="item.active == 1 ? 'primary' : 'secondary'">{{ item.active == 1 ? 'aktif' : 'tidak aktif' }}</b-badge>
                   </template>
@@ -83,9 +86,9 @@
                       :disabled="btnLoading"
                       v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_UPDATE')"
                     >
-                      <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>                      
-                    </b-button>                    
-                    <b-tooltip :target="'btEdit' + index" variant="primary" placement="rightbottom">Ubah Jenis Aktivitas</b-tooltip>
+                      <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>            
+                      <b-tooltip :target="'btEdit' + index" variant="primary" placement="rightbottom">Ubah Jenis Aktivitas</b-tooltip>
+                    </b-button>          
                     <b-button
                       :id="'btDelete' + index"
                       variant="outline-danger p-1"
@@ -95,8 +98,8 @@
                       v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_DESTROY')"
                     >
                       <b-icon icon="trash" class="p-0 m-0"></b-icon>
+                      <b-tooltip :target="'btDelete' + index" variant="danger" placement="rightbottom">Hapus Jenis Aktivitas</b-tooltip>
                     </b-button>
-                    <b-tooltip :target="'btDelete' + index" variant="danger" placement="rightbottom">Hapus Jenis Aktivitas</b-tooltip>
                   </template>
                   <template #emptytext>
                     tidak ada data yang bisa ditampilkan
@@ -140,7 +143,7 @@
 <script>
   import KemahasiswaanLayout from '@/views/layouts/KemahasiswaanLayout'
   export default {
-    name: 'JenisAktivtas',
+    name: 'JenisAktivtasIndex',
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
 				name: 'jenisaktivitas',
@@ -153,8 +156,8 @@
 			})
     },
     setup() {
-      return {         
-        url: '/kemahasiswaan/jenisaktivitas',       
+      return {  
+        url: '/kemahasiswaan/jenisaktivitas',
       }
     },
     mounted() {
@@ -165,15 +168,21 @@
       btnLoading: false,
       
       //setting table
+      from: 1,
       currentPage: 1,
       perPage: 10,
       totalRows: 0,
       datatable: [],
-      fields: [                
+      fields: [
+        {
+          label: 'No.',
+          key: 'no',
+          thStyle: 'width: 50px',
+        },  
         {
           key: 'nama_aktivitas',
-          label: 'Nama',          
-        },        
+          label: 'Nama',
+        },  
         {
           label: 'Aksi',
           key: 'aksi',
@@ -222,26 +231,28 @@
           url = page.search.length > 0 ? url + '&search=' + page.search : url
         }
         
-        await this.$ajax.get(url, {
-          headers: {
-            Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
-          }
-        })
-        .then(({ data }) => {
-          this.totalRows = data.result.total
-          this.datatable = data.result.data
-          page.loaded = true
-          this.$store.dispatch('uiadmin/updatePage', page)
-          this.$nextTick(() => {            
-            this.currentPage = page.currentPage        
-          });
-          this.datatableLoading = false
-        })
+        await this.$ajax
+          .get(url, {
+            headers: {
+              Authorization: this.$store.getters['auth/Token'],
+            }
+          })
+          .then(({ data }) => {
+            this.from = data.result.from
+            this.totalRows = data.result.total
+            this.datatable = data.result.data
+            page.loaded = true
+            this.$store.dispatch('uiadmin/updatePage', page)
+            this.$nextTick(() => {
+              this.currentPage = page.currentPage
+            })
+            this.datatableLoading = false
+          })
       },
       handleSearch() {
         this.currentPage = 1
         this.updatesettingpage()
-        this.initialize();
+        this.initialize()
       },
       handlePageChange(value) {
         this.currentPage = value
@@ -253,20 +264,21 @@
         this.$bvModal.show('modal-delete')
       },
       resetModal() {
-        this.dataItem = {} 
+        this.dataItem = {}
       },
       handleDelete(event) {
         event.preventDefault()
-        this.btnLoading = true        
-        this.$ajax.post(
-          '/kemahasiswaan/jenisaktivitas/' + this.dataItem.idjenis,
+        this.btnLoading = true
+        this.$ajax
+          .post(
+            '/kemahasiswaan/jenisaktivitas/' + this.dataItem.idjenis,
             {
               _method: 'DELETE',
             },
             {
               headers: {
-                Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
-              }
+                Authorization: this.$store.getters['auth/Token'],
+              },
             }
           )
           .then(() => {
@@ -276,7 +288,6 @@
           .catch(() => {
             this.btnLoading = false
           })
-          
         // Hide the modal manually
         this.$nextTick(() => {
           this.dataItem = {}
@@ -285,7 +296,7 @@
       },
     },
     components: {
-			KemahasiswaanLayout,
-		},    
+      KemahasiswaanLayout,
+    },
   }
 </script>

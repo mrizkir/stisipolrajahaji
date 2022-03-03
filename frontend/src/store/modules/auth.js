@@ -54,6 +54,15 @@ const getters = {
 	AttributeUser: state => key => {
 		return state.user == null ? "" : state.user[key]
 	},
+	DetailUser: state => key => {
+		let user = state.user
+		if (user !== null) {
+			let detail = state.user.detail
+			return (typeof detail === 'undefined' || detail == null) ? "" : detail[key]
+		} else {
+			return ""
+		}
+	},
 	can: state => name => {
 		if (state.user == null) {
 			return false

@@ -1,17 +1,10 @@
 <template>
   <div class="login-box" v-if="userlogged">
-    <div class="login-logo">
-      PortalEkampusV2
-    </div>
-    <b-card
-      class="login-card-body"    
-    >
+    <div class="login-logo">PortalEkampusV2</div>
+    <b-card class="login-card-body">
       <p class="login-box-msg">Silahkan masukan username dan password</p>
       <b-form @submit.prevent="onSubmit" name="frmlogin" id="frmlogin">
-        <b-form-group
-          label="Username:"
-          label-for="txtUsername"
-        >      
+        <b-form-group label="Username:" label-for="txtUsername">
           <b-form-input
             id="txtUsername"
             v-model="v$.formdata.username.$model"
@@ -19,17 +12,11 @@
             :state="validateState('username')"
             aria-describedby="frmlogin-username"
           />
-          <b-form-invalid-feedback
-            id="frmlogin-username"
-          >
+          <b-form-invalid-feedback id="frmlogin-username">
             Username tidak boleh kosong, silahkan diisi !!!.
           </b-form-invalid-feedback>
         </b-form-group>
-        
-        <b-form-group
-          label="Password:"
-          label-for="txtPassword"
-        >      
+        <b-form-group label="Password:" label-for="txtPassword">
           <b-form-input
             id="txtPassword"
             v-model="v$.formdata.password.$model"
@@ -38,24 +25,18 @@
             :state="validateState('password')"
             aria-describedby="frmlogin-password"
           />
-          <b-form-invalid-feedback
-            id="frmlogin-password"
-          >
+          <b-form-invalid-feedback id="frmlogin-password">
             Password tidak boleh kosong, silahkan diisi !!!.
           </b-form-invalid-feedback>
         </b-form-group>
-        <b-form-group
-          label="Halaman:"            
-        >      
+        <b-form-group label="Halaman:">
           <b-form-select
             v-model="v$.formdata.page.$model"
             :options="daftar_page"
             :state="validateState('page')"
             aria-describedby="frmlogin-page"
           />
-          <b-form-invalid-feedback
-            id="frmlogin-page"
-          >
+          <b-form-invalid-feedback id="frmlogin-page">
             Silahkan pilih akan mengakses halaman apa ?
           </b-form-invalid-feedback>
         </b-form-group>
@@ -67,17 +48,13 @@
             block
           >
             Login
-          </b-button>  
-          <b-alert
-            :show="form_error"
-            variant="danger"
-            class="mt-2"
-          >
+          </b-button>
+          <b-alert :show="form_error" variant="danger" class="mt-2">
             Username atau Password tidak dikenal !!!
           </b-alert>
         </div>
       </b-form>
-    </b-card>    
+    </b-card>
   </div>
 </template>
 <script>
@@ -87,23 +64,22 @@
   export default {
     name: 'Login',
     setup() {
-      return { 
-        v$: useVuelidate(),        
+      return {
+        v$: useVuelidate(),
       }
     },
 
     created() {
-			if (this.$store.getters["auth/Authenticated"]) {				
-				this.$router.push(
-					"/dashboard/" + this.$store.getters["auth/AccessToken"]
-				);
-			}      
-		},
-
+      if (this.$store.getters['auth/Authenticated']) {
+        this.$router.push(
+          '/dashboard/' + this.$store.getters['auth/AccessToken']
+        )
+      }
+    },
     mounted() {
       this.daftar_page = this.$store.getters['uifront/getDaftarPage']
       if (!this.daftar_page.length) {
-        this.$router.go();
+        this.$router.go()
       }
     },
 
@@ -120,18 +96,17 @@
         },
       }
     },
-      
     validations() {
       return {
         formdata: {
           username: {
-            required 
+            required,
           },
           password: {
-            required,             
+            required,
           },
           page: {
-            required,             
+            required,
           },
         },
       }
@@ -146,35 +121,35 @@
           this.btnLoading = true
           this.form_error = false
           await this.$ajax
-						.post('/auth/login', {
-							username: this.formdata.username,
-							password: this.formdata.password,
-							page: this.formdata.page,
-						})
-						.then(({ data }) => {              
-							this.$ajax
-								.get('/auth/me', {
-									headers: {
-										Authorization: data.token_type + ' ' + data.access_token,
-									},
-								})
-								.then(response => {
-									var data_user = {
-										token: data,
-										user: response.data,
-									}
-									this.$store.dispatch('auth/afterLoginSuccess', data_user)
-								})
-							this.btnLoading = false
+            .post('/auth/login', {
+              username: this.formdata.username,
+              password: this.formdata.password,
+              page: this.formdata.page,
+            })
+            .then(({ data }) => {
+              this.$ajax
+                .get('/auth/me', {
+                  headers: {
+                    Authorization: data.token_type + ' ' + data.access_token,
+                  },
+                })
+                .then((response) => {
+                  var data_user = {
+                    token: data,
+                    user: response.data,
+                  }
+                  this.$store.dispatch('auth/afterLoginSuccess', data_user)
+                })
+              this.btnLoading = false
               this.userlogged = false
-							this.$router.push('/dashboard/' + data.access_token)
-						})
-						.catch(() => {
+              this.$router.push('/dashboard/' + data.access_token)
+            })
+            .catch(() => {
               this.form_error = true
-							this.btnLoading = false
-						})
-        }      
-      }    
+              this.btnLoading = false
+            })
+        }
+      },
     },
   }
 </script>

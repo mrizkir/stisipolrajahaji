@@ -47,8 +47,7 @@
         await this.$ajax
           .get(url, {
             headers: {
-              Authorization:
-                'Bearer ' + this.$store.getters['auth/AccessToken'],
+              Authorization: this.$store.getters['auth/Token'],
             },
           })
           .then(({ data }) => {

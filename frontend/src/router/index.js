@@ -55,7 +55,8 @@ const routes = [
       bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
-    component: () => import('../views/pages/admin/kemahasiswaan/Kemahasiswaan.vue'),
+    component: () =>
+      import('../views/pages/admin/kemahasiswaan/Kemahasiswaan.vue'),
   },
   //kemahasiswaan - jenis aktivitas
   {
@@ -95,6 +96,33 @@ const routes = [
     component: () =>
       import(
         '../views/pages/admin/kemahasiswaan/jenisaktivitas/JenisAktivitas-Edit.vue'
+      ),
+  },
+  //kemahasiswaan - data aktivitas
+  {
+    path: '/kemahasiswaan/dataaktivitas',
+    name: 'AkademikDataAktivitas',
+    meta: {
+      title: 'AKTIVITAS MAHASISWA - DATA AKTIVITAS',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/kemahasiswaan/dataaktivitas/DataAktivitas-Index.vue'
+      ),
+  },
+  {
+    path: '/kemahasiswaan/dataaktivitas/create',
+    name: 'AkademikDataAktivitasCreate',
+    meta: {
+      title: 'AKTIVITAS MAHASISWA - DATA AKTIVITAS',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/kemahasiswaan/dataaktivitas/DataAktivitas-Create.vue'
       ),
   },
   //system - users

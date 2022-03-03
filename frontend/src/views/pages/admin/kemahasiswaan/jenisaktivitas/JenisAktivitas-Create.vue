@@ -1,19 +1,14 @@
 <template>
   <KemahasiswaanLayout>
-    <template v-slot:page-header>
-      Jenis Aktivitas
-    </template>
+    <template v-slot:page-header>Jenis Aktivitas</template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/kemahasiswaan">Kemahasiswaan</b-breadcrumb-item>          
-      <b-breadcrumb-item to="/kemahasiswaan/jenisaktivitas">Jenis Aktivitas</b-breadcrumb-item>          
-      <b-breadcrumb-item active>Tambah</b-breadcrumb-item>      
+      <b-breadcrumb-item to="/kemahasiswaan">Kemahasiswaan</b-breadcrumb-item>
+      <b-breadcrumb-item to="/kemahasiswaan/jenisaktivitas">Jenis Aktivitas</b-breadcrumb-item>
+      <b-breadcrumb-item active>Tambah</b-breadcrumb-item>
     </template>
-    <template v-slot:page-content>   
+    <template v-slot:page-content>
       <b-form @submit.prevent="onSubmit" name="frmdata" id="frmdata" v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_STORE')">
-        <b-card
-          no-body
-          class="card-primary card-outline"
-        >
+        <b-card no-body class="card-primary card-outline">
           <template #header>
             <h3 class="card-title">Tambah Jenis Aktivitas</h3>
             <div class="card-tools">
@@ -22,11 +17,11 @@
               </button>
             </div>
           </template>
-          <b-card-body>      
+          <b-card-body>
             <b-form-group
               label="Nama Jenis Aktivitas:"
               label-for="txtNama"
-            >      
+            >
               <b-form-input
                 id="txtNama"
                 v-model="v$.formdata.nama_aktivitas.$model"
@@ -41,14 +36,14 @@
               </b-form-invalid-feedback>
             </b-form-group>
           </b-card-body>
-          <template #footer>    
+          <template #footer>
             <b-button
               type="submit"
               :disabled="v$.formdata.$invalid || btnLoading"
               variant="primary"
             >
               Simpan
-            </b-button>      
+            </b-button>
           </template>
         </b-card>
       </b-form>
@@ -63,18 +58,18 @@
   import { required } from '@vuelidate/validators'  
   import KemahasiswaanLayout from '@/views/layouts/KemahasiswaanLayout'  
   export default {
-    name: 'JenisAktivtasCreate',  
+    name: 'JenisAktivtasCreate',
     setup() {
-      return { 
+      return {
         v$: useVuelidate(), 
-        url: '/kemahasiswaan/jenisaktivitas',       
+        url: '/kemahasiswaan/jenisaktivitas',
       }
     },
-    data: () => ({      
-      btnLoading: false,      
+    data: () => ({
+      btnLoading: false,    
       formdata: {
-        nama_aktivitas: null,               
-      },      
+        nama_aktivitas: null,
+      },
     }),
     validations() {
       return {
@@ -89,7 +84,7 @@
       validateState(name) {
         const { $dirty, $error } = this.v$.formdata[name]
         return $dirty ? !$error : null
-      },      
+      },
       async onSubmit() {
         if (!this.v$.formdata.$invalid) {
           this.btnLoading = true
@@ -97,25 +92,25 @@
           this.$ajax.post('/kemahasiswaan/jenisaktivitas/store',
 						{
 							nama_aktivitas: this.formdata.nama_aktivitas,							
-						},
+				    },
 						{
 							headers: {
-								Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+								Authorization: this.$store.getters['auth/Token'],
 							}
 						}
 					)
           .then(() => {
             this.btnLoading = false
-						this.$router.push(this.url)
+            this.$router.push(this.url)
 					})
           .catch(() => {
-						this.btnLoading = false
+            this.btnLoading = false
 					})
         }
       },
     },
     components: {
-			KemahasiswaanLayout,
-		},
+      KemahasiswaanLayout,
+    },
   }
 </script>

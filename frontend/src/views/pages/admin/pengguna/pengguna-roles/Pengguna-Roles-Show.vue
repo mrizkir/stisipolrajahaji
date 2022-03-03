@@ -31,21 +31,21 @@
                       <dt class="col-sm-3">ID</dt>
                       <dd class="col-sm-9">{{data_role.id}}</dd>
                     </dl>
-                  </b-col>  
+                  </b-col>
                   <b-col>
                     <dl class="row">
                       <dt class="col-sm-4">Guard</dt>
                       <dd class="col-sm-8">{{data_role.guard_name}}</dd>
                     </dl>
                   </b-col>
-                </b-row>  
+                </b-row>
                 <b-row>
                   <b-col>
                     <dl class="row">
                       <dt class="col-sm-3">Nama Role</dt>
                       <dd class="col-sm-9">{{data_role.name}}</dd>
                     </dl>
-                  </b-col>    
+                  </b-col>
                   <b-col>
                     <dl class="row">
                       <dt class="col-sm-4">Created/Updated</dt>
@@ -53,19 +53,19 @@
                         {{$date(data_role.created_at).format("DD.MM.YYYY HH:mm")}} / {{$date(data_role.updated_at).format('DD.MM.YYYY HH:mm')}}</dd>
                     </dl>
                   </b-col>
-                </b-row>  
+                </b-row>
               </b-card-body>
             </b-card>
           </b-col>
         </b-row>
         <b-row>
-          <b-col>    
+          <b-col>
             <b-card
               no-body
               class="card-primary card-outline"
             >
               <template #header>
-                <h3 class="card-title">Daftar Permission ({{ selectedPermissions.length }})</h3>  
+                <h3 class="card-title">Daftar Permission ({{ selectedPermissions.length }})</h3>
                 <div class="card-tools">
                   <b-button
                     size="xs"
@@ -126,7 +126,7 @@
               <b-card-body class="p-0">
                 <b-alert class="m-3 font-italic" show>
                   Silahkan pilih permission untuk role {{data_role.name}} dengan cara mengklik baris dalam tabel di bawah ini.
-                </b-alert>  
+                </b-alert>
                 <b-table
                   id="datatable"
                   primary-key="id"
@@ -175,7 +175,7 @@
                     </b-button>
                     <span v-else>
                       N.A
-                    </span>      
+                    </span>
                   </template>
                 </b-table>
               </b-card-body>
@@ -204,7 +204,7 @@
     created() {
       this.role_id = this.$route.params.role_id
       this.initialize()
-    },    
+    },  
     data: () => ({
       role_id: null,
       datatableLoading: false,
@@ -225,7 +225,7 @@
         },
         {
           key: 'selected',
-          label: 'Pilihan',          
+          label: 'Pilihan',
           thStyle: 'width: 100px',
         },
         {
@@ -234,7 +234,7 @@
           thStyle: 'width: 100px',
         },
       ],
-      totalRows: 1,  
+      totalRows: 1,
       perPage: 10,
       currentPage: 1,
       sortBy: 'name',
@@ -275,10 +275,10 @@
             } else {
               this.$set(item, 'selected', true)
             }
-          }          
+          }    
         }
       },
-      onFiltered(filteredItems) {  
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length
         this.currentPage = 1
       },
@@ -289,10 +289,10 @@
         //load data role beserta permissions-nya
         await this.$ajax.get(url, {
           headers: {
-            Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+            Authorization: this.$store.getters['auth/Token'],
           }
         })
-        .then(({ data }) => {    
+        .then(({ data }) => {  
           this.data_role = data.role
         })
         
@@ -300,10 +300,10 @@
         await this.$ajax
         .get('/system/setting/roles/' + this.role_id + '/allpermissions', {
           headers: {
-            Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+            Authorization: this.$store.getters['auth/Token'],
           },
         })
-        .then(({ data }) => {  
+        .then(({ data }) => {
           this.datatable = data.permissions
           this.totalRows = this.datatable.length
           this.datatableLoading = false          
@@ -312,7 +312,7 @@
           this.datatableLoading = false
         })
       },
-      async save() {  
+      async save() {
         if (this.selectedPermissions.length > 0) {
           this.btnLoading = true
           await this.$ajax
@@ -324,7 +324,7 @@
               },
               {
                 headers: {
-                  Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+                  Authorization: this.$store.getters['auth/Token'],
                 }
               }
             )
@@ -342,7 +342,7 @@
             autoHideDelay: 5000,
             appendToast: false
           })
-        }        
+        }  
       },
       async revokePermission(item) {
         this.btnLoading = true
@@ -354,7 +354,7 @@
             },
             {
               headers: {
-                Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+                Authorization: this.$store.getters['auth/Token'],
               }
             }
         )

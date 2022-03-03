@@ -1,4 +1,4 @@
-<template>  
+<template>
   <PenggunaSistemLayout>
     <template v-slot:page-breadcrumb>
       <b-breadcrumb-item active>Pengguna Sistem</b-breadcrumb-item>
@@ -14,6 +14,6 @@
     name: 'PenggunaSistem',
     components: {
       PenggunaSistemLayout,
-    }    
+    }
   }
 </script>

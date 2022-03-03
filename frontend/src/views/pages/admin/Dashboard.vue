@@ -49,7 +49,7 @@ export default {
   name: "Dashboard",
   created() {
     this.token = this.$route.params.token;
-    this.initialize();
+    this.initialize()
   },
   data: () => ({
     token: null,

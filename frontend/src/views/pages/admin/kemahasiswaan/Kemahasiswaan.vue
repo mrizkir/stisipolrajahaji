@@ -4,7 +4,7 @@
       Kemahasiswaan
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item active>Kemahasiswaan</b-breadcrumb-item>      
+      <b-breadcrumb-item active>Kemahasiswaan</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
       page-content
@@ -16,7 +16,7 @@
   export default {
     name: 'Kemahasiswaan',
     components: {
-			KemahasiswaanLayout,
-		},    
+      KemahasiswaanLayout,
+    },
   }
 </script>

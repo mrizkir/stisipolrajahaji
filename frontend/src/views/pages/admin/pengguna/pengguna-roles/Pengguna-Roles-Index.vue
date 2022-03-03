@@ -1,4 +1,4 @@
-<template>  
+<template>
   <PenggunaSistemLayout>
     <template v-slot:page-header>
       Roles
@@ -16,7 +16,7 @@
               class="card-primary card-outline"
             >
               <template #header>
-                <h3 class="card-title">Daftar Roles</h3>  
+                <h3 class="card-title">Daftar Roles</h3>
                 <div class="card-tools">
                   <b-button
                     size="xs"
@@ -50,7 +50,7 @@
                       &nbsp;
                     </div>
                   </template>
-                  <template #cell(No)="data">      
+                  <template #cell(No)="data">
                     {{ data.index + 1 }}
                   </template>
                   <template #cell(aksi)="{ item }">
@@ -80,12 +80,12 @@
 <script>
   import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'
   export default {
-    name: 'PenggunaRolesIndex',    
+    name: 'PenggunaRolesIndex',  
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
         name: 'role',
         role_permission: [],
-        loaded: false,        
+        loaded: false,
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         search: this.search,
@@ -130,7 +130,7 @@
       ],
       sortBy: 'name',
       sortDesc: false,
-    }),    
+    }),  
     methods: {
       updatesettingpage() {
         var page = this.$store.getters['uiadmin/Page']('role')
@@ -160,16 +160,16 @@
         
         await this.$ajax.get(url, {
           headers: {
-            Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+            Authorization: this.$store.getters['auth/Token'],
           }
         })
-        .then(({ data }) => {    
+        .then(({ data }) => {  
           this.datatable = data.roles
           page.loaded = true
           this.$store.dispatch('uiadmin/updatePage', page)
           this.datatableLoading = false
         })             
-      },      
+      },    
     },
     watch: {
       sortDesc() {

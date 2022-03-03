@@ -2,31 +2,31 @@
   <div class="wrapper">
     <navbar>
       <template v-slot:sidebartoggle>
-        <b-button variant="link" @click.stop="sidebar_visible = !sidebar_visible">
+        <b-button
+          variant="link"
+          @click.stop="sidebar_visible = !sidebar_visible"
+        >
           <font-awesome-icon :icon="['fas', 'bars']" />
-        </b-button>        
+        </b-button>
       </template>
     </navbar>
 
     <b-sidebar
       id="left-sidebar"
       aria-labelledby="sidebar-header-title"
-      v-model="sidebar_visible"      
+      v-model="sidebar_visible"
       width="250px"
     >
       <template #header>
         <div class="d-flex align-items-center flex-column">
-          <b-avatar variant="primary" text="BV" class="mb-3 mt-2" size="5rem"></b-avatar>
+          <b-avatar variant="primary" text="BV" class="mb-3 mt-2" size="5rem" />
           <h5 id="sidebar-header-title">ADMIN</h5>
           <div class="divider"></div>
         </div>
       </template>
       <template #default>
         <nav>
-          <b-nav
-            class="nav-pills nav-sidebar"
-            vertical
-          >
+          <b-nav class="nav-pills nav-sidebar" vertical>
             <b-nav-item
               to="/akademik"
               v-if="$store.getters['auth/can']('AKADEMIK-GROUP')"
@@ -36,17 +36,28 @@
             </b-nav-item>
             <li class="nav-header">PERKULIAHAN</li>
             <li>
-              <b-button v-b-toggle.collapse-perkuliahan variant="primary">Penyelenggaraan</b-button>
-              <b-collapse id="collapse-perkuliahan" class="mt-2" tag="ul" is-nav>
+              <b-button v-b-toggle.collapse-perkuliahan variant="primary">
+                Penyelenggaraan
+              </b-button>
+              <b-collapse
+                id="collapse-perkuliahan"
+                class="mt-2"
+                tag="ul"
+                is-nav
+              >
                 <b-nav-item
                   to="/akademik/perkuliahan/penyelenggaraan"
-                  v-if="$store.getters['auth/can']('AKADEMIK-PENYELENGGARAAN_BROWSE')"
+                  v-if="
+                    $store.getters['auth/can'](
+                      'AKADEMIK-PENYELENGGARAAN_BROWSE'
+                    )
+                  "
                 >
                   <b-icon icon="arrow-right" />
                   PENYELENGGARAAN
                 </b-nav-item>
               </b-collapse>
-            </li>    
+            </li>
           </b-nav>
         </nav>
       </template>
@@ -65,10 +76,15 @@
                 <b-breadcrumb-item
                   :to="'/dashboard/' + $store.getters['auth/AccessToken']"
                 >
-                  <b-icon icon="house-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                  <b-icon
+                    icon="house-fill"
+                    scale="1.25"
+                    shift-v="1.25"
+                    aria-hidden="true"
+                  />
                   Home
-                </b-breadcrumb-item>    
-                <slot name="page-breadcrumb" />  
+                </b-breadcrumb-item>
+                <slot name="page-breadcrumb" />
               </b-breadcrumb>
             </b-col>
           </b-row>
@@ -87,28 +103,28 @@
   import footerportal from '@/components/panels/footeradmin.vue'
   export default {
     name: 'AkademikLayout',
-     data: () => ({
+    data: () => ({
       //sidebar
-			sidebar_visible: true,      
-		}),
+      sidebar_visible: true,
+    }),
     components: {
       navbar,
       footerportal,
     },
     methods: {
-      handleVisible(isVisible) {        
+      handleVisible(isVisible) {
         this.sidebar_visible = isVisible
-      }
+      },
     },
     watch: {
       sidebar_visible(val) {
         const el = document.body
-        if(val) {
+        if (val) {
           el.classList.remove('sidebar-collapse')
         } else {
           el.classList.add('sidebar-collapse')
         }
-      }
+      },
     },
   }
 </script>

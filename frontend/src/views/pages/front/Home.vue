@@ -9,6 +9,6 @@
     name: 'Home',
     components: {
 			FrontendLayout,
-		},    
+		},  
   }
 </script>

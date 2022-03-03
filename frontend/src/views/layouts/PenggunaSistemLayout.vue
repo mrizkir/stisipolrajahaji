@@ -2,9 +2,12 @@
   <div class="wrapper">
     <navbar>
       <template v-slot:sidebartoggle>
-        <b-button variant="link" @click.stop="sidebar_visible = !sidebar_visible">
+        <b-button
+          variant="link"
+          @click.stop="sidebar_visible = !sidebar_visible"
+        >
           <font-awesome-icon :icon="['fas', 'bars']" />
-        </b-button>        
+        </b-button>
       </template>
     </navbar>
 
@@ -122,19 +125,19 @@
       sidebar_visible: true,
     }),
     methods: {
-      handleVisible(isVisible) {        
+      handleVisible(isVisible) {
         this.sidebar_visible = isVisible
-      }
+      },
     },
     watch: {
       sidebar_visible(val) {
         const el = document.body
-        if(val) {
+        if (val) {
           el.classList.remove('sidebar-collapse')
         } else {
           el.classList.add('sidebar-collapse')
         }
-      }
+      },
     },
     components: {
       navbar,

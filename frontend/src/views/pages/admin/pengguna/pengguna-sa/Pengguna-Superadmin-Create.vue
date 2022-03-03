@@ -23,7 +23,7 @@
   import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'
   import CreateForm from '@/components/pengguna/user-create'
   export default {
-    name: 'PenggunaSuperadminCreate',   
+    name: 'PenggunaSuperadminCreate', 
     components: {
       PenggunaSistemLayout,
       CreateForm,

@@ -4,7 +4,7 @@
       Akademik
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item active>Akademik</b-breadcrumb-item>      
+      <b-breadcrumb-item active>Akademik</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
       page-content
@@ -17,6 +17,6 @@
     name: 'Akademik',
     components: {
 			AkademikLayout,
-		},    
+		},  
   }
 </script>

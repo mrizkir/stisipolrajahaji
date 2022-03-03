@@ -1,4 +1,4 @@
-<template>  
+<template>
   <PenggunaSistemLayout>
     <template v-slot:page-header>
       Permission
@@ -166,8 +166,8 @@
   export default {
     name: 'PenggunaPermission',
     setup() {
-      return { 
-        v$: useVuelidate(),        
+      return {
+        v$: useVuelidate(),
       }
     },
     created() {
@@ -227,7 +227,7 @@
         formdata: {
           name: {
             required 
-          },  
+          },
         },
       }
     },
@@ -270,7 +270,7 @@
         
         await this.$ajax.get(url, {
           headers: {
-            Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+            Authorization: this.$store.getters['auth/Token'],
           }
         })
         .then(({ data }) => {
@@ -294,9 +294,9 @@
         this.updatesettingpage()
         this.initialize()
       },
-      showModalAdd() {  
+      showModalAdd() {
         this.$bvModal.show('modal-add-permission')
-      },      
+      },    
       showModalDelete(item) {
         this.dataItem = item
         this.$bvModal.show('modal-delete')
@@ -321,11 +321,11 @@
             },
             {
               headers: {
-                Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+                Authorization: this.$store.getters['auth/Token'],
               }
             }
           ).then(() => {
-            this.$router.go();
+            this.$router.go()
           }).catch(() => {
             this.btnLoading = false;
           })     
@@ -341,7 +341,7 @@
             },
             {
               headers: {
-                Authorization: 'Bearer ' + this.$store.getters['auth/AccessToken'],
+                Authorization: this.$store.getters['auth/Token'],
               }
             }
           )

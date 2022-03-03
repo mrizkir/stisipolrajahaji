@@ -108,7 +108,9 @@ class AuthController extends Controller
 	 */
 	public function me()
 	{
-		$user = $this->guard()->user()->toArray();		
+		$objUser = $this->guard()->user();
+		$user = $objUser->toArray();
+		$user['detail'] = $objUser->detail;
 		$user['role'] = HelperAuth::getRealRoleName($user['page']);
 		$user['issuperadmin'] = $this->hasRole('superadmin');
 		$user['permissions'] = $this->guard()->user()->permissions->pluck('id','name')->toArray();
