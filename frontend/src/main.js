@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import router from './router'
 import store from './store'
 
-import api from "./plugins/api"
+import api from './plugins/api'
 import '@/plugins/dayjs'
 
 import './scss/app.scss'
@@ -22,8 +22,9 @@ Vue.use(IconsPlugin)
 Vue.use(api);
 
 //icon font awesome
-import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { faBars, faGear } from '@fortawesome/free-solid-svg-icons'
 library.add(faBars)
+library.add(faGear)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

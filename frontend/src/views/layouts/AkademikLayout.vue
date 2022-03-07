@@ -4,23 +4,31 @@
       <template v-slot:sidebartoggle>
         <b-button
           variant="link"
-          @click.stop="sidebar_visible = !sidebar_visible"
+          @click.stop="sidebar_left_visible = !sidebar_left_visible"
         >
           <font-awesome-icon :icon="['fas', 'bars']" />
+        </b-button>
+      </template>
+      <template v-slot:sidebartoggleright>
+         <b-button
+          variant="link"
+          @click.stop="sidebar_right_visible = !sidebar_right_visible"
+        >
+          <font-awesome-icon :icon="['fas', 'gear']" />
         </b-button>
       </template>
     </navbar>
 
     <b-sidebar
       id="left-sidebar"
-      aria-labelledby="sidebar-header-title"
-      v-model="sidebar_visible"
+      aria-labelledby="sidebar-header-left-title"
+      v-model="sidebar_left_visible"
       width="250px"
     >
       <template #header>
         <div class="d-flex align-items-center flex-column">
           <b-avatar variant="primary" text="BV" class="mb-3 mt-2" size="5rem" />
-          <h5 id="sidebar-header-title">ADMIN</h5>
+          <h5 id="sidebar-header-left-title">ADMIN</h5>
           <div class="divider"></div>
         </div>
       </template>
@@ -62,6 +70,23 @@
         </nav>
       </template>
     </b-sidebar>
+    <b-sidebar
+      id="right-sidebar"
+      aria-labelledby="sidebar-header-right-title"
+      v-model="sidebar_right_visible"
+      width="250px"
+      right
+    >
+      <template #header>
+        <div class="d-flex align-items-center flex-column">          
+          <h5 id="sidebar-header-right-title">OPTIONS</h5>
+          <div class="divider"></div>
+        </div>
+      </template>
+      <template #default>
+        test
+      </template>
+    </b-sidebar>
     <!-- main content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -95,7 +120,7 @@
       </section>
     </div>
     <footerportal />
-    <div v-b-visible.once="handleVisible" class="d-xs-none"></div>
+    <div v-b-visible.once="handleVisibleLeft" class="d-xs-none"></div>
   </div>
 </template>
 <script>
@@ -105,19 +130,20 @@
     name: 'AkademikLayout',
     data: () => ({
       //sidebar
-      sidebar_visible: true,
+      sidebar_left_visible: true,
+      sidebar_right_visible: false,
     }),
     components: {
       navbar,
       footerportal,
     },
     methods: {
-      handleVisible(isVisible) {
-        this.sidebar_visible = isVisible
+      handleVisibleLeft(isVisible) {
+        this.sidebar_left_visible = isVisible
       },
     },
     watch: {
-      sidebar_visible(val) {
+      sidebar_left_visible(val) {
         const el = document.body
         if (val) {
           el.classList.remove('sidebar-collapse')
