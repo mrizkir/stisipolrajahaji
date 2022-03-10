@@ -1,5 +1,5 @@
 <template>
-  <KemahasiswaanLayout>
+  <KemahasiswaanLayout :showrightsidebar="false">
     <template v-slot:page-header>
       Jenis Aktivitas
     </template>
@@ -76,7 +76,7 @@
     },
     data: () => ({
       idjenis: null,  
-      btnLoading: false,    
+      btnLoading: false,
       formdata: {
         nama_aktivitas: null,
       },

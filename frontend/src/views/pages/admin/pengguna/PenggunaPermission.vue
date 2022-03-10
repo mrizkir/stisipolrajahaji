@@ -282,7 +282,7 @@
             this.currentPage = page.currentPage
           })
           this.datatableLoading = false
-        })             
+        }) 
       },
       handleSearch() {
         this.currentPage = 1
@@ -296,7 +296,7 @@
       },
       showModalAdd() {
         this.$bvModal.show('modal-add-permission')
-      },    
+      },
       showModalDelete(item) {
         this.dataItem = item
         this.$bvModal.show('modal-delete')

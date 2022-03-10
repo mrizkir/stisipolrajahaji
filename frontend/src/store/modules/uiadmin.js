@@ -5,6 +5,9 @@ const getDefaultState = () => {
 		//page
 		default_dashboard: null,
 		pages: [],
+		//data master
+		daftar_prodi: [],
+		prodi_id: null,
   }
 }
 const state = getDefaultState()
@@ -29,6 +32,14 @@ const mutations = {
 			}
 		}
 	},
+	//data master
+	setDaftarProdi(state, daftar) {
+		state.daftar_prodi = daftar;
+	},
+	setProdiID(state, id) {
+		state.prodi_id = id;
+	},
+
 	resetState(state) {
 		Object.assign(state, getDefaultState());
 	},
@@ -43,6 +54,20 @@ const getters = {
 	AtributeValueOfPage: state => (name, key) => {
 		let page = state.pages.find(halaman => halaman.name == name);
 		return page[key];
+	},
+	//data master
+	getDaftarProdi: state => (prepend) => {
+		var daftar_prodi = state.daftar_prodi		
+		if(prepend) {
+			daftar_prodi[0] = {
+				value: 0,
+				text: 'KESELURUHAN PRODI',
+			}
+		}
+		return daftar_prodi.filter(el => el != null);
+	},
+	getProdiID: state => {
+		return parseInt(state.prodi_id);
 	},
 }
 
@@ -72,16 +97,17 @@ const actions = {
 					let daftar_prodi = data.daftar_prodi
 					var prodi = []
 					daftar_prodi.forEach(element => {
-						prodi[element.id] = {
-							id: element.id,
+						prodi[element.kjur] = {
+							value: element.kjur,
 							text:
-								element.nama_prodi_alias + ' (' + element.nama_jenjang + ')',
+								element.nama_ps_alias + ' (' + element.nama_jenjang + ')',
 							nama_prodi:
-								element.nama_prodi + ' (' + element.nama_jenjang + ')',
+								element.nama_ps + ' (' + element.nama_jenjang + ')',
 						}
 					})
-					// commit('setDaftarProdi', prodi)
-					// commit('setProdiID', data.prodi_id)
+					console.log(prodi)
+					commit('setDaftarProdi', prodi)
+					commit('setProdiID', data.prodi_id)
 
 					// commit('setDaftarKelas', data.daftar_kelas)
 					// commit('setIDKelas', data.idkelas)
@@ -112,6 +138,16 @@ const actions = {
 	},
 	deletePage({ commit },name) {
 		commit('removePage', name)
+	},
+	//data master
+	updateProdi({ commit },id) {
+		commit("setProdiID", id);
+	},
+	updateTahunAkademik({ commit },tahun) {
+		commit("setTahunAkademik", tahun);
+	},
+	updateSemesterAkademik({ commit },semester) {
+		commit("setSemesterAkademik", semester);
 	},
 	reinit({ commit }) {
 		commit("resetState");

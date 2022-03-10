@@ -213,9 +213,6 @@
         }
       )
     },
-    mounted() {
-      this.$store.dispatch('uifront/init', this.$ajax)
-    },
     data() {
       return {
         refCount: 0,

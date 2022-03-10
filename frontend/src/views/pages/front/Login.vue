@@ -1,6 +1,8 @@
 <template>
   <div class="login-box" v-if="userlogged">
-    <div class="login-logo">PortalEkampusV2</div>
+    <div class="login-logo">
+      <b-link to="/">PortalEkampusV2</b-link>
+    </div>
     <b-card class="login-card-body">
       <p class="login-box-msg">Silahkan masukan username dan password</p>
       <b-form @submit.prevent="onSubmit" name="frmlogin" id="frmlogin">
@@ -69,26 +71,71 @@
       }
     },
 
-    created() {
+    created() {      
       if (this.$store.getters['auth/Authenticated']) {
         this.$router.push(
           '/dashboard/' + this.$store.getters['auth/AccessToken']
         )
-      }
-    },
-    mounted() {
-      this.daftar_page = this.$store.getters['uifront/getDaftarPage']
-      if (!this.daftar_page.length) {
-        this.$router.go()
-      }
-    },
+      } else {
+        this.$store.dispatch('uifront/init', this.$ajax)
+      }      
+    },   
 
     data() {
       return {
         form_error: false,
         userlogged: true,
         btnLoading: false,
-        daftar_page: [],
+        daftar_page: [
+          {
+            text: 'Pilih Halaman',
+            value: '',
+          },
+          {
+            text: 'superadmin',
+            value: 'sa',
+          },
+          {
+            text: 'manajemen',
+            value: 'm',
+          },
+          {
+            text: 'pmb',
+            value: 'pmb',
+          },
+          {
+            text: 'keuangan',
+            value: 'k',
+          },
+          {
+            text: 'operator nilai',
+            value: 'on',
+          },
+          {
+            text: 'dosen',
+            value: 'd',
+          },
+          {
+            text: 'dosen wali',
+            value: 'dw',
+          },
+          {
+            text: 'mahasiswa',
+            value: 'mh',
+          },
+          {
+            text: 'mahasiswa baru',
+            value: 'mb',
+          },
+          {
+            text: 'alumni',
+            value: 'al',
+          },
+          {
+            text: 'orangtua wali',
+            value: 'ot',
+          },
+        ],
         formdata: {
           username: null,
           password: null,

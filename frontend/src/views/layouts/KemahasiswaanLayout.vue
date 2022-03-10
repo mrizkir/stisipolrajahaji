@@ -4,9 +4,18 @@
       <template v-slot:sidebartoggle>
         <b-button
           variant="link"
-          @click.stop="sidebar_visible = !sidebar_visible"
+          @click.stop="sidebar_left_visible = !sidebar_left_visible"
         >
           <font-awesome-icon :icon="['fas', 'bars']" />
+        </b-button>
+      </template>
+      <template v-slot:sidebartoggleright>
+         <b-button
+          variant="link"
+          @click.stop="sidebar_right_visible = !sidebar_right_visible"
+          v-if="showrightsidebar"
+        >
+          <font-awesome-icon :icon="['fas', 'gear']" />
         </b-button>
       </template>
     </navbar>
@@ -14,7 +23,7 @@
     <b-sidebar
       id="left-sidebar"
       aria-labelledby="sidebar-header-title"
-      v-model="sidebar_visible"
+      v-model="sidebar_left_visible"
       width="250px"
     >
       <template #header>
@@ -66,6 +75,19 @@
         </nav>
       </template>
     </b-sidebar>
+    <b-sidebar
+      id="right-sidebar"
+      aria-labelledby="sidebar-header-right-title"
+      v-model="sidebar_right_visible"
+      width="250px"
+      title="Options"
+      right
+      v-if="showrightsidebar"
+    >
+      <template #default>
+        <slot name="filtersidebar" />
+      </template>
+    </b-sidebar>
     <!-- main content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -109,19 +131,26 @@
     name: 'KemahasiswaanLayout',
     data: () => ({
       //sidebar
-      sidebar_visible: true,
+      sidebar_left_visible: true,
+      sidebar_right_visible: false,
     }),
-    components: {
-      navbar,
-      footerportal,
-    },
+    props: {
+			showrightsidebar: {
+				type: Boolean,
+				default: true,
+			},
+			temporaryleftsidebar: {
+				type: Boolean,
+				default: false,
+			},
+		},
     methods: {
       handleVisible(isVisible) {
-        this.sidebar_visible = isVisible
+        this.sidebar_left_visible = isVisible
       },
     },
     watch: {
-      sidebar_visible(val) {
+      sidebar_left_visible(val) {
         const el = document.body
         if (val) {
           el.classList.remove('sidebar-collapse')
@@ -129,6 +158,10 @@
           el.classList.add('sidebar-collapse')
         }
       },
+    },
+    components: {
+      navbar,
+      footerportal,
     },
   }
 </script>

@@ -30,7 +30,7 @@
       this.initialize()
     },
     data: () => ({
-      user_id: null,    
+      user_id: null,
       data_user: {},
     }),
     methods: {

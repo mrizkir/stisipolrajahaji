@@ -15,11 +15,11 @@ class HelperAuth
     'k'=>'keuangan',
     'on'=>'operator nilai',
     'd'=>'dosen',
-    'dw'=>'dosoenwali',
+    'dw'=>'dosen wali',
     'mh'=>'mahasiswa',
-    'mb'=>'mahasiswabaru',
+    'mb'=>'mahasiswa baru',
     'al'=>'alumni',
-    'ot'=>'orangtuawali',      
+    'ot'=>'orangtua wali',      
 	];  
   //digunakan untuk mendapat nama role
   public static function getRealRoleName($role = null) {    

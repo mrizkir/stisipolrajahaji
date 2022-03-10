@@ -1,5 +1,5 @@
 <template>
-  <KemahasiswaanLayout>
+  <KemahasiswaanLayout :showrightsidebar="false">
     <template v-slot:page-header>
       Kemahasiswaan
     </template>

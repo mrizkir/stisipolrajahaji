@@ -103,7 +103,7 @@
     name: 'user-edit',    
     setup() {
       return { 
-        v$: useVuelidate(),        
+        v$: useVuelidate(),  
       }
     },
     props: {
@@ -130,14 +130,14 @@
         datauser: {
           nama: {
             required,
-          },          
+          },    
           email: {
             required,
             email, 
           }, 
           username: {
             required,
-          },         
+          },   
         },
       }
     },
@@ -146,7 +146,7 @@
       validateState(name) {
         const { $dirty, $error } = this.v$.datauser[name]
         return $dirty ? !$error : null
-      },      
+      },
       async onSubmit() {
         if (!this.v$.datauser.$invalid) {
           this.btnLoading = true

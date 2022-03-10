@@ -152,7 +152,7 @@
       },
       user_id: {        
         required: true,
-      },      
+      },
     },
     mounted() {
       this.initialize()
@@ -167,16 +167,16 @@
           key: 'name',
           label: 'Nama Permission',
           sortable: true,
-        },        
+        },  
         {
           key: 'guard_name',
           label: 'Guard',
         },
         {
           key: 'selected',
-          label: 'Pilihan',          
+          label: 'Pilihan',    
           thStyle: 'width: 100px',
-        },        
+        },  
         {
           label: 'Aksi',
           key: 'aksi',
@@ -230,7 +230,7 @@
       onFiltered(filteredItems) {        
         this.totalRows = filteredItems.length
         this.currentPage = 1
-      },      
+      },
       async initialize() {
         this.datatableLoading = true        
         var url = '/system/users/' + this.user_id + '/rolepermission'

@@ -65,7 +65,14 @@ class UIController extends Controller {
         ->orderBy('tahun','asc')
         ->get();
 
-        $daftar_prodi=ProgramStudiModel::all();        
+        $daftar_prodi=ProgramStudiModel::select(\DB::raw('
+          program_studi.*,
+          jenjang_studi.njenjang AS nama_jenjang
+        '))
+        ->where('kjur', '!=', 0)
+        ->join('jenjang_studi', 'jenjang_studi.kjenjang', 'program_studi.kjenjang')
+        ->get();
+        
         $prodi_id=$config['default_kjur'];
 
         $tahun_pendaftaran = $config['default_tahun_pendaftaran'];

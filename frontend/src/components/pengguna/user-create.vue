@@ -95,7 +95,7 @@
     name: 'user-create',    
     setup() {
       return { 
-        v$: useVuelidate(),        
+        v$: useVuelidate(),  
       }
     },
 
@@ -111,13 +111,13 @@
     },
 
     data: () => ({      
-      btnLoading: false,      
+      btnLoading: false,
       formdata: {
         nama: null,
         email: null,
         username: null,
-        password: null,        
-      },      
+        password: null,  
+      },
     }),
 
     validations() {
@@ -125,14 +125,14 @@
         formdata: {
           nama: {
             required,
-          },          
+          },    
           email: {
             required,
             email, 
           }, 
           username: {
             required,
-          },         
+          },   
         },
       }
     },
@@ -141,7 +141,7 @@
       validateState(name) {
         const { $dirty, $error } = this.v$.formdata[name]
         return $dirty ? !$error : null
-      },      
+      },
       async onSubmit() {
         if (!this.v$.formdata.$invalid) {
           this.btnLoading = true

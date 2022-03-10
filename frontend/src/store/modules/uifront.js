@@ -28,7 +28,7 @@ const getters = {
 const actions = {
   init({ commit, getters }, ajax) {
 		//dipindahkan kesini karena ada beberapa kasus yang melaporkan ini membuat bermasalah.
-		commit("setLoaded", false)		
+		// commit("setLoaded", false)		
     if (!getters.isLoaded) {
 			ajax.get('/system/setting/uifront').then(({ data }) => {				
 				var daftar_page = [{

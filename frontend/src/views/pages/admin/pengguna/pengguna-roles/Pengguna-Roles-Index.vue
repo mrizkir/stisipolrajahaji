@@ -168,8 +168,8 @@
           page.loaded = true
           this.$store.dispatch('uiadmin/updatePage', page)
           this.datatableLoading = false
-        })             
-      },    
+        }) 
+      },
     },
     watch: {
       sortDesc() {

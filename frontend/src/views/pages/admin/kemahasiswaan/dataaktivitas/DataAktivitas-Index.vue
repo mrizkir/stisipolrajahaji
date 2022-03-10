@@ -45,12 +45,27 @@
         </b-row>
       </b-container>
     </template>
+    <template v-slot:filtersidebar>      
+			<Filter6
+        :prodi="prodi_id"
+        v-on:changeTahunAkademik="changeTahunAkademik"
+        v-on:changeProdi="changeProdi"
+        v-on:changeSemesterAkademik="changeSemesterAkademik"
+        ref="filter6"
+      />	
+		</template>
   </KemahasiswaanLayout>
 </template>
 <script>
   import KemahasiswaanLayout from '@/views/layouts/KemahasiswaanLayout'
+  import Filter6 from '@/components/widgets/FilterMode6';
   export default {
     name: 'DataAktivitasIndex',
+    setup() {
+      return {  
+        url: '/kemahasiswaan/dataaktivitas',
+      }
+    },
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
 				name: 'dataaktivitas',
@@ -60,13 +75,44 @@
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         search: this.search,
+        prodi_id: this.$store.getters['uiadmin/getProdiID'],
 			})
+      this.prodi_id = this.$store.getters['uiadmin/AtributeValueOfPage']('dataaktivitas', 'prodi_id')
     },
-    setup() {
-      return {  
-        url: '/kemahasiswaan/dataaktivitas',
-      }
+    mounted() {
+      this.firstloading = false      
+      this.$refs.filter6.setFirstTimeLoading(this.firstloading)
     },
+    data: () => ({
+      firstloading: true,
+      prodi_id: null,
+      //setting table
+      from: 1,
+      currentPage: 1,
+      perPage: 10,
+      totalRows: 0,
+      datatable: [],
+      fields: [
+        {
+          label: 'No.',
+          key: 'no',
+          thStyle: 'width: 50px',
+        },  
+        {
+          key: 'nama_aktivitas',
+          label: 'Nama',
+        },  
+        {
+          label: 'Aksi',
+          key: 'aksi',
+          thStyle: 'width: 150px',
+        },
+      ],
+      sortBy: 'nama_aktivitas',
+      sortDesc: false,
+      search: null,
+      dataItem: {},
+    }),
     methods: {
       updatesettingpage() {
         var page = this.$store.getters['uiadmin/Page']('dataaktivitas')
@@ -74,7 +120,7 @@
         page.currentPage = this.currentPage
         page.sortBy = this.sortBy
         page.sortDesc = this.sortDesc
-        page.search = this.search
+        page.search = this.search        
         this.$store.dispatch('uiadmin/updatePage', page)
       },
       clearsettingpage() {
@@ -85,6 +131,7 @@
         page.sortBy = 'nama_aktivitas'
         page.sortDesc = false
         page.search = null
+        page.prodi_id = this.$store.getters['uiadmin/getProdiID']
         this.$store.dispatch('uiadmin/updatePage', page)
 
         this.$bvToast.toast('Setting halaman sudah kembali ke default, silahkan refresh', {
@@ -94,9 +141,22 @@
           appendToast: false
         })
       },
+      changeTahunAkademik(val) {
+        console.log(val)
+      },
+      changeProdi(val) {
+        this.prodi_id = val
+        var page = this.$store.getters['uiadmin/Page']('dataaktivitas')
+        page.prodi_id = this.prodi_id
+        this.$store.dispatch('uiadmin/updatePage', page)
+      },
+      changeSemesterAkademik(val) {
+        console.log(val)
+      },
     },
     components: {
       KemahasiswaanLayout,
+      Filter6,
     },
   }
 </script>
