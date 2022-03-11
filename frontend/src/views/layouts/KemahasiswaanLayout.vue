@@ -79,7 +79,7 @@
       id="right-sidebar"
       aria-labelledby="sidebar-header-right-title"
       v-model="sidebar_right_visible"
-      width="250px"
+      width="300px"
       title="Options"
       right
       v-if="showrightsidebar"
@@ -94,10 +94,10 @@
       <section class="content-header">
         <b-container fluid>
           <b-row class="mb-2">
-            <b-col sm="6">
+            <b-col sm="4">
               <h1><slot name="page-header" /></h1>
             </b-col>
-            <b-col sm="6">
+            <b-col sm="8">
               <b-breadcrumb class="float-sm-right">
                 <b-breadcrumb-item
                   :to="'/dashboard/' + $store.getters['auth/AccessToken']"
@@ -112,6 +112,11 @@
                 </b-breadcrumb-item>
                 <slot name="page-breadcrumb" />
               </b-breadcrumb>
+            </b-col>
+          </b-row>
+          <b-row class="mb-2" v-if="showsubheader">
+            <b-col sm="12">
+              <slot name="page-sub-header" />
             </b-col>
           </b-row>
         </b-container>
@@ -143,6 +148,10 @@
 				type: Boolean,
 				default: false,
 			},
+      showsubheader: {
+        type: Boolean,
+        default: false,
+      }
 		},
     methods: {
       handleVisible(isVisible) {

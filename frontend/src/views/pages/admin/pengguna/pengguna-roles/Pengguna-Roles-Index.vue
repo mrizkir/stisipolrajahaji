@@ -163,22 +163,22 @@
             Authorization: this.$store.getters['auth/Token'],
           }
         })
-        .then(({ data }) => {  
-          this.datatable = data.roles
-          page.loaded = true
-          this.$store.dispatch('uiadmin/updatePage', page)
-          this.datatableLoading = false
-        }) 
+          .then(({ data }) => {
+            this.datatable = data.roles
+            page.loaded = true
+            this.$store.dispatch('uiadmin/updatePage', page)
+            this.datatableLoading = false
+          })
       },
     },
     watch: {
       sortDesc() {
         this.updatesettingpage()
-        this.initialize()        
-      }
+        this.initialize()
+      },
     },
     components: {
       PenggunaSistemLayout,
-    }
+    },
   }
 </script>

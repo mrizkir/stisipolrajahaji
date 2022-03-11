@@ -110,7 +110,7 @@
       }, 
     },
 
-    data: () => ({      
+    data: () => ({
       btnLoading: false,
       formdata: {
         nama: null,
@@ -125,14 +125,14 @@
         formdata: {
           nama: {
             required,
-          },    
+          }, 
           email: {
             required,
             email, 
           }, 
           username: {
             required,
-          },   
+          },
         },
       }
     },
@@ -167,7 +167,7 @@
 					})
         }
       },
-    },    
+    }, 
   }
 </script>
 

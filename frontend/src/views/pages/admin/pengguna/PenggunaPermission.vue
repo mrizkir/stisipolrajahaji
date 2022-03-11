@@ -142,6 +142,13 @@
                   Nama permission tidak boleh kosong, silahkan diisi !!!.
                 </b-form-invalid-feedback>
               </b-form-group>
+              <b-form-checkbox
+                v-model="formdata.group"
+                value="1"
+                unchecked-value="0"
+              >
+                GROUP
+              </b-form-checkbox>
               <div class="buttons-w">
                 <b-button
                   type="submit"
@@ -217,9 +224,11 @@
       //form
       formdata: {
         name: null,
+        group: 0,
       },
       defaultform: {
         name: null,
+        group: null,
       },
     }),
     validations() {
@@ -317,7 +326,8 @@
           this.btnLoading = true
           await this.$ajax.post('/system/setting/permissions/store',
             {
-              name: this.formdata.name.toLowerCase()
+              name: this.formdata.name.toLowerCase(),
+              group: this.formdata.group,
             },
             {
               headers: {
@@ -363,11 +373,11 @@
     watch: {
       sortDesc() {
         this.updatesettingpage()
-        this.initialize()        
-      }
+        this.initialize()
+      },
     },
     components: {
       PenggunaSistemLayout,
-    }
+    },
   }
 </script>

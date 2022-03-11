@@ -43,15 +43,15 @@ class UIController extends Controller {
     $config = ConfigurationModel::getCache();    
     $daftar_semester=[
       0=>[
-        'id'=>1,
+        'value'=>1,
         'text'=>'GANJIL'
       ],
       1=>[
-        'id'=>2,
+        'value'=>2,
         'text'=>'GENAP'
       ],
       2=>[
-        'id'=>3,
+        'value'=>3,
         'text'=>'PENDEK'
       ]
     ];

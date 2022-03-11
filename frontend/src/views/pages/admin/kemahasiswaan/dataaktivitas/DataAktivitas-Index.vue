@@ -1,6 +1,10 @@
 <template>
-  <KemahasiswaanLayout>
+  <KemahasiswaanLayout :showsubheader="true">
     <template v-slot:page-header>Data Aktivitas</template>
+    <template v-slot:page-sub-header>
+      Program Studi <strong>{{ nama_prodi }}</strong> T.A <strong>{{ tahun_akademik }}</strong>
+      Semester <strong>{{ $store.getters["uiadmin/getNamaSemester"](semester_akademik) }}</strong>
+    </template>
     <template v-slot:page-breadcrumb>
       <b-breadcrumb-item to="/kemahasiswaan">Kemahasiswaan</b-breadcrumb-item>
       <b-breadcrumb-item active>Data Aktivitas</b-breadcrumb-item>
@@ -8,9 +12,7 @@
     <template v-slot:page-content>
       <b-container
         fluid
-        v-if="
-          $store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_BROWSE')
-        "
+        v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_BROWSE')"
       >
         <b-row>
           <b-col>
@@ -21,7 +23,7 @@
                   <b-button
                     size="xs"
                     variant="outline-primary"
-                    @click.stop="clearsettingpage"                    
+                    @click.stop="clearsettingpage"
                     v-b-tooltip.hover
                     title="Hapus Setting Halaman"
                     class="mr-1"
@@ -31,8 +33,12 @@
                   <b-button
                     size="xs"
                     variant="outline-primary"
-                    @click.stop="$router.push(url + '/create')"
-                    v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_STORE')"
+                    @click.stop="addAktivitas"
+                    v-if="
+                      $store.getters['auth/can'](
+                        'KEMAHASISWAAN-AKTIVITAS_STORE'
+                      )
+                    "
                     v-b-tooltip.hover
                     title="Tambah Data Aktivitas"
                   >
@@ -45,30 +51,32 @@
         </b-row>
       </b-container>
     </template>
-    <template v-slot:filtersidebar>      
-			<Filter6
+    <template v-slot:filtersidebar>
+      <Filter6
         :prodi="prodi_id"
+        :tahun_akademik="tahun_akademik"
+        :semester_akademik="semester_akademik"
         v-on:changeTahunAkademik="changeTahunAkademik"
         v-on:changeProdi="changeProdi"
         v-on:changeSemesterAkademik="changeSemesterAkademik"
         ref="filter6"
-      />	
-		</template>
+      />
+    </template>
   </KemahasiswaanLayout>
 </template>
 <script>
   import KemahasiswaanLayout from '@/views/layouts/KemahasiswaanLayout'
-  import Filter6 from '@/components/widgets/FilterMode6';
+  import Filter6 from '@/components/widgets/FilterMode6'
   export default {
     name: 'DataAktivitasIndex',
     setup() {
-      return {  
+      return {
         url: '/kemahasiswaan/dataaktivitas',
       }
     },
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
-				name: 'dataaktivitas',
+        name: 'dataaktivitas',
         loaded: false,
         perPage: this.perPage,
         currentPage: this.currentPage,
@@ -76,16 +84,31 @@
         sortDesc: this.sortDesc,
         search: this.search,
         prodi_id: this.$store.getters['uiadmin/getProdiID'],
-			})
-      this.prodi_id = this.$store.getters['uiadmin/AtributeValueOfPage']('dataaktivitas', 'prodi_id')
+        tahun_akademik: this.$store.getters['uiadmin/getTahunAkademik'],
+        semester_akademik: this.$store.getters['uiadmin/getSemesterAkademik'],
+      })
+      this.prodi_id = this.$store.getters['uiadmin/AtributeValueOfPage'](
+        'dataaktivitas',
+        'prodi_id'
+      )
+      this.nama_prodi = this.$store.getters['uiadmin/getProdiName'](
+        this.prodi_id
+      )
+      this.tahun_akademik = this.$store.getters['uiadmin/getTahunAkademik']
+      this.semester_akademik =
+        this.$store.getters['uiadmin/getSemesterAkademik']
     },
     mounted() {
-      this.firstloading = false      
+      this.firstloading = false
       this.$refs.filter6.setFirstTimeLoading(this.firstloading)
     },
     data: () => ({
       firstloading: true,
       prodi_id: null,
+      nama_prodi: null,
+      tahun_akademik: null,
+      semester_akademik: null,
+
       //setting table
       from: 1,
       currentPage: 1,
@@ -97,11 +120,11 @@
           label: 'No.',
           key: 'no',
           thStyle: 'width: 50px',
-        },  
+        },
         {
           key: 'nama_aktivitas',
           label: 'Nama',
-        },  
+        },
         {
           label: 'Aksi',
           key: 'aksi',
@@ -120,7 +143,7 @@
         page.currentPage = this.currentPage
         page.sortBy = this.sortBy
         page.sortDesc = this.sortDesc
-        page.search = this.search        
+        page.search = this.search
         this.$store.dispatch('uiadmin/updatePage', page)
       },
       clearsettingpage() {
@@ -132,26 +155,56 @@
         page.sortDesc = false
         page.search = null
         page.prodi_id = this.$store.getters['uiadmin/getProdiID']
+        page.tahun_akademik = this.$store.getters['uiadmin/getTahunAkademik']
+        page.semester_akademik =
+          this.$store.getters['uiadmin/getSemesterAkademik']
         this.$store.dispatch('uiadmin/updatePage', page)
 
-        this.$bvToast.toast('Setting halaman sudah kembali ke default, silahkan refresh', {
-          title: 'Pesan Sistem',
-          variant: 'info',
-          autoHideDelay: 5000,
-          appendToast: false
-        })
-      },
-      changeTahunAkademik(val) {
-        console.log(val)
+        this.$bvToast.toast(
+          'Setting halaman sudah kembali ke default, silahkan refresh',
+          {
+            title: 'Pesan Sistem',
+            variant: 'info',
+            autoHideDelay: 5000,
+            appendToast: false,
+          }
+        )
       },
       changeProdi(val) {
         this.prodi_id = val
         var page = this.$store.getters['uiadmin/Page']('dataaktivitas')
         page.prodi_id = this.prodi_id
         this.$store.dispatch('uiadmin/updatePage', page)
+        this.nama_prodi = this.$store.getters['uiadmin/getProdiName'](
+          this.prodi_id
+        )
+      },
+      changeTahunAkademik(val) {
+        this.tahun_akademik = val
+        var page = this.$store.getters['uiadmin/Page']('dataaktivitas')
+        page.tahun_akademik = this.tahun_akademik
+        this.$store.dispatch('uiadmin/updatePage', page)
       },
       changeSemesterAkademik(val) {
-        console.log(val)
+        this.semester_akademik = val
+        var page = this.$store.getters['uiadmin/Page']('dataaktivitas')
+        page.semester_akademik = this.semester_akademik
+        this.$store.dispatch('uiadmin/updatePage', page)
+      },
+      addAktivitas() {
+        if (this.prodi_id > 0) {
+          this.$router.push(this.url + '/create')
+        } else {
+          this.$bvToast.toast(
+            'Tidak bisa menambah, silahkan pilih Prodi, Tahun Akademik, dan Semester',
+            {
+              title: 'Pesan Sistem',
+              variant: 'warning',
+              autoHideDelay: 5000,
+              appendToast: false,
+            }
+          )
+        }
       },
     },
     components: {

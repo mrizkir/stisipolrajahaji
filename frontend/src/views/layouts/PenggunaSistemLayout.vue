@@ -85,10 +85,10 @@
       <section class="content-header">
         <b-container fluid>
           <b-row class="mb-2">
-            <b-col sm="6">
+            <b-col sm="4">
               <h1><slot name="page-header" /></h1>
             </b-col>
-            <b-col sm="6">
+            <b-col sm="8">
               <b-breadcrumb class="float-sm-right">
                 <b-breadcrumb-item
                   :to="'/dashboard/' + $store.getters['auth/AccessToken']"

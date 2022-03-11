@@ -6,6 +6,14 @@ const getDefaultState = () => {
 		default_dashboard: null,
 		pages: [],
 		//data master
+		daftar_ta: [],
+		tahun_pendaftaran: null,
+		tahun_akademik: null,
+
+		daftar_semester: [],
+		semester_pendaftaran: null,
+		semester_akademik: null,
+
 		daftar_prodi: [],
 		prodi_id: null,
   }
@@ -33,6 +41,26 @@ const mutations = {
 		}
 	},
 	//data master
+	setDaftarTA(state, daftar) {
+		state.daftar_ta = daftar;
+	},
+	setTahunPendaftaran(state, tahun) {
+		state.tahun_pendaftaran = tahun;
+	},
+	setTahunAkademik(state, tahun) {
+		state.tahun_akademik = tahun;
+	},
+
+	setDaftarSemester(state, daftar) {
+		state.daftar_semester = daftar;
+	},
+	setSemesterPendaftaran(state, semester) {
+		state.semester_pendaftaran = semester;
+	},
+	setSemesterAkademik(state, semester) {
+		state.semester_akademik = semester;
+	},
+
 	setDaftarProdi(state, daftar) {
 		state.daftar_prodi = daftar;
 	},
@@ -69,6 +97,51 @@ const getters = {
 	getProdiID: state => {
 		return parseInt(state.prodi_id);
 	},
+	getProdiName: state => key => {
+		if(state.daftar_prodi == null || state.daftar_prodi[key] == null) {
+			return 'N.A'
+		} else if(key == 0) {
+			return 'KESELURUHAN'
+		} else {
+			return state.daftar_prodi[key].nama_prodi
+		}
+	},
+	getDaftarTA: state => {
+		return state.daftar_ta;
+	},
+	getDaftarTABefore: state => ta => {
+		let daftar_ta = state.daftar_ta;
+		var daftar = [];
+		daftar_ta.forEach(element => {
+			if (element.value <= ta) {
+				daftar.push(element);
+			}
+		});
+		return daftar;
+	},
+	getTahunPendaftaran: state => {
+		return parseInt(state.tahun_pendaftaran);
+	},
+	getTahunAkademik: state => {
+		return parseInt(state.tahun_akademik);
+	},
+	getDaftarSemester: state => {
+		return state.daftar_semester;
+	},
+	getNamaSemester: state => key => {
+		var nama_semester = "";
+		let found = state.daftar_semester.find(semester => semester.value == key);
+		if (typeof found !== "undefined") {
+			nama_semester = found.text;
+		}
+		return nama_semester;
+	},
+	getSemesterPendaftaran: state => {
+		return parseInt(state.semester_pendaftaran);
+	},
+	getSemesterAkademik: state => {
+		return parseInt(state.semester_akademik);
+	},
 }
 
 //actions
@@ -88,11 +161,11 @@ const actions = {
 					},
 				})
 				.then(({ data }) => {
-					// commit('setDaftarTA', data.daftar_ta)
-					// commit('setTahunPendaftaran', data.tahun_pendaftaran)
-					// commit('setTahunAkademik', data.tahun_akademik)
-					// commit('setDaftarSemester', data.daftar_semester)
-					// commit('setSemesterAkademik', data.semester_akademik)
+					commit('setDaftarTA', data.daftar_ta)
+					commit('setTahunPendaftaran', data.tahun_pendaftaran)
+					commit('setTahunAkademik', data.tahun_akademik)
+					commit('setDaftarSemester', data.daftar_semester)
+					commit('setSemesterAkademik', data.semester_akademik)
 					
 					let daftar_prodi = data.daftar_prodi
 					var prodi = []
@@ -104,8 +177,7 @@ const actions = {
 							nama_prodi:
 								element.nama_ps + ' (' + element.nama_jenjang + ')',
 						}
-					})
-					console.log(prodi)
+					})					
 					commit('setDaftarProdi', prodi)
 					commit('setProdiID', data.prodi_id)
 
@@ -141,16 +213,16 @@ const actions = {
 	},
 	//data master
 	updateProdi({ commit },id) {
-		commit("setProdiID", id);
+		commit('setProdiID', id);
 	},
 	updateTahunAkademik({ commit },tahun) {
-		commit("setTahunAkademik", tahun);
+		commit('setTahunAkademik', tahun);
 	},
 	updateSemesterAkademik({ commit },semester) {
-		commit("setSemesterAkademik", semester);
+		commit('setSemesterAkademik', semester);
 	},
 	reinit({ commit }) {
-		commit("resetState");
+		commit('resetState');
 	},
 }
 export default {

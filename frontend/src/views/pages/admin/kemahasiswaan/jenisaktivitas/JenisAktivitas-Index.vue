@@ -156,7 +156,7 @@
 			})
     },
     setup() {
-      return {  
+      return {
         url: '/kemahasiswaan/jenisaktivitas',
       }
     },

@@ -292,7 +292,7 @@
             Authorization: this.$store.getters['auth/Token'],
           }
         })
-        .then(({ data }) => {  
+        .then(({ data }) => {
           this.data_role = data.role
         })
         
@@ -369,10 +369,10 @@
     computed: {
       selectedPermissions() {
         return this.datatable.filter(item => item.selected)
-      }
+      },
     },
     components: {
       PenggunaSistemLayout,
-    }
+    },
   }
 </script>

@@ -213,6 +213,14 @@ class PermissionsTableSeeder extends Seeder
 			'updated_at'=>Carbon::now()
 		]);
 
+		//pddikti
+		\DB::table('permissions')->insert([
+			'name'=>"PDDIKTI-GROUP",
+			'guard_name'=>'api',
+			'created_at'=>Carbon::now(),
+			'updated_at'=>Carbon::now()
+		]);
+
 		//elearning
 		\DB::table('permissions')->insert([
 			'name'=>"ELEARNING-GROUP",
@@ -310,6 +318,7 @@ class PermissionsTableSeeder extends Seeder
 			'KEMAHASISWAAN-JENIS-AKTIVITAS',
 			'KEMAHASISWAAN-AKTIVITAS',			
 
+			'PDDIKTI-KRS',
 			"KEPEGAWAIAN-DOSEN",           
 
 			'SYSTEM-SETTING-PERMISSIONS',

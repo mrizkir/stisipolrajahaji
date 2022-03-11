@@ -13,6 +13,7 @@
          <b-button
           variant="link"
           @click.stop="sidebar_right_visible = !sidebar_right_visible"
+          v-if="showrightsidebar"
         >
           <font-awesome-icon :icon="['fas', 'gear']" />
         </b-button>
@@ -21,14 +22,14 @@
 
     <b-sidebar
       id="left-sidebar"
-      aria-labelledby="sidebar-header-left-title"
+      aria-labelledby="sidebar-header-title"
       v-model="sidebar_left_visible"
       width="250px"
     >
       <template #header>
         <div class="d-flex align-items-center flex-column">
           <b-avatar variant="primary" text="BV" class="mb-3 mt-2" size="5rem" />
-          <h5 id="sidebar-header-left-title">ADMIN</h5>
+          <h5 id="sidebar-header-title">ADMIN</h5>
           <div class="divider"></div>
         </div>
       </template>
@@ -36,36 +37,26 @@
         <nav>
           <b-nav class="nav-pills nav-sidebar" vertical>
             <b-nav-item
-              to="/akademik"
-              v-if="$store.getters['auth/can']('AKADEMIK-GROUP')"
+              to="/pddikti"
+              v-if="$store.getters['auth/can']('PDDIKTI-GROUP')"
             >
               <b-icon icon="arrow-right" />
               DASHBOARD
             </b-nav-item>
-            <li class="nav-header">PERKULIAHAN</li>
-            <li>
-              <b-button v-b-toggle.collapse-perkuliahan variant="primary">
-                Penyelenggaraan
-              </b-button>
-              <b-collapse
-                id="collapse-perkuliahan"
-                class="mt-2"
-                tag="ul"
-                is-nav
-              >
-                <b-nav-item
-                  to="/akademik/perkuliahan/penyelenggaraan"
-                  v-if="
-                    $store.getters['auth/can'](
-                      'AKADEMIK-PENYELENGGARAAN_BROWSE'
-                    )
-                  "
-                >
-                  <b-icon icon="arrow-right" />
-                  PENYELENGGARAAN
-                </b-nav-item>
-              </b-collapse>
+            <li class="nav-header">
+              PERKULIAHAN
             </li>
+            <b-nav-item
+              to="/pddikti/krs"
+              v-if="
+                $store.getters['auth/can'](
+                  'PDDIKTI-KRS_BROWSE'
+                )
+              "
+            >
+              <b-icon icon="arrow-right" />
+              KRS
+            </b-nav-item>
           </b-nav>
         </nav>
       </template>
@@ -74,17 +65,13 @@
       id="right-sidebar"
       aria-labelledby="sidebar-header-right-title"
       v-model="sidebar_right_visible"
-      width="250px"
+      width="300px"
+      title="Options"
       right
+      v-if="showrightsidebar"
     >
-      <template #header>
-        <div class="d-flex align-items-center flex-column">          
-          <h5 id="sidebar-header-right-title">OPTIONS</h5>
-          <div class="divider"></div>
-        </div>
-      </template>
       <template #default>
-        test
+        <slot name="filtersidebar" />
       </template>
     </b-sidebar>
     <!-- main content -->
@@ -105,12 +92,17 @@
                     icon="house-fill"
                     scale="1.25"
                     shift-v="1.25"
-                    aria-hidden="true"
+                    ria-hidden="true"
                   />
                   Home
                 </b-breadcrumb-item>
                 <slot name="page-breadcrumb" />
               </b-breadcrumb>
+            </b-col>
+          </b-row>
+          <b-row class="mb-2" v-if="showsubheader">
+            <b-col sm="12">
+              <slot name="page-sub-header" />
             </b-col>
           </b-row>
         </b-container>
@@ -120,25 +112,35 @@
       </section>
     </div>
     <footerportal />
-    <div v-b-visible.once="handleVisibleLeft" class="d-xs-none"></div>
+    <div v-b-visible.once="handleVisible" class="d-xs-none"></div>
   </div>
 </template>
 <script>
   import navbar from '@/components/panels/navbaradmin.vue'
   import footerportal from '@/components/panels/footeradmin.vue'
   export default {
-    name: 'AkademikLayout',
+    name: 'PDDIKTILayout',
     data: () => ({
       //sidebar
       sidebar_left_visible: true,
       sidebar_right_visible: false,
     }),
-    components: {
-      navbar,
-      footerportal,
-    },
+    props: {
+			showrightsidebar: {
+				type: Boolean,
+				default: true,
+			},
+			temporaryleftsidebar: {
+				type: Boolean,
+				default: false,
+			},
+      showsubheader: {
+        type: Boolean,
+        default: false,
+      }
+		},
     methods: {
-      handleVisibleLeft(isVisible) {
+      handleVisible(isVisible) {
         this.sidebar_left_visible = isVisible
       },
     },
@@ -151,6 +153,10 @@
           el.classList.add('sidebar-collapse')
         }
       },
+    },
+    components: {
+      navbar,
+      footerportal,
     },
   }
 </script>

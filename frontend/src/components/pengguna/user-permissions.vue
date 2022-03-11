@@ -150,7 +150,7 @@
         type: String,
         default: null,
       },
-      user_id: {        
+      user_id: {  
         required: true,
       },
     },
@@ -217,9 +217,9 @@
         }
       },
       rowClicked(item) {
-        if (typeof item !== 'undefined' && item !== null) {     
-          if (item.selected2 == null) {     
-            if (item.selected) {      
+        if (typeof item !== 'undefined' && item !== null) {   
+          if (item.selected2 == null) {   
+            if (item.selected) {
               this.$set(item, 'selected', false)
             } else {
               this.$set(item, 'selected', true)
@@ -227,7 +227,7 @@
           }
         }
       },
-      onFiltered(filteredItems) {        
+      onFiltered(filteredItems) {  
         this.totalRows = filteredItems.length
         this.currentPage = 1
       },
@@ -251,7 +251,7 @@
           this.datatableLoading = false
         })
       },
-      async save() {        
+      async save() {  
         if (this.selectedPermissions.length > 0) {
           this.btnLoading = true
           await this.$ajax

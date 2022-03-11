@@ -121,7 +121,7 @@
       },
     },
 
-    data: () => ({      
+    data: () => ({
       btnLoading: false,
     }),
 
@@ -130,14 +130,14 @@
         datauser: {
           nama: {
             required,
-          },    
+          }, 
           email: {
             required,
             email, 
           }, 
           username: {
             required,
-          },   
+          },
         },
       }
     },
@@ -174,6 +174,6 @@
 					});
         }
       },
-    },    
+    }, 
   }
 </script>

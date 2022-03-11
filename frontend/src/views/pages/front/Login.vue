@@ -31,8 +31,9 @@
             Password tidak boleh kosong, silahkan diisi !!!.
           </b-form-invalid-feedback>
         </b-form-group>
-        <b-form-group label="Halaman:">
+        <b-form-group label="Halaman:" label-for="selectPage">
           <b-form-select
+            id="selectPage"
             v-model="v$.formdata.page.$model"
             :options="daftar_page"
             :state="validateState('page')"
@@ -71,15 +72,15 @@
       }
     },
 
-    created() {      
+    created() {
       if (this.$store.getters['auth/Authenticated']) {
         this.$router.push(
           '/dashboard/' + this.$store.getters['auth/AccessToken']
         )
       } else {
         this.$store.dispatch('uifront/init', this.$ajax)
-      }      
-    },   
+      }
+    },
 
     data() {
       return {

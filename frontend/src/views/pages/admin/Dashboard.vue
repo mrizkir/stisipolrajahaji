@@ -27,6 +27,18 @@
             <b-button variant="primary" to="/akademik">GO</b-button>
           </b-card>
         </b-col>
+        <b-col md="3" sm="6" xs="12" v-if="$store.getters['auth/can']('PDDIKTI-GROUP')">
+          <b-card
+            bg-variant="dark"
+            text-variant="white"
+            title="PDDIKTI"            
+          >
+            <b-card-text>
+              Export data Akademik ke Forlap / PDDIKTI
+            </b-card-text>
+            <b-button variant="primary" to="/pddikti">GO</b-button>
+          </b-card>
+        </b-col>
         <b-col md="3" sm="6" xs="12" v-if="$store.getters['auth/can']('KEMAHASISWAAN-GROUP')">
           <b-card
             bg-variant="dark"

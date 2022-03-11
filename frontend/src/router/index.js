@@ -35,6 +35,27 @@ const routes = [
     },
     component: () => import('../views/pages/admin/Dashboard.vue'),
   },
+  //pddikti
+  {
+    path: '/pddikti',
+    name: 'PDDIKTI',
+    meta: {
+      title: 'PDDIKTI',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () => import('../views/pages/admin/pddikti/PDDIKTI.vue'),
+  },
+  {
+    path: '/pddikti/krs',
+    name: 'PDDIKTIKRS',
+    meta: {
+      title: 'PDDIKTI - KRS',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () => import('../views/pages/admin/pddikti/pddikti-krs/PDDIKTI-KRS-Index.vue'),
+  },
   //akademik
   {
     path: '/akademik',
