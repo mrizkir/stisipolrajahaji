@@ -215,7 +215,7 @@ class PermissionsTableSeeder extends Seeder
 
 		//pddikti
 		\DB::table('permissions')->insert([
-			'name'=>"PDDIKTI-GROUP",
+			'name'=>"FEEDER-GROUP",
 			'guard_name'=>'api',
 			'created_at'=>Carbon::now(),
 			'updated_at'=>Carbon::now()
@@ -318,7 +318,7 @@ class PermissionsTableSeeder extends Seeder
 			'KEMAHASISWAAN-JENIS-AKTIVITAS',
 			'KEMAHASISWAAN-AKTIVITAS',			
 
-			'PDDIKTI-KRS',
+			'FEEDER-KRS',
 			"KEPEGAWAIAN-DOSEN",           
 
 			'SYSTEM-SETTING-PERMISSIONS',

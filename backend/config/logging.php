@@ -122,6 +122,14 @@ return [
 			'days' => 7,
 		],
 
+		'feeder' => [
+			'driver' => 'daily',
+			'tap' => [App\Helpers\HelperFormatBarisLog::class],
+			'path' => storage_path('logs/feeder.log'),
+			'level' => env('LOG_LEVEL', 'debug'),
+			'days' => 7,
+		],
+
 		'system-user' => [
 			'driver' => 'daily',
 			'tap' => [App\Helpers\HelperFormatBarisLog::class],

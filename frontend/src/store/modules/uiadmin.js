@@ -16,6 +16,8 @@ const getDefaultState = () => {
 
 		daftar_prodi: [],
 		prodi_id: null,
+
+		feeder_token: null,
   }
 }
 const state = getDefaultState()
@@ -68,6 +70,10 @@ const mutations = {
 		state.prodi_id = id;
 	},
 
+	setFeederToken(state, token) {
+		state.feeder_token = token;
+	},
+
 	resetState(state) {
 		Object.assign(state, getDefaultState());
 	},
@@ -106,6 +112,15 @@ const getters = {
 			return state.daftar_prodi[key].nama_prodi
 		}
 	},
+	getProdiNameForFeeder: state => key => {
+		if(state.daftar_prodi == null || state.daftar_prodi[key] == null) {
+			return 'N.A'
+		} else if(key == 0) {
+			return 'KESELURUHAN'
+		} else {
+			return state.daftar_prodi[key].nama_prodi_feeder
+		}
+	},
 	getDaftarTA: state => {
 		return state.daftar_ta;
 	},
@@ -142,6 +157,10 @@ const getters = {
 	getSemesterAkademik: state => {
 		return parseInt(state.semester_akademik);
 	},
+
+	getFeederToken: state => {
+		return state.feeder_token;
+	},
 }
 
 //actions
@@ -176,6 +195,8 @@ const actions = {
 								element.nama_ps_alias + ' (' + element.nama_jenjang + ')',
 							nama_prodi:
 								element.nama_ps + ' (' + element.nama_jenjang + ')',
+							nama_prodi_feeder:
+								element.nama_jenjang + ' ' + element.nama_ps,
 						}
 					})					
 					commit('setDaftarProdi', prodi)
@@ -220,6 +241,9 @@ const actions = {
 	},
 	updateSemesterAkademik({ commit },semester) {
 		commit('setSemesterAkademik', semester);
+	},
+	updateFeederToken({ commit },token) {
+		commit('setFeederToken', token);
 	},
 	reinit({ commit }) {
 		commit('resetState');

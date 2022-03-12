@@ -143,7 +143,7 @@
 <script>
   import KemahasiswaanLayout from '@/views/layouts/KemahasiswaanLayout'
   export default {
-    name: 'JenisAktivtasIndex',
+    name: 'JenisAktivitasIndex',
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
 				name: 'jenisaktivitas',

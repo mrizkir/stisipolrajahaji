@@ -58,7 +58,7 @@
   import { required } from '@vuelidate/validators'  
   import KemahasiswaanLayout from '@/views/layouts/KemahasiswaanLayout'  
   export default {
-    name: 'JenisAktivtasCreate',
+    name: 'JenisAktivitasCreate',
     setup() {
       return {
         v$: useVuelidate(), 

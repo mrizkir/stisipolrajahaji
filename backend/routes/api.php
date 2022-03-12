@@ -32,6 +32,10 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	$router->get('/kemahasiswaan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen|programstudi|'],'uses'=>'Kemahasiswaan\JenisAktivitasController@show','as'=>'kemahasiswaan-jenisaktivitas.show']);
 	$router->put('/kemahasiswaan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen|programstudi|'],'uses'=>'Kemahasiswaan\JenisAktivitasController@update','as'=>'kemahasiswaan-jenisaktivitas.update']);
 	$router->delete('/kemahasiswaan/jenisaktivitas/{id}',['middleware'=>['role:superadmin|manajemen|programstudi|'],'uses'=>'Kemahasiswaan\JenisAktivitasController@destroy','as'=>'kemahasiswaan-jenisaktivitas.destroy']);
+	
+	//feeder - koneksi
+	$router->get('/feeder/teskoneksi',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Feeder\FeederController@teskoneksi','as'=>'feeder.teskoneksi']);				
+	$router->post('/feeder/mahasiswa/getkrsmahasiswa',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Feeder\FeederController@getkrsmahasiswa','as'=>'feeder-mahasiswa.getkrsmahasiswa']);				
 
 	//setting - permissions
 	$router->get('/system/setting/permissions',['middleware'=>['role:superadmin|akademik|pmb'],'uses'=>'System\PermissionsController@index','as'=>'permissions.index']);

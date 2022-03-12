@@ -35,26 +35,26 @@ const routes = [
     },
     component: () => import('../views/pages/admin/Dashboard.vue'),
   },
-  //pddikti
+  //feeder
   {
-    path: '/pddikti',
-    name: 'PDDIKTI',
+    path: '/feeder',
+    name: 'Feeder',
     meta: {
-      title: 'PDDIKTI',
+      title: 'Feeder',
       bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
-    component: () => import('../views/pages/admin/pddikti/PDDIKTI.vue'),
+    component: () => import('../views/pages/admin/feeder/Feeder.vue'),
   },
   {
-    path: '/pddikti/krs',
-    name: 'PDDIKTIKRS',
+    path: '/feeder/krs',
+    name: 'FeederKRS',
     meta: {
-      title: 'PDDIKTI - KRS',
+      title: 'Feeder - KRS',
       bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
-    component: () => import('../views/pages/admin/pddikti/pddikti-krs/PDDIKTI-KRS-Index.vue'),
+    component: () => import('../views/pages/admin/feeder/feeder-krs/Feeder-KRS-Index.vue'),
   },
   //akademik
   {

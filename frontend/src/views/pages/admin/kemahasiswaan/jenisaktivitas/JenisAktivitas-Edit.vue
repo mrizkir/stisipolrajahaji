@@ -63,7 +63,7 @@
   import { required } from '@vuelidate/validators'  
   import KemahasiswaanLayout from '@/views/layouts/KemahasiswaanLayout'  
   export default {
-    name: 'JenisAktivtasEdit',
+    name: 'JenisAktivitasEdit',
     created() {
       this.idjenis =this.$route.params.idjenis
       this.initialize()

@@ -37,8 +37,8 @@
         <nav>
           <b-nav class="nav-pills nav-sidebar" vertical>
             <b-nav-item
-              to="/pddikti"
-              v-if="$store.getters['auth/can']('PDDIKTI-GROUP')"
+              to="/feeder"
+              v-if="$store.getters['auth/can']('Feeder-GROUP')"
             >
               <b-icon icon="arrow-right" />
               DASHBOARD
@@ -47,10 +47,10 @@
               PERKULIAHAN
             </li>
             <b-nav-item
-              to="/pddikti/krs"
+              to="/feeder/krs"
               v-if="
                 $store.getters['auth/can'](
-                  'PDDIKTI-KRS_BROWSE'
+                  'Feeder-KRS_BROWSE'
                 )
               "
             >
@@ -119,7 +119,7 @@
   import navbar from '@/components/panels/navbaradmin.vue'
   import footerportal from '@/components/panels/footeradmin.vue'
   export default {
-    name: 'PDDIKTILayout',
+    name: 'FeederLayout',
     data: () => ({
       //sidebar
       sidebar_left_visible: true,
