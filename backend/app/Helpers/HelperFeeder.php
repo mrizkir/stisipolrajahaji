@@ -76,7 +76,7 @@ class HelperFeeder
       'username'=>$this->getFeederUsername(),
       'password'=>$this->getFeederPassword(),
     ]);
-
+    \Log::channel(self::LOG_CHANNEL)->info("HelperFeeder::koneksi(".$this->getFeederHost().") dengan data $rawBody");
     return $this->HttpPost($this->getFeederHost() .'?=&=', $rawBody);    
   }
   /**

@@ -25,10 +25,12 @@ class FeederController extends Controller
       if ($response['error_code'] == 0) {
         $response['error_desc'] = "Koneksi berhasil ke server feeder {$feeder->getFeederHost()}";
       }
+      \Log::channel(self::LOG_CHANNEL)->info("FeederController::teskoneksi() Berhasil");
       return Response()->json($response, 200); 
     }
     catch(Exception $e) 
     {
+      \Log::channel(self::LOG_CHANNEL)->error("FeederController::teskoneksi() gagal karena " . $e->getMessage());
       return Response()->json([$e->getMessage()], 422); 
     }    
   }
