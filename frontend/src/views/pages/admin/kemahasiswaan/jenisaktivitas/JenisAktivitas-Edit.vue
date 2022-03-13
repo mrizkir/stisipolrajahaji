@@ -75,7 +75,7 @@
       }
     },
     data: () => ({
-      idjenis: null,  
+      idjenis: null,
       btnLoading: false,
       formdata: {
         nama_aktivitas: null,
@@ -100,7 +100,7 @@
         await this.$ajax.get(url, {
           headers: {
             Authorization: this.$store.getters['auth/Token'],
-          }
+          },
         })
         .then(({ data }) => {
           this.formdata = data.result
@@ -111,23 +111,23 @@
           this.btnLoading = true
           
           this.$ajax.post('/kemahasiswaan/jenisaktivitas/' + this.idjenis,
-						{
+            {
               _method: 'PUT',
-							nama_aktivitas: this.formdata.nama_aktivitas,							
-				    },
-						{
-							headers: {
-								Authorization: this.$store.getters['auth/Token'],
-							}
-						}
-					)
+            	nama_aktivitas: this.formdata.nama_aktivitas,            	
+      	    },
+            {
+            	headers: {
+            		Authorization: this.$store.getters['auth/Token'],
+            	}
+            }
+      		)
           .then(() => {
             this.btnLoading = false
             this.$router.push(this.url)
-					})
+      		})
           .catch(() => {
             this.btnLoading = false
-					})
+      		})
         }
       },
     },

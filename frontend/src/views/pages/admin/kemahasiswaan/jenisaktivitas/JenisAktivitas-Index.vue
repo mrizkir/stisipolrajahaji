@@ -11,17 +11,14 @@
       <b-container fluid v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_BROWSE')">
         <b-row>
           <b-col>
-            <b-card
-              no-body
-              class="card-primary card-outline"
-            >
+            <b-card no-body class="card-primary card-outline">
               <template #header>
                 <h3 class="card-title">Daftar Jenis Aktivitas</h3>
                 <div class="card-tools">
                   <b-button
                     size="xs"
                     variant="outline-primary"
-                    @click.stop="clearsettingpage"                    
+                    @click.stop="clearsettingpage"
                     v-b-tooltip.hover
                     title="Hapus Setting Halaman"
                     class="mr-1"
@@ -146,14 +143,14 @@
     name: 'JenisAktivitasIndex',
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
-				name: 'jenisaktivitas',
+      	name: 'jenisaktivitas',
         loaded: false,
         perPage: this.perPage,
         currentPage: this.currentPage,
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         search: this.search,
-			})
+      })
     },
     setup() {
       return {
@@ -178,11 +175,11 @@
           label: 'No.',
           key: 'no',
           thStyle: 'width: 50px',
-        },  
+        },
         {
           key: 'nama_aktivitas',
           label: 'Nama',
-        },  
+        },
         {
           label: 'Aksi',
           key: 'aksi',
@@ -218,7 +215,7 @@
           title: 'Pesan Sistem',
           variant: 'info',
           autoHideDelay: 5000,
-          appendToast: false
+          appendToast: false,
         })
       },
       async initialize() {

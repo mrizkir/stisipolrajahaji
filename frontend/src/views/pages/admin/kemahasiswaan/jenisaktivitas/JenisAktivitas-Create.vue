@@ -90,22 +90,22 @@
           this.btnLoading = true
           
           this.$ajax.post('/kemahasiswaan/jenisaktivitas/store',
-						{
-							nama_aktivitas: this.formdata.nama_aktivitas,							
-				    },
-						{
-							headers: {
-								Authorization: this.$store.getters['auth/Token'],
-							}
-						}
-					)
+            {
+            	nama_aktivitas: this.formdata.nama_aktivitas,            	
+      	    },
+            {
+            	headers: {
+            		Authorization: this.$store.getters['auth/Token'],
+            	}
+            }
+      		)
           .then(() => {
             this.btnLoading = false
             this.$router.push(this.url)
-					})
+      		})
           .catch(() => {
             this.btnLoading = false
-					})
+      		})
         }
       },
     },

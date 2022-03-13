@@ -105,7 +105,7 @@
             </b-form-group>
 
             <b-form-group
-              label="Jenis Anggota:"              
+              label="Jenis Anggota:"    
               v-slot="{ ariaDescribedby }"
             >
               <b-form-radio v-model="formdata.jenis_anggota" :aria-describedby="ariaDescribedby" name="formdata-jenis-anggota" value="1">Personal</b-form-radio>
@@ -119,7 +119,7 @@
               <b-form-textarea
                 id="txtKeterangan"
                 v-model="formdata.keterangan"
-                placeholder="Keterangan"                                
+                placeholder="Keterangan"    
                 rows="3"
                 max-rows="6"
               />              
@@ -132,7 +132,7 @@
               <b-form-input
                 id="txtLokasi"
                 v-model="formdata.lokasi"
-                placeholder="Lokasi Kegiatan / Aktivitas"                
+                placeholder="Lokasi Kegiatan / Aktivitas"
                 aria-describedby="frmdata-txtLokasi"
               />             
             </b-form-group>
@@ -193,7 +193,7 @@
 
       daftar_jenis_aktivitas: [],
       formdata: {
-        no_sk_tugas: null,        
+        no_sk_tugas: null,
         tanggal_sk_tugas: null,
         jenis_aktivitas_id: null,
         jenis_anggota: null,
@@ -221,28 +221,28 @@
       }
     },
     methods: {
-      async initialize() {        
+      async initialize() {
         var url = '/kemahasiswaan/jenisaktivitas'
 
         await this.$ajax
           .get(url, {
             headers: {
               Authorization: this.$store.getters['auth/Token'],
-            }
+            },
           })
-          .then(({ data }) => {            
+          .then(({ data }) => {
             var jenis_aktivitas = data.result.data
             this.daftar_jenis_aktivitas.push({
               value: null,
               text: 'PILIH JENIS KEGIATAN',
             })
             if (jenis_aktivitas) {
-              jenis_aktivitas.forEach(element => {
+              jenis_aktivitas.forEach((element) => {
                 this.daftar_jenis_aktivitas.push({
                   value: element.idjenis,
                   text: element.nama_aktivitas,
                 })
-              });
+              })
             }
           })
       },
@@ -252,8 +252,7 @@
       },
       async onSubmit() {
         if (!this.v$.formdata.$invalid) {
-        this.btnLoading = true
-
+          this.btnLoading = true
         }
       },
     },

@@ -10,10 +10,7 @@
       <b-container fluid>
         <b-row>
           <b-col>
-            <b-card
-              no-body
-              class="card-primary card-outline"
-            >
+            <b-card no-body class="card-primary card-outline">
               <template #header>
                 <h3 class="card-title">Generate Token</h3>
               </template>
@@ -56,7 +53,7 @@
               Authorization: this.$store.getters['auth/Token'],
             }
           })
-          .then(({ data }) => {            
+          .then(({ data }) => {
             this.message_test = data.error_desc
             this.token = data.data.token
             this.btnLoading = false

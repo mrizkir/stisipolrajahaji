@@ -4,7 +4,9 @@
       Pengguna Manajemen
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>
+      <b-breadcrumb-item to="/sistem-pengguna">
+        Pengguna Sistem
+      </b-breadcrumb-item>
       <b-breadcrumb-item to="/sistem-pengguna/manajemen">Pengguna Manajemen</b-breadcrumb-item>
       <b-breadcrumb-item active>Tambah</b-breadcrumb-item>
     </template>
@@ -30,5 +32,3 @@
     }
   }
 </script>
-
-

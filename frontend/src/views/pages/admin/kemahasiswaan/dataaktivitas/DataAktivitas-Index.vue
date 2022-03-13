@@ -2,8 +2,12 @@
   <KemahasiswaanLayout :showsubheader="true">
     <template v-slot:page-header>Data Aktivitas</template>
     <template v-slot:page-sub-header>
-      Program Studi <strong>{{ nama_prodi }}</strong> T.A <strong>{{ tahun_akademik }}</strong>
-      Semester <strong>{{ $store.getters["uiadmin/getNamaSemester"](semester_akademik) }}</strong>
+      Program Studi <strong>{{ nama_prodi }}</strong> T.A
+      <strong>{{ tahun_akademik }}</strong>
+      Semester
+      <strong>
+        {{ store.getters['uiadmin/getNamaSemester'](semester_akademik) }}
+      </strong>
     </template>
     <template v-slot:page-breadcrumb>
       <b-breadcrumb-item to="/kemahasiswaan">Kemahasiswaan</b-breadcrumb-item>
@@ -99,11 +103,9 @@
         'dataaktivitas',
         'tahun_akademik'
       )
-      this.semester_akademik =
-        this.$store.getters['uiadmin/AtributeValueOfPage'](
-          'dataaktivitas',
-          'semester_akademik'
-        )
+      this.semester_akademik = this.$store.getters[
+        'uiadmin/AtributeValueOfPage'
+      ]('dataaktivitas', 'semester_akademik')
     },
     mounted() {
       this.firstloading = false

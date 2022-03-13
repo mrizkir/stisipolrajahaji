@@ -140,14 +140,14 @@
       sidebar_right_visible: false,
     }),
     props: {
-			showrightsidebar: {
-				type: Boolean,
-				default: true,
-			},
-			temporaryleftsidebar: {
-				type: Boolean,
-				default: false,
-			},
+      showrightsidebar: {
+      	type: Boolean,
+      	default: true,
+      },
+      temporaryleftsidebar: {
+      	type: Boolean,
+      	default: false,
+      },
       showsubheader: {
         type: Boolean,
         default: false,

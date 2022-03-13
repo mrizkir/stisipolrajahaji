@@ -7,7 +7,7 @@
           <b-card
             bg-variant="dark"
             text-variant="white"
-            title="Pengguna Sistem"            
+            title="Pengguna Sistem"  
           >
             <b-card-text>
               Mengatur roles, permission, dan pengguna
@@ -19,7 +19,7 @@
           <b-card
             bg-variant="dark"
             text-variant="white"
-            title="Akademik"            
+            title="Akademik"  
           >
             <b-card-text>
               Mengelola data akademik
@@ -31,7 +31,7 @@
           <b-card
             bg-variant="dark"
             text-variant="white"
-            title="Feeder"            
+            title="Feeder"  
           >
             <b-card-text>
               Export data Akademik ke Feeder
@@ -43,7 +43,7 @@
           <b-card
             bg-variant="dark"
             text-variant="white"
-            title="Kemahasiswaan"            
+            title="Kemahasiswaan"  
           >
             <b-card-text>
               Mengelola data kemahasiswaan

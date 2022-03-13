@@ -16,7 +16,7 @@
   export default {
     name: 'Akademik',
     components: {
-			AkademikLayout,
-		},  
+      AkademikLayout,
+		},
   }
 </script>

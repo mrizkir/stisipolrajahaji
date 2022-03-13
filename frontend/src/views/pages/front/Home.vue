@@ -8,7 +8,7 @@
   export default {
     name: 'Home',
     components: {
-			FrontendLayout,
-		},  
+      FrontendLayout,
+    },
   }
 </script>

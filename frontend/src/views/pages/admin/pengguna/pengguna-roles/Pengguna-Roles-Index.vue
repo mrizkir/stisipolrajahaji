@@ -1,20 +1,20 @@
 <template>
   <PenggunaSistemLayout>
-    <template v-slot:page-header>
-      Roles
-    </template>
+    <template v-slot:page-header>Roles</template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>
+      <b-breadcrumb-item to="/sistem-pengguna">
+        Pengguna Sistem
+      </b-breadcrumb-item>
       <b-breadcrumb-item active>Roles</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
-      <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-SETTING-ROLES_BROWSE')">
+      <b-container
+        fluid
+        v-if="$store.getters['auth/can']('SYSTEM-SETTING-ROLES_BROWSE')"
+      >
         <b-row>
           <b-col>
-            <b-card
-              no-body
-              class="card-primary card-outline"
-            >
+            <b-card no-body class="card-primary card-outline">
               <template #header>
                 <h3 class="card-title">Daftar Roles</h3>
                 <div class="card-tools">
@@ -46,9 +46,7 @@
                   no-local-sorting
                 >
                   <template #table-busy>
-                    <div class="text-center text-danger my-2">
-                      &nbsp;
-                    </div>
+                    <div class="text-center text-danger my-2">&nbsp;</div>
                   </template>
                   <template #cell(No)="data">
                     {{ data.index + 1 }}
@@ -58,8 +56,10 @@
                       variant="outline-primary p-1"
                       size="xs"
                       :to="'/sistem-pengguna/roles/' + item.id + '/detail'"
-                      v-b-tooltip.hover                      
-                      v-if="$store.getters['auth/can']('SYSTEM-SETTING-ROLES_SHOW')"
+                      v-b-tooltip.hover
+                      v-if="
+                        $store.getters['auth/can']('SYSTEM-SETTING-ROLES_SHOW')
+                      "
                       title="detail permission dari role"
                     >
                       <b-icon icon="shield-lock" class="p-0 m-0"></b-icon>
@@ -80,7 +80,7 @@
 <script>
   import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'
   export default {
-    name: 'PenggunaRolesIndex',  
+    name: 'PenggunaRolesIndex',
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
         name: 'role',
@@ -92,12 +92,11 @@
       })
     },
     mounted() {
-      this.initialize()      
+      this.initialize()
     },
     data: () => ({
       datatableLoading: false,
       btnLoading: false,
-      
       //setting table
       datatable: [],
       fields: [
@@ -130,12 +129,12 @@
       ],
       sortBy: 'name',
       sortDesc: false,
-    }),  
+    }),
     methods: {
       updatesettingpage() {
         var page = this.$store.getters['uiadmin/Page']('role')
         page.sortBy = this.sortBy
-        page.sortDesc = this.sortDesc        
+        page.sortDesc = this.sortDesc
         this.$store.dispatch('uiadmin/updatePage', page)
       },
       clearsettingpage() {
@@ -146,23 +145,26 @@
         page.sortDesc = false
         this.$store.dispatch('uiadmin/updatePage', page)
 
-        this.$bvToast.toast('Setting halaman sudah kembali ke default, silahkan refresh', {
-          title: 'Pesan Sistem',
-          variant: 'info',
-          autoHideDelay: 5000,
-          appendToast: false
-        })
+        this.$bvToast.toast(
+          'Setting halaman sudah kembali ke default, silahkan refresh',
+          {
+            title: 'Pesan Sistem',
+            variant: 'info',
+            autoHideDelay: 5000,
+            appendToast: false,
+          }
+        )
       },
       async initialize() {
         this.datatableLoading = true
         var page = this.$store.getters['uiadmin/Page']('role')
         var url = '/system/setting/roles'
-        
-        await this.$ajax.get(url, {
-          headers: {
-            Authorization: this.$store.getters['auth/Token'],
-          }
-        })
+        await this.$ajax
+          .get(url, {
+            headers: {
+              Authorization: this.$store.getters['auth/Token'],
+            },
+          })
           .then(({ data }) => {
             this.datatable = data.roles
             page.loaded = true

@@ -4,17 +4,16 @@
       Pengguna Manajemen
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>
+      <b-breadcrumb-item to="/sistem-pengguna">
+        Pengguna Sistem
+      </b-breadcrumb-item>
       <b-breadcrumb-item active>Pengguna Manajemen</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
       <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_BROWSE')">
         <b-row>
           <b-col>
-            <b-card
-              no-body
-              class="card-primary card-outline"
-            >
+            <b-card no-body class="card-primary card-outline">
               <template #header>
                 <h3 class="card-title">Daftar Pengguna</h3>
                 <div class="card-tools">
@@ -238,7 +237,7 @@
           title: 'Pesan Sistem',
           variant: 'info',
           autoHideDelay: 5000,
-          appendToast: false
+          appendToast: false,
         })
       },
       async initialize() {
@@ -254,7 +253,7 @@
         await this.$ajax.get(url, {
           headers: {
             Authorization: this.$store.getters['auth/Token'],
-          }
+          },
         })
         .then(({ data }) => {
           this.from = data.result.from
@@ -316,8 +315,6 @@
     },
     components: {
       PenggunaSistemLayout,
-    }
+    },
   }
 </script>
-
-

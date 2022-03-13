@@ -1,25 +1,31 @@
 <template>
   <PenggunaSistemLayout>
-    <template v-slot:page-header>
-      Roles
-    </template>
+    <template v-slot:page-header>Roles</template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>
+      <b-breadcrumb-item to="/sistem-pengguna">
+        Pengguna Sistem
+      </b-breadcrumb-item>
       <b-breadcrumb-item to="/sistem-pengguna/roles">Roles</b-breadcrumb-item>
       <b-breadcrumb-item active>Detail</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
-      <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-SETTING-ROLES_SHOW')">
+      <b-container
+        fluid
+        v-if="$store.getters['auth/can']('SYSTEM-SETTING-ROLES_SHOW')"
+      >
         <b-row>
           <b-col>
-            <b-card
-              no-body
-              class="card-primary card-outline"
-            >
+            <b-card no-body class="card-primary card-outline">
               <template #header>
                 <h3 class="card-title">Data Role</h3>
                 <div class="card-tools">
-                  <button type="button" class="btn btn-tool" v-b-tooltip.hover title="Keluar" @click.stop="$router.push('/sistem-pengguna/roles')">
+                  <button
+                    type="button"
+                    class="btn btn-tool"
+                    v-b-tooltip.hover
+                    title="Keluar"
+                    @click.stop="$router.push('/sistem-pengguna/roles')"
+                  >
                     <b-icon icon="x-square"></b-icon>
                   </button>
                 </div>
@@ -29,13 +35,13 @@
                   <b-col>
                     <dl class="row">
                       <dt class="col-sm-3">ID</dt>
-                      <dd class="col-sm-9">{{data_role.id}}</dd>
+                      <dd class="col-sm-9">{{ data_role.id }}</dd>
                     </dl>
                   </b-col>
                   <b-col>
                     <dl class="row">
                       <dt class="col-sm-4">Guard</dt>
-                      <dd class="col-sm-8">{{data_role.guard_name}}</dd>
+                      <dd class="col-sm-8">{{ data_role.guard_name }}</dd>
                     </dl>
                   </b-col>
                 </b-row>
@@ -43,14 +49,21 @@
                   <b-col>
                     <dl class="row">
                       <dt class="col-sm-3">Nama Role</dt>
-                      <dd class="col-sm-9">{{data_role.name}}</dd>
+                      <dd class="col-sm-9">{{ data_role.name }}</dd>
                     </dl>
                   </b-col>
                   <b-col>
                     <dl class="row">
                       <dt class="col-sm-4">Created/Updated</dt>
                       <dd class="col-sm-8">
-                        {{$date(data_role.created_at).format("DD.MM.YYYY HH:mm")}} / {{$date(data_role.updated_at).format('DD.MM.YYYY HH:mm')}}</dd>
+                        {{
+                          $date(data_role.created_at).format('DD.MM.YYYY HH:mm')
+                        }}
+                        /
+                        {{
+                          $date(data_role.updated_at).format('DD.MM.YYYY HH:mm')
+                        }}
+                      </dd>
                     </dl>
                   </b-col>
                 </b-row>
@@ -60,18 +73,17 @@
         </b-row>
         <b-row>
           <b-col>
-            <b-card
-              no-body
-              class="card-primary card-outline"
-            >
+            <b-card no-body class="card-primary card-outline">
               <template #header>
-                <h3 class="card-title">Daftar Permission ({{ selectedPermissions.length }})</h3>
+                <h3 class="card-title">
+                  Daftar Permission ({{ selectedPermissions.length }})
+                </h3>
                 <div class="card-tools">
                   <b-button
                     size="xs"
                     variant="outline-primary"
                     :disabled="selectedPermissions.length === 0 || btnLoading"
-                    @click.stop="save"                    
+                    @click.stop="save"
                     v-b-tooltip.hover
                     title="Simpan Permission"
                     class="mr-1"
@@ -91,10 +103,10 @@
                   </b-btn>
                   <b-btn
                     size="xs"
-                    variant="outline-primary"          
+                    variant="outline-primary"
                     @click="setAllSelected"
                     v-b-tooltip.hover
-                    title="Pilih semua permission"          
+                    title="Pilih semua permission"
                   >
                     Pilih Semua
                   </b-btn>
@@ -118,14 +130,18 @@
                     ></b-form-input>
 
                     <b-input-group-append>
-                      <b-button :disabled="!filter" @click="filter = ''">Clear</b-button>
+                      <b-button :disabled="!filter" @click="filter = ''">
+                        Clear
+                      </b-button>
                     </b-input-group-append>
                   </b-input-group>
                 </b-form-group>
               </b-card-body>
               <b-card-body class="p-0">
                 <b-alert class="m-3 font-italic" show>
-                  Silahkan pilih permission untuk role {{data_role.name}} dengan cara mengklik baris dalam tabel di bawah ini.
+                  Silahkan pilih permission untuk role
+                  {{ data_role.name }}
+                  dengan cara mengklik baris dalam tabel di bawah ini.
                 </b-alert>
                 <b-table
                   id="datatable"
@@ -154,12 +170,13 @@
                   <template v-slot:cell(selected)="{ item, field: { key } }">
                     <b-form-checkbox
                       v-model="item[key]"
-                      v-if="$store.getters['auth/can']('USER_STOREPERMISSIONS') && item.selected2 === null"
+                      v-if="
+                        $store.getters['auth/can']('USER_STOREPERMISSIONS') &&
+                        item.selected2 === null
+                      "
                       switch
                     />
-                    <span v-else>
-                      N.A
-                    </span>
+                    <span v-else>N.A</span>
                   </template>
                   <template #cell(aksi)="{ item }">
                     <b-button
@@ -168,14 +185,20 @@
                       size="xs"
                       @click.stop="revokePermission(item)"
                       :disabled="btnLoading"
-                      v-if="$store.getters['auth/can']('ROLE_REVOKEPERMISSIONS') && item.selected == 'true'"
+                      v-if="
+                        $store.getters['auth/can']('ROLE_REVOKEPERMISSIONS') &&
+                        item.selected == 'true'
+                      "
                     >
                       <b-icon icon="trash" class="p-0 m-0"></b-icon>
-                      <b-tooltip :target="'btDelete' + item.id" variant="danger">Hapus Permission Role</b-tooltip>
+                      <b-tooltip
+                        :target="'btDelete' + item.id"
+                        variant="danger"
+                      >
+                        Hapus Permission Role
+                      </b-tooltip>
                     </b-button>
-                    <span v-else>
-                      N.A
-                    </span>
+                    <span v-else>N.A</span>
                   </template>
                 </b-table>
               </b-card-body>
@@ -185,7 +208,7 @@
                   :per-page="perPage"
                   v-model="currentPage"
                   :total-rows="totalRows"
-                  class="pagination-sm m-0 float-right"  
+                  class="pagination-sm m-0 float-right"
                   responsive
                   pills
                 >
@@ -204,16 +227,16 @@
     created() {
       this.role_id = this.$route.params.role_id
       this.initialize()
-    },  
+    },
     data: () => ({
       role_id: null,
       datatableLoading: false,
       btnLoading: false,
 
-      data_role : {},
+      data_role: {},
 
-      //setting table 
-      fields: [        
+      //setting table
+      fields: [
         {
           key: 'name',
           label: 'Nama Permission',
@@ -275,7 +298,7 @@
             } else {
               this.$set(item, 'selected', true)
             }
-          }    
+          }
         }
       },
       onFiltered(filteredItems) {
@@ -287,45 +310,45 @@
         var url = '/system/setting/roles/' + this.role_id
 
         //load data role beserta permissions-nya
-        await this.$ajax.get(url, {
-          headers: {
-            Authorization: this.$store.getters['auth/Token'],
-          }
-        })
-        .then(({ data }) => {
-          this.data_role = data.role
-        })
-        
+        await this.$ajax
+          .get(url, {
+            headers: {
+              Authorization: this.$store.getters['auth/Token'],
+            },
+          })
+          .then(({ data }) => {
+            this.data_role = data.role
+          })
         //load data permissions secara keseluruhan
         await this.$ajax
-        .get('/system/setting/roles/' + this.role_id + '/allpermissions', {
-          headers: {
-            Authorization: this.$store.getters['auth/Token'],
-          },
-        })
-        .then(({ data }) => {
-          this.datatable = data.permissions
-          this.totalRows = this.datatable.length
-          this.datatableLoading = false          
-        })
-        .catch(() => {
-          this.datatableLoading = false
-        })
+          .get('/system/setting/roles/' + this.role_id + '/allpermissions', {
+            headers: {
+              Authorization: this.$store.getters['auth/Token'],
+            },
+          })
+          .then(({ data }) => {
+            this.datatable = data.permissions
+            this.totalRows = this.datatable.length
+            this.datatableLoading = false
+          })
+          .catch(() => {
+            this.datatableLoading = false
+          })
       },
       async save() {
         if (this.selectedPermissions.length > 0) {
           this.btnLoading = true
           await this.$ajax
             .post(
-              "/system/setting/roles/storerolepermissions",
+              '/system/setting/roles/storerolepermissions',
               {
                 role_id: this.data_role.id,
-                chkpermission: this.selectedPermissions
+                chkpermission: this.selectedPermissions,
               },
               {
                 headers: {
                   Authorization: this.$store.getters['auth/Token'],
-                }
+                },
               }
             )
             .then(() => {
@@ -336,39 +359,45 @@
               this.btnLoading = false
             })
         } else {
-          this.$bvToast.toast('Simpan permission dari role ' + this.data_role.name + ' gagal karena jumlah permissionnya 0' , {
-            title: 'Pesan Sistem',
-            variant: 'warning',
-            autoHideDelay: 5000,
-            appendToast: false
-          })
-        }  
+          this.$bvToast.toast(
+            'Simpan permission dari role ' +
+              this.data_role.name +
+              ' gagal karena jumlah permissionnya 0',
+            {
+              title: 'Pesan Sistem',
+              variant: 'warning',
+              autoHideDelay: 5000,
+              appendToast: false,
+            }
+          )
+        }
       },
       async revokePermission(item) {
         this.btnLoading = true
         await this.$ajax
-          .post('/system/setting/roles/revokerolepermissions',
+          .post(
+            '/system/setting/roles/revokerolepermissions',
             {
               role_id: this.data_role.id,
-			        name: item.name,
+              name: item.name,
             },
             {
               headers: {
                 Authorization: this.$store.getters['auth/Token'],
-              }
+              },
             }
-        )
-        .then(() => {
-          this.$router.go()
-        })
-        .catch(() => {
-          this.btnLoading = false
-        })
+          )
+          .then(() => {
+            this.$router.go()
+          })
+          .catch(() => {
+            this.btnLoading = false
+          })
       },
     },
     computed: {
       selectedPermissions() {
-        return this.datatable.filter(item => item.selected)
+        return this.datatable.filter((item) => item.selected)
       },
     },
     components: {

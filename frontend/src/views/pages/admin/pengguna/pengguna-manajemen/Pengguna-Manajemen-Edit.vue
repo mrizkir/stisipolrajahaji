@@ -4,7 +4,9 @@
       Pengguna Manajemen
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">Pengguna Sistem</b-breadcrumb-item>
+      <b-breadcrumb-item to="/sistem-pengguna">
+        Pengguna Sistem
+      </b-breadcrumb-item>
       <b-breadcrumb-item to="/sistem-pengguna/manajemen">Pengguna Manajemen</b-breadcrumb-item>
       <b-breadcrumb-item active>Ubah</b-breadcrumb-item>
     </template>
@@ -41,7 +43,7 @@
         await this.$ajax.get(url, {
           headers: {
             Authorization: this.$store.getters['auth/Token'],
-          }
+          },
         })
         .then(({ data }) => {
           this.formdata = data.user

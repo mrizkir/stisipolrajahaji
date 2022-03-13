@@ -132,9 +132,9 @@
     mounted() {
       this.firstloading = false
       this.$refs.filter6.setFirstTimeLoading(this.firstloading)      
-      this.initialize()      
+      this.initialize()
     },
-    data: () => ({      
+    data: () => ({
       datatableLoading: false,
       firstloading: true,
       prodi_id: null,
@@ -176,17 +176,17 @@
         },
         {
           key: 'nama_mata_kuliah',
-          label: 'Nama Matakuliah',  
+          label: 'Nama Matakuliah',
           thStyle: 'width: 200px',
         },
         {
           key: 'sks_mata_kuliah',
-          label: 'SKS',  
+          label: 'SKS',
           thStyle: 'width: 50px',
         },
         {
           key: 'nama_kelas_kuliah',
-          label: 'Kelas',  
+          label: 'Kelas',
           thStyle: 'width: 50px',
         },
       ],
@@ -274,7 +274,7 @@
               Authorization: this.$store.getters['auth/Token'],
             }
           })
-          .then(({ data }) => {            
+          .then(({ data }) => {
             this.datatable = data.data            
             this.datatableLoading = false
           })
