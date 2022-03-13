@@ -53,14 +53,14 @@ class TransaksiController extends Controller {
 				
 				if (is_null($data))        {
 					return Response()->json([
-						'status'=>'14',        
+						'status'=>'14',
 						'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"											
 					], 200); 
 				}
 				else if ($data->commited==1)
 				{
 					return Response()->json([
-						'status'=>'88',        
+						'status'=>'88',
 						'message'=>"Tagihan sudah dibayarkan."
 						
 					], 200); 
@@ -129,14 +129,14 @@ class TransaksiController extends Controller {
 			
 				if (is_null($data))        {
 					return Response()->json([
-						'status'=>'14',        
+						'status'=>'14',
 						'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"												
 					], 200); 
 				}
 				else if ($data->commited==1)
 				{
 					return Response()->json([
-						'status'=>'88',        
+						'status'=>'88',
 						'message'=>"Tagihan sudah dibayarkan."											
 					], 200); 
 				}
@@ -213,14 +213,14 @@ class TransaksiController extends Controller {
 			
 				if (is_null($data))        {
 					return Response()->json([
-						'status'=>'14',        
+						'status'=>'14',
 						'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"												
 					], 200); 
 				}
 				else if ($data->commited == 1)
 				{
 					return Response()->json([
-						'status'=>'88',        
+						'status'=>'88',
 						'message'=>"Tagihan dengan KODE_BILLING ($kode_billing) sudah dibayarkan."											
 					], 200); 
 				}

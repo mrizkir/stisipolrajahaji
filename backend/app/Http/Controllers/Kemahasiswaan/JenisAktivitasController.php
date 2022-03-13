@@ -23,7 +23,7 @@ class JenisAktivitasController extends Controller
 
 		$sortdesc = $request->filled('sortdesc') ? $request->query('sortdesc', false) : false;
 		$orderby = $sortdesc == 'true' ? 'desc' : 'asc';
-		$sortby = $request->filled('sortby') ? $request->query('sortby', 'nama') : 'nama';
+		$sortby = $request->filled('sortby') ? $request->query('sortby', 'nama_aktivitas') : 'nama_aktivitas';
 
 		$data = JenisAktivitasModel::orderBy($sortby, $orderby);
 
@@ -35,7 +35,7 @@ class JenisAktivitasController extends Controller
 		$data = $data->paginate(10);
 
 		return Response()->json([
-			'status'=>1,        
+			'status'=>1,
 			'pid'=>'fetch',
 			'message'=>"data jenis aktivitas berhasil diperoleh",
 			'result'=>$data,
@@ -89,14 +89,14 @@ class JenisAktivitasController extends Controller
 						
 		$jenisaktivitas=JenisAktivitasModel::create([
 			'idjenis'=>Uuid::uuid4()->toString(),
-			'nama_aktivitas'=>strtoupper($request->input('nama_aktivitas')),               
+			'nama_aktivitas'=>strtoupper($request->input('nama_aktivitas')),       
 		]);                 
 
 		return Response()->json([
-			'status'=>1,        
+			'status'=>1,
 			'pid'=>'store',
 			'jenisaktivitas'=>$jenisaktivitas,    
-			'message'=>"data jenis aktivitas berhasil disimpan",            
+			'message'=>"data jenis aktivitas berhasil disimpan",    
 		], 200); 
 	}
 	/**
@@ -123,8 +123,8 @@ class JenisAktivitasController extends Controller
 		{					
 			$this->validate($request, [
 				'nama_aktivitas'=>[
-					'required',            
-					'string',                
+					'required',    
+					'string',        
 					Rule::unique('pe3_jenis_aktivitas')->ignore($jenisaktivitas->nama_aktivitas, 'nama_aktivitas')           
 				],						
 			]); 

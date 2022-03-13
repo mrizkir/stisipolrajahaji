@@ -288,7 +288,7 @@ class RolesController extends Controller
 			'name'=>[
 				'required',
 				Rule::unique('roles')->ignore($role->name,'name')
-			],         
+			], 
 		],[
 			'name.required'=>'Nama role mohon untuk di isi',
 		]);   

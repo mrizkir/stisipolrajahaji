@@ -53,7 +53,7 @@ class ZoomController extends Controller {
             'email'=>$request->input('email'),
             'api_key'=>$request->input('api_key'),
             'api_secret'=>$request->input('api_secret'),
-            'im_token'=>$request->input('im_token'),            
+            'im_token'=>$request->input('im_token'),    
         ]);                 
         
         \App\Models\System\ActivityLog::log($request,[
@@ -102,11 +102,11 @@ class ZoomController extends Controller {
                 $jwt = JWT::encode($payload, $api_secret);           
                 $client = new Client ();
                 $response = $client->get(
-                    'https://api.zoom.us/v2/users/'.$zoom->email,        
+                    'https://api.zoom.us/v2/users/'.$zoom->email,
                     [
                         'debug' => FALSE,
                         'headers'=>[
-                            'Authorization' => 'Bearer ' . $jwt,            
+                            'Authorization' => 'Bearer ' . $jwt,    
                             'content-type' => 'application/json'
                         ]
                     ]
@@ -187,7 +187,7 @@ class ZoomController extends Controller {
                                                         'required',
                                                         'string',
                                                         Rule::unique('plugins_h2h_zoom')->ignore($zoom->email,'email')
-                                                    ],           
+                                                    ],   
                                         'api_key'=>[
                                                         'required',
                                                         'string',

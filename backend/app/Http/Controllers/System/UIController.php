@@ -225,7 +225,7 @@ class UIController extends Controller {
         'tahun_pendaftaran'=>$tahun_pendaftaran,
         'tahun_akademik'=>$tahun_akademik,
         'daftar_semester'=>$daftar_semester,
-        'semester_akademik' => $config['default_semester'],                
+        'semester_akademik' => $config['default_semester'],        
         'daftar_prodi'=>$daftar_prodi,
         'prodi_id'=>$prodi_id,
         'daftar_kelas'=>$daftar_kelas,

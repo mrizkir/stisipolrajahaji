@@ -23,7 +23,7 @@ class FormulirPendaftaranOnlineModel extends Model {
 	 * @var array
 	 */
 	protected $fillable = [        
-		'no_pendaftaran',                      
+		'no_pendaftaran',              
 		'no_formulir',    
 		'nama_mhs',
 		'tempat_lahir',

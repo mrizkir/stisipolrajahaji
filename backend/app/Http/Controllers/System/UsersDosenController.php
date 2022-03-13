@@ -76,8 +76,8 @@ class UsersDosenController extends UsersController
 			$user=User::create([
 				'idbank'=>0,				
 				'username'=> $request->input('username'),
-				'userpassword'=>$password,            
-				'salt'=>$salt,            
+				'userpassword'=>$password,    
+				'salt'=>$salt,    
 				'nama'=>$request->input('nama'),
 				'email'=>$request->input('email'),
 				'page'=>'d',
@@ -139,7 +139,7 @@ class UsersDosenController extends UsersController
 				'username'=>[
 					'required',
 					'unique:user,username,'.$user->userid.',userid,page,m'
-					],           
+					],   
 				'nama'=>'required',
 				'email'=>'required|string|email|unique:user,email,'.$user->userid.',userid,page,m',				
 				'active'=>'required',

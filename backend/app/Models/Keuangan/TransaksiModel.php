@@ -23,7 +23,7 @@ class TransaksiModel extends Model {
 	 * @var array
 	 */
 	protected $fillable = [        
-		'no_transaksi',                      
+		'no_transaksi',              
 		'no_faktur',    
 		'kjur',
 		'tahun',

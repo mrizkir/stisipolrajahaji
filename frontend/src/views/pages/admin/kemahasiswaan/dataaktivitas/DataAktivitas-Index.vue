@@ -78,6 +78,7 @@
       this.$store.dispatch('uiadmin/addToPages', {
         name: 'dataaktivitas',
         loaded: false,
+        from: this.from,
         perPage: this.perPage,
         currentPage: this.currentPage,
         sortBy: this.sortBy,
@@ -94,9 +95,15 @@
       this.nama_prodi = this.$store.getters['uiadmin/getProdiName'](
         this.prodi_id
       )
-      this.tahun_akademik = this.$store.getters['uiadmin/getTahunAkademik']
+      this.tahun_akademik = this.$store.getters['uiadmin/AtributeValueOfPage'](
+        'dataaktivitas',
+        'tahun_akademik'
+      )
       this.semester_akademik =
-        this.$store.getters['uiadmin/getSemesterAkademik']
+        this.$store.getters['uiadmin/AtributeValueOfPage'](
+          'dataaktivitas',
+          'semester_akademik'
+        )
     },
     mounted() {
       this.firstloading = false
@@ -139,6 +146,7 @@
     methods: {
       updatesettingpage() {
         var page = this.$store.getters['uiadmin/Page']('dataaktivitas')
+        page.from = this.from
         page.perPage = this.perPage
         page.currentPage = this.currentPage
         page.sortBy = this.sortBy
@@ -149,6 +157,7 @@
       clearsettingpage() {
         var page = this.$store.getters['uiadmin/Page']('dataaktivitas')
         page.loaded = false
+        page.from = 1
         page.perPage = 10
         page.currentPage = 1
         page.sortBy = 'nama_aktivitas'

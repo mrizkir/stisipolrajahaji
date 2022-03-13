@@ -137,7 +137,7 @@
       showsubheader: {
         type: Boolean,
         default: false,
-      }
+      },
 		},
     methods: {
       handleVisible(isVisible) {

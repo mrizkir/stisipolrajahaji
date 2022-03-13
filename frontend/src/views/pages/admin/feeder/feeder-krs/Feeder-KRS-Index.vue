@@ -100,7 +100,7 @@
     },
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
-        name: 'feeder-krs',        
+        name: 'feeder-krs',
         loaded: false,
         from: this.from,
         perPage: this.perPage,
@@ -176,19 +176,19 @@
         },
         {
           key: 'nama_mata_kuliah',
-          label: 'Nama Matakuliah',          
+          label: 'Nama Matakuliah',  
           thStyle: 'width: 200px',
         },
         {
           key: 'sks_mata_kuliah',
-          label: 'SKS',          
+          label: 'SKS',  
           thStyle: 'width: 50px',
         },
         {
           key: 'nama_kelas_kuliah',
-          label: 'Kelas',          
+          label: 'Kelas',  
           thStyle: 'width: 50px',
-        },        
+        },
       ],
       sortBy: 'nama_aktivitas',
       sortDesc: false,

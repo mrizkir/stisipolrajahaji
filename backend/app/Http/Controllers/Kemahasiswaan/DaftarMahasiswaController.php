@@ -15,7 +15,7 @@ class DaftarMahasiswaController extends Controller {
     $daftar_mahasiswa = \DB::table('v_datamhs')->get();    
 
     return Response()->json([
-      'status'=>'00',        
+      'status'=>'00',
       'message'=>"data mahasiswa berhasil diperoleh",
       'daftar_mahasiswa'=>$daftar_mahasiswa
     ], 200); 
