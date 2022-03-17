@@ -196,7 +196,7 @@
         no_sk_tugas: null,
         tanggal_sk_tugas: null,
         jenis_aktivitas_id: null,
-        jenis_anggota: null,
+        jenis_anggota: 1,
         judul_aktivitas: null,
         keterangan: null,
         lokasi: null,

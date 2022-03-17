@@ -27,8 +27,8 @@ class CreateDataAktivitasTables extends Migration
       $table->uuid('jenis_aktivitas_id');        
       $table->tinyInteger('jenis_anggota')->default(1);
       $table->string('judul_aktivitas');        
-      $table->string('keterangan');        
-      $table->string('lokasi');        
+      $table->string('keterangan')->nullable();        
+      $table->string('lokasi')->nullable();
 
       $table->index('jenis_aktivitas_id');     
 

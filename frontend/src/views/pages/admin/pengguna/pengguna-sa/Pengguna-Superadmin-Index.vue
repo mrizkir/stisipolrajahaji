@@ -81,6 +81,7 @@
                   show-empty
                   responsive
                   no-local-sorting
+                  small
                 >
                   <template #table-busy>
                     <div class="text-center text-danger my-2">&nbsp;</div>

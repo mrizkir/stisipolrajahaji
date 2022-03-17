@@ -160,6 +160,7 @@
                   hover
                   show-empty
                   responsive
+                  small
                 >
                   <template #table-busy>
                     <div class="text-center text-danger my-2">

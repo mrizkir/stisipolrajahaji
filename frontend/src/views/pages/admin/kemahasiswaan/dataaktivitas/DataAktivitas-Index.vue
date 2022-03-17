@@ -76,6 +76,7 @@
                   show-empty
                   responsive
                   no-local-sorting
+                  small
                 >
                   <template #table-busy>
                     <div class="text-center text-danger my-2">
@@ -87,6 +88,9 @@
                   </template>
                   <template #cell(tanggal_sk_tugas)="{ item }">
                     {{ $date(item.tanggal_sk_tugas).format("DD.MM.YYYY") }}
+                  </template>
+                  <template #cell(jenis_anggota)="{ item }">
+                    {{ item.jenis_anggota == 1 ? 'Personal' : 'Kelompok' }}
                   </template>
                   <template #cell(aksi)="{ item }">
                     <b-button
