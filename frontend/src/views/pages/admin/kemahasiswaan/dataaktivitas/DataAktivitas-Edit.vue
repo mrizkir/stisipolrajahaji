@@ -8,13 +8,13 @@
     <template v-slot:page-breadcrumb>
       <b-breadcrumb-item to="/kemahasiswaan">Kemahasiswaan</b-breadcrumb-item>
       <b-breadcrumb-item to="/kemahasiswaan/dataaktivitas">Data Aktivitas</b-breadcrumb-item>
-      <b-breadcrumb-item active>Tambah</b-breadcrumb-item>
+      <b-breadcrumb-item active>Ubah</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
-      <b-form @submit.prevent="onSubmit" name="frmdata" id="frmdata" v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_STORE')">
+      <b-form @submit.prevent="onSubmit" name="frmdata" id="frmdata" v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_UPDATE')">
         <b-card no-body class="card-primary card-outline">
           <template #header>
-            <h3 class="card-title">Tambah Data Aktivitas</h3>
+            <h3 class="card-title">Ubah Data Aktivitas</h3>
             <div class="card-tools">
               <button type="button" class="btn btn-tool" v-b-tooltip.hover title="Keluar" @click.stop="$router.push(url)">
                 <b-icon icon="x-square"></b-icon>
@@ -165,6 +165,8 @@
       }
     },
     created() {
+      this.id = this.$route.params.id
+
       this.prodi_id = this.$store.getters['uiadmin/AtributeValueOfPage'](
         'dataaktivitas',
         'prodi_id'
@@ -185,6 +187,7 @@
       this.initialize()
     },
     data: () => ({
+      id: null,
       btnLoading: false,
       prodi_id: null,
       nama_prodi: null,
@@ -245,6 +248,15 @@
               })
             }
           })
+
+        await this.$ajax.get(this.url + '/' + this.id, {
+          headers: {
+            Authorization: this.$store.getters['auth/Token'],
+          },
+        })
+        .then(({ data }) => {
+          this.formdata = data.result
+        })
       },
       validateState(name) {
         const { $dirty, $error } = this.v$.formdata[name]
@@ -254,11 +266,9 @@
         if (!this.v$.formdata.$invalid) {
           this.btnLoading = true
 
-          this.$ajax.post(this.url + '/store',
+          this.$ajax.post(this.url + '/' + this.id,
             {
-              prodi_id: this.prodi_id,              
-			        idsmt: this.semester_akademik,
-              tahun: this.tahun_akademik,
+              _method: 'PUT',              
             	no_sk_tugas: this.formdata.no_sk_tugas,
               tanggal_sk_tugas: this.formdata.tanggal_sk_tugas,
               jenis_aktivitas_id: this.formdata.jenis_aktivitas_id,

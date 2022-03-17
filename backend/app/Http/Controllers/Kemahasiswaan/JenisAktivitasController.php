@@ -58,7 +58,7 @@ class JenisAktivitasController extends Controller
 			return Response()->json([
 				'status'=>0,
 				'pid'=>'update',    
-				'message'=>["Data jenis aktivitas dengan ($id) tidak tersedia di database"]
+				'message'=>["Data jenis aktivitas dengan id ($id) tidak tersedia di database"]
 			], 422); 
 		}
 		else
@@ -67,7 +67,7 @@ class JenisAktivitasController extends Controller
 				'status'=>1,
 				'pid'=>'fetchdata',
 				'result'=>$jenisaktivitas,      
-				'message'=>'Data jenis aktivitas '.$jenisaktivitas->namaruang.' berhasil diperoleh.'
+				'message'=>'Data jenis aktivitas berhasil diperoleh.'
 			], 200); 
 		}
 	}   
@@ -116,7 +116,7 @@ class JenisAktivitasController extends Controller
 			return Response()->json([
 				'status'=>0,
 				'pid'=>'update',    
-				'message'=>["Data jenis aktivitas dengan ($id) tidak tersedia di database"]
+				'message'=>["Data jenis aktivitas dengan id ($id) tidak tersedia di database"]
 			], 422); 
 		}
 		else
@@ -136,7 +136,7 @@ class JenisAktivitasController extends Controller
 				'status'=>1,
 				'pid'=>'update',
 				'jenisaktivitas'=>$jenisaktivitas,      
-				'message'=>'Data jenis aktivitas '.$jenisaktivitas->namaruang.' berhasil diubah.'
+				'message'=>'Data jenis aktivitas berhasil diubah.'
 			], 200); 
 		}
 	}   

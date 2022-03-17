@@ -146,6 +146,19 @@ const routes = [
         '../views/pages/admin/kemahasiswaan/dataaktivitas/DataAktivitas-Create.vue'
       ),
   },
+  {
+    path: '/kemahasiswaan/dataaktivitas/:id/edit',
+    name: 'AkademikDataAktivitasEdit',
+    meta: {
+      title: 'AKTIVITAS MAHASISWA - JENIS AKTIVITAS',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/kemahasiswaan/dataaktivitas/DataAktivitas-Edit.vue'
+      ),
+  },
   //system - users
   {
     path: '/sistem-pengguna',

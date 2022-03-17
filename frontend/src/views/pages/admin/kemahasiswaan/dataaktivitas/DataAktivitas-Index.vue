@@ -6,7 +6,7 @@
       <strong>{{ tahun_akademik }}</strong>
       Semester
       <strong>
-        {{ store.getters['uiadmin/getNamaSemester'](semester_akademik) }}
+        {{ $store.getters['uiadmin/getNamaSemester'](semester_akademik) }}
       </strong>
     </template>
     <template v-slot:page-breadcrumb>
@@ -50,9 +50,110 @@
                   </b-button>
                 </div>
               </template>
+              <b-card-body>
+                <div class="input-group input-group-sm">
+                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />
+                  <div class="input-group-append">
+                    <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
+                      <b-icon icon="search" />
+                    </button>
+                  </div>
+                </div>
+              </b-card-body>
+              <b-card-body class="p-0">
+                <b-table
+                  id="datatable"
+                  primary-key="id"
+                  :fields="fields"
+                  :items="datatable"
+                  :sort-by.sync="sortBy"
+                  :sort-desc.sync="sortDesc"
+                  :current-page="currentPage"
+                  :busy="datatableLoading"
+                  outlined
+                  striped
+                  hover
+                  show-empty
+                  responsive
+                  no-local-sorting
+                >
+                  <template #table-busy>
+                    <div class="text-center text-danger my-2">
+                      &nbsp;
+                    </div>
+                  </template>
+                  <template #cell(no)="{ index }">
+                    {{ index + from }}
+                  </template>
+                  <template #cell(tanggal_sk_tugas)="{ item }">
+                    {{ $date(item.tanggal_sk_tugas).format("DD.MM.YYYY") }}
+                  </template>
+                  <template #cell(aksi)="{ item }">
+                    <b-button
+                      :id="'btDetail' + item.id" variant="outline-primary p-1 mr-1"
+                      size="xs"
+                      :to="url + '/' + item.id + '/detail'"
+                      :disabled="btnLoading"
+                      v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_SHOW')"
+                    >
+                      <b-icon icon="eye" class="p-0 m-0"></b-icon>
+                    </b-button>
+                    <b-button
+                      :id="'btEdit' + item.id" variant="outline-primary p-1 mr-1"
+                      size="xs"
+                      :to="url + '/' + item.id + '/edit'"
+                      :disabled="btnLoading"
+                      v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_UPDATE')"
+                    >
+                      <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>
+                    </b-button>
+                    <b-tooltip :target="'btEdit' + item.id" variant="primary">Ubah Data Aktivitas</b-tooltip>
+                    <b-button
+                      :id="'btDelete' + item.id"
+                      variant="outline-danger p-1"
+                      size="xs"
+                      @click.stop="showModalDelete(item)"
+                      :disabled="btnLoading"
+                      v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_DESTROY')"
+                    >
+                      <b-icon icon="trash" class="p-0 m-0"></b-icon>
+                    </b-button>
+                    <b-tooltip :target="'btDelete' + item.id" variant="danger">Hapus Data Aktivitas</b-tooltip>
+                  </template>
+                  <template #emptytext>
+                    tidak ada data yang bisa ditampilkan
+                  </template>
+                </b-table>
+              </b-card-body>
+              <template #footer>
+                Total {{ totalRows }} data
+                <b-pagination
+                  v-model="currentPage"
+                  :total-rows="totalRows"
+                  :per-page="perPage"
+                  aria-controls="datatable"
+                  class="pagination-sm m-0 float-right"
+                  @change="handlePageChange"
+                  responsive
+                  pills
+                >
+                </b-pagination>
+              </template>
             </b-card>
           </b-col>
         </b-row>
+        <b-modal
+          id="modal-delete"
+          header-bg-variant="danger"
+          centered
+          @hidden="resetModal"
+          @ok="handleDelete"
+        >
+          <template #modal-title>Hapus Data</template>
+          <div class="d-block">
+            Data aktivitas dengan judul "{{ dataItem.judul_aktivitas }}" akan dihapus ?
+          </div>
+        </b-modal>
       </b-container>
     </template>
     <template v-slot:filtersidebar>
@@ -110,8 +211,12 @@
     mounted() {
       this.firstloading = false
       this.$refs.filter6.setFirstTimeLoading(this.firstloading)
+      this.initialize()
     },
     data: () => ({
+      datatableLoading: false,
+      btnLoading: false,
+
       firstloading: true,
       prodi_id: null,
       nama_prodi: null,
@@ -132,15 +237,32 @@
         },
         {
           key: 'nama_aktivitas',
-          label: 'Nama',
+          label: 'Jenis Kegiatan',
         },
+        {
+          key: 'judul_aktivitas',
+          label: 'Judul',
+        },
+        {
+          key: 'no_sk_tugas',
+          label: 'Nomor SK',
+        },
+        {
+          key: 'tanggal_sk_tugas',
+          label: 'Tanggal SK',
+        },
+        
+        {
+          key: 'jenis_anggota',
+          label: 'Jenis Anggota',
+        },        
         {
           label: 'Aksi',
           key: 'aksi',
           thStyle: 'width: 150px',
         },
       ],
-      sortBy: 'nama_aktivitas',
+      sortBy: 'judul_aktivitas',
       sortDesc: false,
       search: null,
       dataItem: {},
@@ -162,7 +284,7 @@
         page.from = 1
         page.perPage = 10
         page.currentPage = 1
-        page.sortBy = 'nama_aktivitas'
+        page.sortBy = 'judul_aktivitas'
         page.sortDesc = false
         page.search = null
         page.prodi_id = this.$store.getters['uiadmin/getProdiID']
@@ -202,6 +324,43 @@
         page.semester_akademik = this.semester_akademik
         this.$store.dispatch('uiadmin/updatePage', page)
       },
+      async initialize() {
+        this.datatableLoading = true
+        var page = this.$store.getters['uiadmin/Page']('dataaktivitas')
+        var url = this.url + '?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
+
+        if (page.loaded && page.search != null) {
+          this.search = page.search
+          url = page.search.length > 0 ? url + '&search=' + page.search : url
+        }
+        
+        await this.$ajax.get(url, {
+          headers: {
+            Authorization: this.$store.getters['auth/Token'],
+          },
+        })
+        .then(({ data }) => {
+          this.from = data.result.from
+          this.totalRows = data.result.total
+          this.datatable = data.result.data
+          page.loaded = true
+          this.$store.dispatch('uiadmin/updatePage', page)
+          this.$nextTick(() => {
+            this.currentPage = page.currentPage
+          })
+          this.datatableLoading = false
+        })
+      },
+      handleSearch() {
+        this.currentPage = 1
+        this.updatesettingpage()
+        this.initialize()
+      },
+      handlePageChange(value) {
+        this.currentPage = value
+        this.updatesettingpage()
+        this.initialize()
+      },
       addAktivitas() {
         if (this.prodi_id > 0) {
           this.$router.push(this.url + '/create')
@@ -216,6 +375,41 @@
             }
           )
         }
+      },
+      showModalDelete(item) {
+        this.dataItem = item
+        this.$bvModal.show('modal-delete')
+      },
+      resetModal() {
+        this.dataItem = {}
+      },
+      handleDelete(event) {
+        event.preventDefault()
+        this.btnLoading = true
+        this.$ajax
+          .post(
+            this.url + '/' + this.dataItem.id,
+            {
+              _method: 'DELETE',
+            },
+            {
+              headers: {
+                Authorization: this.$store.getters['auth/Token'],
+              },
+            }
+          )
+          .then(() => {
+            this.initialize()
+            this.btnLoading = false
+          })
+          .catch(() => {
+            this.btnLoading = false
+          })
+        // Hide the modal manually
+        this.$nextTick(() => {
+          this.dataItem = {}
+          this.$bvModal.hide('modal-delete')
+        })
       },
     },
     components: {
