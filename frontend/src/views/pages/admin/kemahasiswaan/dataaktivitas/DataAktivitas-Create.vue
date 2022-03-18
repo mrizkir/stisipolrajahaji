@@ -273,9 +273,9 @@
             	},
             }
       		)
-          .then(() => {
+          .then(({ data }) => {
             this.btnLoading = false
-            this.$router.push(this.url)
+            this.$router.push(this.url + '/' + data.result.id + '/detail')
       		})
           .catch(() => {
             this.btnLoading = false

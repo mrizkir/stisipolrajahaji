@@ -34,7 +34,9 @@ class DataAktivitasController extends Controller
 
 		if ($request->filled('search')) {
 			$search = $request->query('search');
-			$data = $data->whereRaw("judul_aktivitas LIKE '%$search%'");			
+			$data = $data->whereRaw("judul_aktivitas LIKE '%$search%'")
+			->orWhereRaw("no_sk_tugas LIKE '%$search%'")			
+			->orWhereRaw("nama_aktivitas LIKE '%$search%'");			
 		}
 
 		$data = $data->paginate(10);
@@ -42,7 +44,7 @@ class DataAktivitasController extends Controller
 		return Response()->json([
 			'status'=>1,
 			'pid'=>'fetch',
-			'message'=>"data jenis aktivitas berhasil diperoleh",
+			'message'=>"data aktivitas berhasil diperoleh",
 			'result'=>$data,
 		], 200); 
 	}
@@ -57,13 +59,20 @@ class DataAktivitasController extends Controller
 	{			
 		$this->hasPermissionTo('KEMAHASISWAAN-AKTIVITAS_BROWSE');
 
-		$dataaktivitas = DataAktivitasModel::find($id);
+		$dataaktivitas = DataAktivitasModel::select(\DB::raw('
+			pe3_data_aktivitas.*,
+			pe3_jenis_aktivitas.nama_aktivitas
+		'))
+		->join('pe3_jenis_aktivitas', 'pe3_jenis_aktivitas.idjenis', 'pe3_data_aktivitas.jenis_aktivitas_id')
+		->where('pe3_data_aktivitas.id', $id)
+		->first();
+
 		if (is_null($dataaktivitas))
 		{
 			return Response()->json([
 				'status'=>0,
 				'pid'=>'update',    
-				'message'=>["Data jenis aktivitas dengan id ($id) tidak tersedia di database"]
+				'message'=>["Data data aktivitas dengan id ($id) tidak tersedia di database"]
 			], 422); 
 		}
 		else
@@ -117,7 +126,7 @@ class DataAktivitasController extends Controller
 		return Response()->json([
 			'status'=>1,
 			'pid'=>'store',
-			'dataaktivitas'=>$dataaktivitas,    
+			'result'=>$dataaktivitas,    
 			'message'=>"data aktivitas berhasil disimpan",    
 		], 200); 
 	}
@@ -138,7 +147,7 @@ class DataAktivitasController extends Controller
 			return Response()->json([
 				'status'=>0,
 				'pid'=>'update',    
-				'message'=>["Data jenis aktivitas dengan id ($id) tidak tersedia di database"]
+				'message'=>["Data data aktivitas dengan id ($id) tidak tersedia di database"]
 			], 422); 
 		}
 		else

@@ -150,13 +150,26 @@ const routes = [
     path: '/kemahasiswaan/dataaktivitas/:id/edit',
     name: 'AkademikDataAktivitasEdit',
     meta: {
-      title: 'AKTIVITAS MAHASISWA - JENIS AKTIVITAS',
+      title: 'AKTIVITAS MAHASISWA - DATA AKTIVITAS',
       bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
     component: () =>
       import(
         '../views/pages/admin/kemahasiswaan/dataaktivitas/DataAktivitas-Edit.vue'
+      ),
+  },
+  {
+    path: '/kemahasiswaan/dataaktivitas/:id/detail',
+    name: 'AkademikDataAktivitasDetail',
+    meta: {
+      title: 'AKTIVITAS MAHASISWA - DATA AKTIVITAS',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/kemahasiswaan/dataaktivitas/DataAktivitas-Detail.vue'
       ),
   },
   //system - users

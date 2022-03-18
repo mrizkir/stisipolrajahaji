@@ -250,23 +250,24 @@
           this.search = page.search
           url = page.search.length > 0 ? url + '&search=' + page.search : url
         }
-        
-        await this.$ajax.get(url, {
-          headers: {
-            Authorization: this.$store.getters['auth/Token'],
-          },
-        })
-        .then(({ data }) => {
-          this.from = data.result.from
-          this.totalRows = data.result.total
-          this.datatable = data.result.data
-          page.loaded = true
-          this.$store.dispatch('uiadmin/updatePage', page)
-          this.$nextTick(() => {
-            this.currentPage = page.currentPage
+
+        await this.$ajax
+          .get(url, {
+            headers: {
+              Authorization: this.$store.getters['auth/Token'],
+            },
           })
-          this.datatableLoading = false
-        })
+          .then(({ data }) => {
+            this.from = data.result.from
+            this.totalRows = data.result.total
+            this.datatable = data.result.data
+            page.loaded = true
+            this.$store.dispatch('uiadmin/updatePage', page)
+            this.$nextTick(() => {
+              this.currentPage = page.currentPage
+            })
+            this.datatableLoading = false
+          })
       },
       handleSearch() {
         this.currentPage = 1
@@ -288,15 +289,16 @@
       handleDelete(event) {
         event.preventDefault()
         this.btnLoading = true
-        this.$ajax.post(
-          '/system/usersmanajemen/' + this.dataItem.userid,
+        this.$ajax
+          .post(
+            '/system/usersmanajemen/' + this.dataItem.userid,
             {
               _method: 'DELETE',
             },
             {
               headers: {
                 Authorization: this.$store.getters['auth/Token'],
-              }
+              },
             }
           )
           .then(() => {
@@ -306,7 +308,7 @@
           .catch(() => {
             this.btnLoading = false
           })
-          
+
         // Hide the modal manually
         this.$nextTick(() => {
           this.dataItem = {}

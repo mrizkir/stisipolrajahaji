@@ -166,24 +166,7 @@
     },
     created() {
       this.id = this.$route.params.id
-
-      this.prodi_id = this.$store.getters['uiadmin/AtributeValueOfPage'](
-        'dataaktivitas',
-        'prodi_id'
-      )
-      this.nama_prodi = this.$store.getters['uiadmin/getProdiName'](
-        this.prodi_id
-      )
-      this.tahun_akademik = this.$store.getters['uiadmin/AtributeValueOfPage'](
-        'dataaktivitas',
-        'tahun_akademik'
-      )
-      this.semester_akademik =
-        this.$store.getters['uiadmin/AtributeValueOfPage'](
-          'dataaktivitas',
-          'semester_akademik'
-        )
-
+      
       this.initialize()
     },
     data: () => ({
@@ -256,6 +239,13 @@
         })
         .then(({ data }) => {
           this.formdata = data.result
+          this.prodi_id = this.formdata.prodi_id
+            this.nama_prodi = this.$store.getters['uiadmin/getProdiName'](
+              this.prodi_id
+            )
+            this.tahun_akademik = this.formdata.tahun
+
+            this.semester_akademik = this.formdata.idsmt
         })
       },
       validateState(name) {
