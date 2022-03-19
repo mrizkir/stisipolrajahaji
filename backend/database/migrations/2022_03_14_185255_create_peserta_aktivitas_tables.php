@@ -20,21 +20,15 @@ class CreatePesertaAktivitasTables extends Migration
       $table->uuid('id')->primary();                        
       $table->uuid('data_aktivitas_id');
       $table->char('nim', 20);        
-      $table->tinyInteger('idsmt');        
-      $table->year('tahun');        
-      $table->integer('tasmt');        
-      $table->string('no_sk_tugas');        
-      $table->date('tanggal_sk_tugas');        
-      $table->uuid('jenis_aktivitas_id');        
+      $table->char('nirm', 20);
       $table->tinyInteger('jenis_anggota')->default(1);
-      $table->string('judul_aktivitas');        
-      $table->string('keterangan');        
-      $table->string('lokasi');        
-
-      $table->index('jenis_aktivitas_id');     
-
+      
       $table->timestamps();
-            
+      
+      
+      $table->index('nim');     
+      $table->index('nirm');     
+
     });
   }
 

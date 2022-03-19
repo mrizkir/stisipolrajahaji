@@ -34,7 +34,7 @@
             <b-form-group
               label="Nomor SK Tugas:"
               label-for="txtNoSKTugas"
-            >      
+            >    
               <b-form-input
                 id="txtNoSKTugas"
                 v-model="v$.formdata.no_sk_tugas.$model"
@@ -59,7 +59,7 @@
                 locale="id"
                 placeholder="Tanggal SK Tugas"
                 aria-describedby="frmdata-tanggal-sk-tugas"
-              />              
+              />            
               <b-form-invalid-feedback
                 id="frmdata-tanggal-sk-tugas"
               >
@@ -82,12 +82,12 @@
               >
                 Jenis kegiatan tidak boleh kosong, silahkan dipilih !!!.
               </b-form-invalid-feedback>
-            </b-form-group>            
+            </b-form-group>          
             
             <b-form-group
               label="Judul:"
               label-for="txtJudul"
-            >      
+            >    
               <b-form-textarea
                 id="txtJudul"
                 v-model="v$.formdata.judul_aktivitas.$model"
@@ -109,43 +109,43 @@
               v-slot="{ ariaDescribedby }"
             >
               <b-form-radio v-model="formdata.jenis_anggota" :aria-describedby="ariaDescribedby" name="formdata-jenis-anggota" value="1">Personal</b-form-radio>
-              <b-form-radio v-model="formdata.jenis_anggota" :aria-describedby="ariaDescribedby" name="formdata-jenis-anggota" value="2">Kelompok</b-form-radio>              
+              <b-form-radio v-model="formdata.jenis_anggota" :aria-describedby="ariaDescribedby" name="formdata-jenis-anggota" value="2">Kelompok</b-form-radio>            
             </b-form-group>
 
             <b-form-group
               label="Keterangan:"
               label-for="txtKeterangan"
-            >      
+            >    
               <b-form-textarea
                 id="txtKeterangan"
                 v-model="formdata.keterangan"
                 placeholder="Keterangan"    
                 rows="3"
                 max-rows="6"
-              />              
+              />            
             </b-form-group>
 
             <b-form-group
               label="Lokasi:"
               label-for="txtLokasi"
-            >      
+            >    
               <b-form-input
                 id="txtLokasi"
                 v-model="formdata.lokasi"
                 placeholder="Lokasi Kegiatan / Aktivitas"
                 aria-describedby="frmdata-txtLokasi"
-              />             
+              />           
             </b-form-group>
 
           </b-card-body>
-          <template #footer>    
+          <template #footer>  
             <b-button
               type="submit"
               :disabled="v$.formdata.$invalid || btnLoading"
               variant="primary"
             >
               Simpan
-            </b-button>      
+            </b-button>    
           </template>
         </b-card>
       </b-form>
@@ -256,7 +256,7 @@
 
           this.$ajax.post(this.url + '/store',
             {
-              prodi_id: this.prodi_id,              
+              prodi_id: this.prodi_id,      
 			        idsmt: this.semester_akademik,
               tahun: this.tahun_akademik,
             	no_sk_tugas: this.formdata.no_sk_tugas,

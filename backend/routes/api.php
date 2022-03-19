@@ -36,9 +36,14 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	//kemahasiswaan - data aktivitas
 	$router->get('/kemahasiswaan/dataaktivitas',['middleware'=>['role:superadmin|manajemen|programstudi|dosen'],'uses'=>'Kemahasiswaan\DataAktivitasController@index','as'=>'kemahasiswaan-dataaktivitas.index']);				
 	$router->post('/kemahasiswaan/dataaktivitas/store',['middleware'=>['role:superadmin|manajemen|programstudi|dosen|'],'uses'=>'Kemahasiswaan\DataAktivitasController@store','as'=>'kemahasiswaan-dataaktivitas.store']);
+	$router->post('/kemahasiswaan/dataaktivitas/storepeserta',['middleware'=>['role:superadmin|manajemen|programstudi|dosen|'],'uses'=>'Kemahasiswaan\DataAktivitasController@storepeserta','as'=>'kemahasiswaan-dataaktivitas.storepeserta']);
 	$router->get('/kemahasiswaan/dataaktivitas/{id}',['middleware'=>['role:superadmin|manajemen|programstudi|dosen|'],'uses'=>'Kemahasiswaan\DataAktivitasController@show','as'=>'kemahasiswaan-dataaktivitas.show']);
 	$router->put('/kemahasiswaan/dataaktivitas/{id}',['middleware'=>['role:superadmin|manajemen|programstudi|dosen'],'uses'=>'Kemahasiswaan\DataAktivitasController@update','as'=>'kemahasiswaan-dataaktivitas.update']);
 	$router->delete('/kemahasiswaan/dataaktivitas/{id}',['middleware'=>['role:superadmin|manajemen|programstudi|dosen'],'uses'=>'Kemahasiswaan\DataAktivitasController@destroy','as'=>'kemahasiswaan-dataaktivitas.destroy']);
+	$router->delete('/kemahasiswaan/dataaktivitas/{id}/deletepeserta',['middleware'=>['role:superadmin|manajemen|programstudi|dosen'],'uses'=>'Kemahasiswaan\DataAktivitasController@destroypeserta','as'=>'kemahasiswaan-dataaktivitas.destroypeserta']);
+	$router->get('/kemahasiswaan/dataaktivitas/{id}/peserta',['middleware'=>['role:superadmin|manajemen|programstudi|dosen|'],'uses'=>'Kemahasiswaan\DataAktivitasController@peserta','as'=>'kemahasiswaan-dataaktivitas.peserta']);
+	$router->get('/kemahasiswaan/dataaktivitas/{id}/penguji',['middleware'=>['role:superadmin|manajemen|programstudi|dosen|'],'uses'=>'Kemahasiswaan\DataAktivitasController@penguji','as'=>'kemahasiswaan-dataaktivitas.penguji']);
+	$router->get('/kemahasiswaan/dataaktivitas/{id}/pembimbing',['middleware'=>['role:superadmin|manajemen|programstudi|dosen|'],'uses'=>'Kemahasiswaan\DataAktivitasController@pembimbing','as'=>'kemahasiswaan-dataaktivitas.pembimbing']);
 	
 	//feeder - koneksi
 	$router->get('/feeder/teskoneksi',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Feeder\FeederController@teskoneksi','as'=>'feeder.teskoneksi']);				

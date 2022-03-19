@@ -29,7 +29,7 @@
                     class="mr-1"
                   >
                     <b-icon icon="trash2" />
-                  </b-button>                  
+                  </b-button>                
                 </div>
               </template>
               <b-card-body class="p-0">
@@ -56,7 +56,7 @@
                   </template>
                   <template #cell(no)="{ index }">
                     {{ index + parseInt(from) }}
-                  </template>                 
+                  </template>               
                   <template #emptytext>
                     tidak ada data yang bisa ditampilkan
                   </template>
@@ -198,7 +198,7 @@
     }),
     methods: {
       updatesettingpage() {
-        var page = this.$store.getters['uiadmin/Page']('feeder-krs')        
+        var page = this.$store.getters['uiadmin/Page']('feeder-krs')
         page.from = this.from
         page.perPage = this.perPage
         page.currentPage = this.currentPage

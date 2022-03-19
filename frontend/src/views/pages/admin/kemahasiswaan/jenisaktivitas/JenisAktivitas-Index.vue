@@ -39,7 +39,7 @@
               </template>
               <b-card-body>
                 <div class="input-group input-group-sm">
-                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />  
+                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />
                   <div class="input-group-append">
                     <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
                       <b-icon icon="search" />
@@ -84,9 +84,9 @@
                       :disabled="btnLoading"
                       v-if="$store.getters['auth/can']('KEMAHASISWAAN-JENIS-AKTIVITAS_UPDATE')"
                     >
-                      <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>            
+                      <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>          
                       <b-tooltip :target="'btEdit' + index" variant="primary" placement="rightbottom">Ubah Jenis Aktivitas</b-tooltip>
-                    </b-button>          
+                    </b-button>        
                     <b-button
                       :id="'btDelete' + index"
                       variant="outline-danger p-1"

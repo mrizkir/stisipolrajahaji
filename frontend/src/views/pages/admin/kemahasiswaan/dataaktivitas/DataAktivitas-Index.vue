@@ -196,6 +196,7 @@
         prodi_id: this.$store.getters['uiadmin/getProdiID'],
         tahun_akademik: this.$store.getters['uiadmin/getTahunAkademik'],
         semester_akademik: this.$store.getters['uiadmin/getSemesterAkademik'],
+        indexTab: 0,
       })
       this.prodi_id = this.$store.getters['uiadmin/AtributeValueOfPage'](
         'dataaktivitas',
@@ -259,7 +260,7 @@
         {
           key: 'jenis_anggota',
           label: 'Jenis Anggota',
-        },        
+        },
         {
           label: 'Aksi',
           key: 'aksi',
@@ -296,7 +297,7 @@
         page.semester_akademik =
           this.$store.getters['uiadmin/getSemesterAkademik']
         this.$store.dispatch('uiadmin/updatePage', page)
-
+        page.indexTab = 0
         this.$bvToast.toast(
           'Setting halaman sudah kembali ke default, silahkan refresh',
           {

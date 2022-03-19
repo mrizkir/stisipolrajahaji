@@ -113,7 +113,7 @@
           this.$ajax.post('/kemahasiswaan/jenisaktivitas/' + this.idjenis,
             {
               _method: 'PUT',
-            	nama_aktivitas: this.formdata.nama_aktivitas,            	
+            	nama_aktivitas: this.formdata.nama_aktivitas,    	
       	    },
             {
             	headers: {

@@ -25,7 +25,7 @@
                 </button>
                 <button type="button" class="btn btn-tool" v-b-tooltip.hover title="Keluar" @click.stop="$router.push('/kemahasiswaan/dataaktivitas')">
                   <b-icon icon="x-square"></b-icon>
-                </button>                
+                </button>              
               </div>
             </template>
             <b-card-body>
@@ -112,7 +112,107 @@
               fill
             >
               <b-tab title="Peserta Aktivitas">
-                <b-card-text>Tab contents 1</b-card-text>
+                <b-form @submit.prevent="onSubmitPeserta" name="frmdata_peserta" id="frmdata_peserta" class="card-text">
+                  <b-form-group
+                    label-cols-sm="2"
+                    label-cols-lg="2"
+                    content-cols-sm
+                    content-cols-lg="10"
+                    label="NIM:"
+                    label-for="txtNim"
+                  >    
+                    <b-form-input
+                      id="txtNim"
+                      v-model="v$.formdata_peserta.nim.$model"
+                      placeholder="Masukan NIM"
+                      :state="validateState('nim')"
+                      aria-describedby="frmdata-peserta-nim"
+                    />
+                    <b-form-invalid-feedback
+                      id="frmdata-peserta-nim"
+                    >
+                      NIM tidak boleh kosong, silahkan diisi !!!.
+                    </b-form-invalid-feedback>
+                  </b-form-group>
+                  <b-form-group
+                    label-cols-sm="2"
+                    label-cols-lg="2"
+                    content-cols-sm
+                    content-cols-lg="10"
+                    label="Peran Peserta:"
+                    label-for="selectPeranPeserta"
+                  >
+                    <b-form-select
+                      id="selectPeranPeserta"
+                      v-model="v$.formdata_peserta.jenis_anggota.$model"
+                      :options="[{value: 1, text: 'Personal'}]"
+                      :state="validateState('jenis_anggota')"
+                      aria-describedby="frmdata-peserta-jenis-anggota"
+                    />
+                    <b-form-invalid-feedback id="frmdata-peserta-jenis-anggota">
+                      Silahkan pilih jenis anggota
+                    </b-form-invalid-feedback>                  
+                  </b-form-group>
+                  <div class="form-row form-group">
+                    <div class="col-sm col-log-10 offset-2">
+                      <b-button
+                        type="submit"
+                        :disabled="v$.formdata_peserta.$invalid || btnLoading"
+                        variant="primary"
+                      >
+                        Tambah
+                      </b-button>
+                    </div>
+                  </div>
+                </b-form>              
+                <b-card-text class="p-0 m-0">
+                  <b-table
+                    id="datatable_peserta"
+                    primary-key="id"
+                    :fields="fields_peserta"
+                    :items="datatable_peserta"                    
+                    striped
+                    hover
+                    show-empty
+                    responsive                    
+                    small
+                  >
+                    <template #cell(no)="{ index }">
+                      {{ index + 1 }}
+                    </template>
+                    <template #cell(jenis_anggota)="{ item }">
+                      {{ item.jenis_anggota == 1 ? 'Personal' : 'Kelompok' }}
+                    </template>
+                    <template #cell(aksi)="{ item }">
+                      <b-button
+                        :id="'btDelete' + item.id"
+                        variant="outline-danger p-1"
+                        size="xs"
+                        @click.stop="showModalDeletePeserta(item)"
+                        :disabled="btnLoading"
+                        v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_DESTROY')"
+                      >
+                        <b-icon icon="trash" class="p-0 m-0"></b-icon>
+                      </b-button>
+                      <b-tooltip :target="'btDelete' + item.id" variant="danger">Hapus Data Peserta</b-tooltip>
+                    </template>
+                    <template #emptytext>
+                      tidak ada data yang bisa ditampilkan
+                    </template>
+                  </b-table>
+                  <b-modal
+                    id="modal-delete-peserta"
+                    header-bg-variant="danger"
+                    centered
+                    @hidden="resetModal"
+                    @ok="handleDeletePeserta"
+                  >
+                    <template #modal-title>Hapus Data</template>
+                    <div class="d-block">
+                      Data peserta aktivitas dengan nim "{{ dataItem.nim }}" akan dihapus ?
+                    </div>
+                  </b-modal>
+                </b-card-text>
               </b-tab>
               <b-tab title="Dosen Pembimbing" lazy>
                 <b-card-text>Tab contents 2</b-card-text>
@@ -141,10 +241,18 @@
     },
     created() {
       this.id = this.$route.params.id
+      this.indexTab = this.$store.getters['uiadmin/AtributeValueOfPage'](
+        'dataaktivitas',
+        'indexTab'
+      )
       this.initialize()
+    },
+    mounted() {
+      this.firstloading = false
     },
     data: () => ({
       id: null,
+      firstloading: true,
       btnLoading: false,
       prodi_id: null,
       nama_prodi: null,
@@ -152,30 +260,52 @@
       semester_akademik: null,
       indexTab: 0,
       daftar_jenis_aktivitas: [],
-      formdata: {
-        no_sk_tugas: null,
-        tanggal_sk_tugas: null,
-        jenis_aktivitas_id: null,
+      formdata_peserta: {
+        nim: null,
         jenis_anggota: 1,
-        judul_aktivitas: null,
-        keterangan: null,
-        lokasi: null,
       },
       data_aktivitas: {},
+
+      dataItem: {},
+      //table peserta
+      datatable_peserta: [],
+      fields_peserta: [
+        {
+          label: 'No.',
+          key: 'no',
+          thStyle: 'width: 50px',
+        },
+        {
+          key: 'nim',
+          label: 'NIM',
+        },
+        {
+          key: 'nirm',
+          label: 'NIRM',
+        },
+        {
+          key: 'nama_mhs',
+          label: 'Nama Mahasiswa',
+        },
+        {
+          key: 'jenis_anggota',
+          label: 'Jenis',
+        },       
+            
+        {
+          label: 'Aksi',
+          key: 'aksi',
+          thStyle: 'width: 50px',
+        },
+      ],
     }),
     validations() {
       return {
-        formdata: {
-          no_sk_tugas: {
+        formdata_peserta: {
+          nim: {
             required,
           },
-          tanggal_sk_tugas: {
-            required,
-          },
-          jenis_aktivitas_id: {
-            required,
-          },
-          judul_aktivitas: {
+          jenis_anggota: {
             required,
           },
         },
@@ -197,30 +327,32 @@
               this.prodi_id
             )
             this.tahun_akademik = this.data_aktivitas.tahun
-
             this.semester_akademik = this.data_aktivitas.idsmt
           })
+
+          this.$ajax
+            .get(this.url + '/' + this.id + '/peserta', {
+              headers: {
+                Authorization: this.$store.getters['auth/Token'],
+              },
+            })
+            .then(({ data }) => {
+              this.datatable_peserta = data.result
+            })
       },
       validateState(name) {
-        const { $dirty, $error } = this.v$.formdata[name]
+        const { $dirty, $error } = this.v$.formdata_peserta[name]
         return $dirty ? !$error : null
       },
-      async onSubmit() {
-        if (!this.v$.formdata.$invalid) {
+      async onSubmitPeserta() {
+        if (!this.v$.formdata_peserta.$invalid) {
           this.btnLoading = true
 
-          this.$ajax.post(this.url + '/store',
+          this.$ajax.post(this.url + '/storepeserta',
             {
-              prodi_id: this.prodi_id,              
-			        idsmt: this.semester_akademik,
-              tahun: this.tahun_akademik,
-            	no_sk_tugas: this.formdata.no_sk_tugas,
-              tanggal_sk_tugas: this.formdata.tanggal_sk_tugas,
-              jenis_aktivitas_id: this.formdata.jenis_aktivitas_id,
-              jenis_anggota: this.formdata.jenis_anggota,
-              judul_aktivitas: this.formdata.judul_aktivitas,
-              keterangan: this.formdata.keterangan,
-              lokasi: this.formdata.lokasi,
+              data_aktivitas_id: this.id,    
+			        nim: this.formdata_peserta.nim,      
+              jenis_anggota: this.formdata_peserta.jenis_anggota,      
       	    },
             {
             	headers: {
@@ -230,17 +362,49 @@
       		)
           .then(() => {
             this.btnLoading = false
-            this.$router.push(this.url)
+            this.$router.go()
       		})
           .catch(() => {
             this.btnLoading = false
       		})
         }
       },
+      showModalDeletePeserta(item) {
+        this.dataItem = item
+        this.$bvModal.show('modal-delete-peserta')
+      },
+      resetModal() {
+        this.dataItem = {}
+      },
+      handleDeletePeserta(event) {
+        event.preventDefault()
+        this.btnLoading = true
+        this.$ajax
+          .post(
+            this.url + '/' + this.dataItem.id + '/deletepeserta',
+            {
+              _method: 'DELETE',
+            },
+            {
+              headers: {
+                Authorization: this.$store.getters['auth/Token'],
+              },
+            }
+          )
+          .then(() => {
+            this.$router.go()
+            this.btnLoading = false
+          })
+          .catch(() => {
+            this.btnLoading = false
+          })
+      },
     },
     watch: {
-      indexTab(val) {
-        console.log(val)
+      indexTab(val) {        
+        var page = this.$store.getters['uiadmin/Page']('dataaktivitas')
+        page.indexTab = val
+        this.$store.dispatch('uiadmin/updatePage', page)
       },
     },
     components: {

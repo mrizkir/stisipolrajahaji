@@ -91,7 +91,7 @@
           
           this.$ajax.post('/kemahasiswaan/jenisaktivitas/store',
             {
-            	nama_aktivitas: this.formdata.nama_aktivitas,            	
+            	nama_aktivitas: this.formdata.nama_aktivitas,    	
       	    },
             {
             	headers: {

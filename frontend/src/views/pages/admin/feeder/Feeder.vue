@@ -21,12 +21,12 @@
                   <p>
                     {{ token }}
                   </p>
-                </b-alert>                
+                </b-alert>              
               </b-card-body>
               <template #footer>
-                <b-button variant="outline-primary" @click.stop="koneksi" :disabled="btnLoading">  
+                <b-button variant="outline-primary" @click.stop="koneksi" :disabled="btnLoading">
                   Get Token
-                </b-button>                
+                </b-button>              
               </template>
             </b-card>
           </b-col>

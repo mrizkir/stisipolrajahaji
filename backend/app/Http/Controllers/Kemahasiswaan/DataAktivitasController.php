@@ -8,6 +8,8 @@ use Illuminate\Validation\Rule;
 use Ramsey\Uuid\Uuid;
 
 use App\Models\Kemahasiswaan\DataAktivitasModel;
+use App\Models\Kemahasiswaan\PesertaAktivitasModel;
+use App\Models\Kemahasiswaan\RegisterMahasiswaModel;
 
 class DataAktivitasController extends Controller
 {      
@@ -64,7 +66,7 @@ class DataAktivitasController extends Controller
 			pe3_jenis_aktivitas.nama_aktivitas
 		'))
 		->join('pe3_jenis_aktivitas', 'pe3_jenis_aktivitas.idjenis', 'pe3_data_aktivitas.jenis_aktivitas_id')
-		->where('pe3_data_aktivitas.id', $id)
+		->where('pe3_data_aktivitas.id', $id)		
 		->first();
 
 		if (is_null($dataaktivitas))
@@ -80,11 +82,38 @@ class DataAktivitasController extends Controller
 			return Response()->json([
 				'status'=>1,
 				'pid'=>'fetchdata',
-				'result'=>$dataaktivitas,      
+				'result'=>$dataaktivitas,
 				'message'=>"Data aktivitas dengan id ($id) berhasil diperoleh."
 			], 200); 
 		}
-	}   
+	} 
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function peserta(Request $request, $id)
+	{			
+		$this->hasPermissionTo('KEMAHASISWAAN-AKTIVITAS_BROWSE');
+
+
+		$peserta = PesertaAktivitasModel::select(\DB::raw('
+			pe3_peserta_aktivitas.*,
+			v_datamhs.nama_mhs
+		'))
+		->join('v_datamhs', 'v_datamhs.nim', 'pe3_peserta_aktivitas.nim')
+		->orderBy('v_datamhs.nama_mhs', 'asc')
+		->get();
+
+		return Response()->json([
+			'status'=>1,
+			'pid'=>'fetchdata',
+			'result'=>$peserta,
+			'message'=>"Peserta aktivitas dari id data aktivitas ($id) berhasil diperoleh."
+		], 200);
+	}
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -96,30 +125,30 @@ class DataAktivitasController extends Controller
 		$this->hasPermissionTo('KEMAHASISWAAN-AKTIVITAS_STORE');
 
 		$rule=[            
-			'prodi_id'=>'required|exists:program_studi,kjur',      
-			'idsmt'=>'required|in:1,2',      
+			'prodi_id'=>'required|exists:program_studi,kjur',
+			'idsmt'=>'required|in:1,2',
 			'tahun'=>'required|numeric',			
-			'no_sk_tugas'=>'required|unique:pe3_data_aktivitas,no_sk_tugas',      
-			'tanggal_sk_tugas'=>'required|date',      
-			'jenis_aktivitas_id'=>'required|exists:pe3_jenis_aktivitas,idjenis',      
-			'jenis_anggota'=>'required|in:1,2',      
+			'no_sk_tugas'=>'required|unique:pe3_data_aktivitas,no_sk_tugas',
+			'tanggal_sk_tugas'=>'required|date',
+			'jenis_aktivitas_id'=>'required|exists:pe3_jenis_aktivitas,idjenis',
+			'jenis_anggota'=>'required|in:1,2',
 			'judul_aktivitas'=>'required',
 		];
 	
 		$this->validate($request, $rule);
 						
 		$dataaktivitas=DataAktivitasModel::create([
-      'id'=>Uuid::uuid4()->toString(),                        
-      'prodi_id'=>$request->input('prodi_id'),        
-      'idsmt'=>$request->input('idsmt'),        
-      'tahun'=>$request->input('tahun'),        
+      'id'=>Uuid::uuid4()->toString(),  
+      'prodi_id'=>$request->input('prodi_id'),  
+      'idsmt'=>$request->input('idsmt'),  
+      'tahun'=>$request->input('tahun'),  
       'tasmt'=>$request->input('tahun') . $request->input('idsmt'),
       'no_sk_tugas'=>strtoupper($request->input('no_sk_tugas')),
-      'tanggal_sk_tugas'=>$request->input('tanggal_sk_tugas'),        
-      'jenis_aktivitas_id'=>$request->input('jenis_aktivitas_id'),        
+      'tanggal_sk_tugas'=>$request->input('tanggal_sk_tugas'),  
+      'jenis_aktivitas_id'=>$request->input('jenis_aktivitas_id'),  
       'jenis_anggota'=>$request->input('jenis_anggota'),
       'judul_aktivitas'=>strtoupper($request->input('judul_aktivitas')),
-      'keterangan'=>$request->input('keterangan'),        
+      'keterangan'=>$request->input('keterangan'),  
       'lokasi'=>$request->input('lokasi'),   			
 		]);                 
 
@@ -128,6 +157,45 @@ class DataAktivitasController extends Controller
 			'pid'=>'store',
 			'result'=>$dataaktivitas,    
 			'message'=>"data aktivitas berhasil disimpan",    
+		], 200); 
+	}
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function storepeserta(Request $request)
+	{
+		$this->hasPermissionTo('KEMAHASISWAAN-AKTIVITAS_STORE');
+
+		$rule=[            
+			'data_aktivitas_id'=>'required|exists:pe3_data_aktivitas,id',			
+			'nim'=>[
+				'required',
+				'exists:register_mahasiswa,nim',
+				'unique:pe3_peserta_aktivitas,nim,'.$request->input('data_aktivitas_id'),
+			],
+			'jenis_anggota'=>'required|in:1,2',			
+		];
+	
+		$this->validate($request, $rule);
+		
+		$data_mhs = RegisterMahasiswaModel::find($request->input('nim'));
+
+		$peserta=PesertaAktivitasModel::create([
+      'id'=>Uuid::uuid4()->toString(),  
+      'data_aktivitas_id'=>$request->input('data_aktivitas_id'),  
+      'nim'=>$request->input('nim'),  
+      'nirm'=>$data_mhs->nirm,  
+      'jenis_anggota'=>$request->input('jenis_anggota'),
+		]);
+
+		return Response()->json([
+			'status'=>1,
+			'pid'=>'store',
+			'result'=>$peserta,    
+			'message'=>"data peserta aktivitas berhasil disimpan",    
 		], 200); 
 	}
 	/**
@@ -153,10 +221,10 @@ class DataAktivitasController extends Controller
 		else
 		{	
 			$rule=[
-				'no_sk_tugas'=>'required|unique:pe3_data_aktivitas,no_sk_tugas,'.$dataaktivitas->id,      
-				'tanggal_sk_tugas'=>'required|date',      
-				'jenis_aktivitas_id'=>'required|exists:pe3_jenis_aktivitas,idjenis',      
-				'jenis_anggota'=>'required|in:1,2',      
+				'no_sk_tugas'=>'required|unique:pe3_data_aktivitas,no_sk_tugas,'.$dataaktivitas->id,
+				'tanggal_sk_tugas'=>'required|date',
+				'jenis_aktivitas_id'=>'required|exists:pe3_jenis_aktivitas,idjenis',
+				'jenis_anggota'=>'required|in:1,2',
 				'judul_aktivitas'=>'required',
 			];
 		
@@ -175,7 +243,7 @@ class DataAktivitasController extends Controller
 			return Response()->json([
 				'status'=>1,
 				'pid'=>'update',
-				'dataaktivitas'=>$dataaktivitas,      
+				'dataaktivitas'=>$dataaktivitas,
 				'message'=>'Data aktivitas berhasil diubah.'
 			], 200); 
 		}
@@ -198,6 +266,10 @@ class DataAktivitasController extends Controller
 		else
 		{
 			$judul_aktivitas=$dataaktivitas->judul_aktivitas;
+			\DB::table('pe3_peserta_aktivitas')
+			->where('data_aktivitas_id', $id)
+			->delete();
+			
 			$dataaktivitas->delete();
 
 			\Log::channel(self::LOG_CHANNEL)->info("Data Aktivitas berhasil di hapus oleh {$this->getUsername()}");
@@ -206,6 +278,36 @@ class DataAktivitasController extends Controller
 				'status'=>1,
 				'pid'=>'destroy',    
 				'message'=>"Data aktivitas dengan id ($id) berhasil dihapus"
+			], 200);    
+		}
+				  
+	} 
+	public function destroypeserta(Request $request,$id)
+	{
+		$this->hasPermissionTo('KEMAHASISWAAN-AKTIVITAS_DESTROY');
+
+		$peserta = PesertaAktivitasModel::find($id); 
+		
+		if (is_null($peserta))
+		{
+			\Log::channel(self::LOG_CHANNEL)->error("Peserta aktivigas dengan id ($id) gagal dihapus oleh {$this->getUsername()} karena var dataaktivitas=null");
+
+			return Response()->json([
+				'status'=>0,				
+				'message'=>["Peserta Aktivitas dengan ($id) gagal dihapus"]
+			], 422); 
+		}		
+		else
+		{
+			$nim=$peserta->nim;
+			$peserta->delete();
+
+			\Log::channel(self::LOG_CHANNEL)->info("Data Peserta Aktivitas berhasil di hapus oleh {$this->getUsername()}");
+		
+			return Response()->json([
+				'status'=>1,
+				'pid'=>'destroy',    
+				'message'=>"Data Peserta aktivitas dengan id ($nim) berhasil dihapus"
 			], 200);    
 		}
 				  

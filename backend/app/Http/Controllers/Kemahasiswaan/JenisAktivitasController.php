@@ -124,7 +124,7 @@ class JenisAktivitasController extends Controller
 			$this->validate($request, [
 				'nama_aktivitas'=>[
 					'required',    
-					'string',        
+					'string',
 					Rule::unique('pe3_jenis_aktivitas')->ignore($jenisaktivitas->nama_aktivitas, 'nama_aktivitas')           
 				],						
 			]); 
