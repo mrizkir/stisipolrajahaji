@@ -20,46 +20,14 @@ public final class Configuration {
     private PreparedStatement pstmt;
     private ResultSet rs;
     
-    public Configuration() {
-        connect();
+    public Configuration() {        
         createNewTable();
-    }
-    /**
-     * Connect to a sample database
-     */
-    private void connect() {        
-        try
-        {
-            // db parameters
-            String url = "jdbc:sqlite:feederclient.db";
-            // create a connection to the database
-            conn = DriverManager.getConnection(url);            
-            
-        } 
-        catch (SQLException e) 
-        {
-            System.out.println(e.getMessage());
-        } 
-        finally {
-            try 
-            {
-                if (conn != null) 
-                {
-                    conn.close();
-                }
-            } 
-            catch (SQLException ex) 
-            {
-                System.out.println(ex.getMessage());
-            }
-        }
     }
     
     /**
      * Create a new table in the test database     
      */
-    private void createNewTable(){
-        
+    private void createNewTable(){        
         // SQL statement for creating a new table
         String sql = """
                      CREATE TABLE IF NOT EXISTS configuration (
@@ -70,6 +38,11 @@ public final class Configuration {
                      """;
         
         try {
+            // db parameters
+            String url = "jdbc:sqlite:feederclient.db";
+            // create a connection to the database
+            conn = DriverManager.getConnection(url); 
+            
             Statement stmt;
             stmt = conn.createStatement();        
             // create a new table
@@ -77,7 +50,7 @@ public final class Configuration {
             
             boolean recordAdded;
             
-            for (int i = 1; i < 3; i++) 
+            for (int i = 1; i <= 3; i++) 
             {
                 sql = "SELECT config_id FROM configuration WHERE config_id = ?";
                 pstmt  = conn.prepareStatement(sql);
@@ -85,7 +58,7 @@ public final class Configuration {
                 
                 rs  = pstmt.executeQuery();
                 recordAdded = false;
-                while(!rs.next())
+                while(rs.next())
                 {
                     recordAdded = true;
                 }
@@ -95,7 +68,7 @@ public final class Configuration {
                 if(!recordAdded) 
                 {
                     pstmt = conn.prepareStatement(sql);
-                    pstmt.setInt(1, 1);
+                    pstmt.setInt(1, i);
                     switch(i)
                     {
                         case 1 -> pstmt.setString(2, "feeder_host");
@@ -111,6 +84,8 @@ public final class Configuration {
         catch (SQLException e) 
         {
             System.out.println(e.getMessage());
+            System.out.println("method createNewTable");
+            e.printStackTrace();
         }
     }
     
@@ -119,13 +94,18 @@ public final class Configuration {
         String config_name = "";
         try 
         {
+            // db parameters
+            String url = "jdbc:sqlite:feederclient.db";
+            // create a connection to the database
+            conn = DriverManager.getConnection(url); 
+            
             String sql = "SELECT config_value FROM configuration WHERE config_id = ?";
             pstmt  = conn.prepareStatement(sql);
             pstmt.setInt(1, config_id);
 
             rs  = pstmt.executeQuery();
             
-            while(!rs.next())
+            while(rs.next())
             {
                 config_name = rs.getString("config_value");
             }
@@ -134,6 +114,8 @@ public final class Configuration {
         catch (SQLException e) 
         {
             System.out.println(e.getMessage());
+            System.out.println("method getConfigValue");
+            e.printStackTrace();
         }
         
         return config_name;
@@ -143,16 +125,23 @@ public final class Configuration {
     {
         try 
         {
+             // db parameters
+            String url = "jdbc:sqlite:feederclient.db";
+            // create a connection to the database
+            conn = DriverManager.getConnection(url); 
+            
             String sql = "UPDATE configuration SET config_value = ? WHERE config_id = ?";
             pstmt  = conn.prepareStatement(sql);
-            pstmt.setInt(1, config_id);
-            pstmt.setString(2, config_value);
+            pstmt.setString(1, config_value);
+            pstmt.setInt(2, config_id);
 
             pstmt.executeUpdate();
         }
         catch (SQLException e) 
         {
             System.out.println(e.getMessage());
+            System.out.println("method updateConfigValue");
+            e.printStackTrace();
         }
     
     }
