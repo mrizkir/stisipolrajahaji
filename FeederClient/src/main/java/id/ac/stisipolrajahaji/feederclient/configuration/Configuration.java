@@ -50,7 +50,7 @@ public final class Configuration {
             
             boolean recordAdded;
             
-            for (int i = 1; i <= 3; i++) 
+            for (int i = 1; i <= 5; i++) 
             {
                 sql = "SELECT config_id FROM configuration WHERE config_id = ?";
                 pstmt  = conn.prepareStatement(sql);
@@ -74,6 +74,8 @@ public final class Configuration {
                         case 1 -> pstmt.setString(2, "feeder_host");
                         case 2 -> pstmt.setString(2, "feeder_username");
                         case 3 -> pstmt.setString(2, "feeder_password");
+                        case 4 -> pstmt.setString(2, "ingat_password");
+                        case 5 -> pstmt.setString(2, "token_feeder");
                     }
                     
                     pstmt.setString(3, "");
@@ -83,8 +85,7 @@ public final class Configuration {
         } 
         catch (SQLException e) 
         {
-            System.out.println(e.getMessage());
-            System.out.println("method createNewTable");
+            System.out.println(e.getMessage());            
             e.printStackTrace();
         }
     }
@@ -113,8 +114,7 @@ public final class Configuration {
         }
         catch (SQLException e) 
         {
-            System.out.println(e.getMessage());
-            System.out.println("method getConfigValue");
+            System.out.println(e.getMessage());            
             e.printStackTrace();
         }
         
@@ -139,8 +139,7 @@ public final class Configuration {
         }
         catch (SQLException e) 
         {
-            System.out.println(e.getMessage());
-            System.out.println("method updateConfigValue");
+            System.out.println(e.getMessage());            
             e.printStackTrace();
         }
     

@@ -6,11 +6,14 @@ package id.ac.stisipolrajahaji.feederclient;
 
 
 import id.ac.stisipolrajahaji.feederclient.configuration.Configuration;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.json.JSONObject;
 
 
 /**
@@ -132,6 +135,7 @@ public class Login extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -156,6 +160,26 @@ public class Login extends javax.swing.JFrame {
             Response response = request.post(Entity.entity(payload, MediaType.APPLICATION_JSON));
             String value = response.readEntity(String.class);
             System.out.println(value);
+            JSONObject feeder = new JSONObject(value);
+            int error_code = (int) feeder.get("error_code");
+            
+            if (error_code == 0)
+            {
+                JSONObject data = feeder.getJSONObject("data");
+                System.out.println((String) data.get("token"));
+                config.updateConfigValue(5, (String) data.get("token"));
+                
+                MainFrame frm = new MainFrame();
+                frm.setVisible(true);
+                frm.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                this.dispose();
+            }
+            else                
+            {
+                config.updateConfigValue(5, "");
+                JOptionPane.showMessageDialog(null, feeder.get("error_desc"));
+            }
+            
             response.close();
         }
         catch(Exception e)
