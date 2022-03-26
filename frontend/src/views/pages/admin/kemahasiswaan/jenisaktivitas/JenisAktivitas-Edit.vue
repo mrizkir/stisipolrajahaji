@@ -1,8 +1,6 @@
 <template>
   <KemahasiswaanLayout :showrightsidebar="false">
-    <template v-slot:page-header>
-      Jenis Aktivitas
-    </template>
+    <template v-slot:page-header>Jenis Aktivitas</template>
     <template v-slot:page-breadcrumb>
       <b-breadcrumb-item to="/kemahasiswaan">Kemahasiswaan</b-breadcrumb-item>
       <b-breadcrumb-item to="/kemahasiswaan/jenisaktivitas">Jenis Aktivitas</b-breadcrumb-item>

@@ -1,8 +1,6 @@
 <template>
   <KemahasiswaanLayout :showrightsidebar="false">
-    <template v-slot:page-header>
-      Jenis Aktivitas
-    </template>
+    <template v-slot:page-header>Jenis Aktivitas</template>
     <template v-slot:page-breadcrumb>
       <b-breadcrumb-item to="/kemahasiswaan">Kemahasiswaan</b-breadcrumb-item>
       <b-breadcrumb-item active>Jenis Aktivitas</b-breadcrumb-item>
@@ -212,12 +210,15 @@
         page.search = null
         this.$store.dispatch('uiadmin/updatePage', page)
 
-        this.$bvToast.toast('Setting halaman sudah kembali ke default, silahkan refresh', {
-          title: 'Pesan Sistem',
-          variant: 'info',
-          autoHideDelay: 5000,
-          appendToast: false,
-        })
+        this.$bvToast.toast(
+          'Setting halaman sudah kembali ke default, silahkan refresh',
+          {
+            title: 'Pesan Sistem',
+            variant: 'info',
+            autoHideDelay: 5000,
+            appendToast: false,
+          }
+        )
       },
       async initialize() {
         this.datatableLoading = true
@@ -228,12 +229,11 @@
           this.search = page.search
           url = page.search.length > 0 ? url + '&search=' + page.search : url
         }
-        
         await this.$ajax
           .get(url, {
             headers: {
               Authorization: this.$store.getters['auth/Token'],
-            }
+            },
           })
           .then(({ data }) => {
             this.from = data.result.from

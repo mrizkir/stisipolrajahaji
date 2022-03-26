@@ -1,3 +1,5 @@
 .DS_Store
 /feederclient/nbproject/private/
 /feederclient/build/
+/strukturdata/target/
+/FeederClient/target/
