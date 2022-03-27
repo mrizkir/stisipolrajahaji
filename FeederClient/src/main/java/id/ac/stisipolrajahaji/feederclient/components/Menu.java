@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package components;
+package id.ac.stisipolrajahaji.feederclient.components;
 
 /**
  *
@@ -27,10 +27,10 @@ public class Menu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        roundPanel1 = new components.RoundPanel();
+        roundPanel1 = new id.ac.stisipolrajahaji.feederclient.components.RoundPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         panelMenu = new javax.swing.JPanel();
-        roundPanel2 = new components.RoundPanel();
+        roundPanel2 = new id.ac.stisipolrajahaji.feederclient.components.RoundPanel();
 
         roundPanel1.setBackground(new java.awt.Color(51, 51, 51));
 
@@ -109,7 +109,7 @@ public class Menu extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelMenu;
-    private components.RoundPanel roundPanel1;
-    private components.RoundPanel roundPanel2;
+    private id.ac.stisipolrajahaji.feederclient.components.RoundPanel roundPanel1;
+    private id.ac.stisipolrajahaji.feederclient.components.RoundPanel roundPanel2;
     // End of variables declaration//GEN-END:variables
 }

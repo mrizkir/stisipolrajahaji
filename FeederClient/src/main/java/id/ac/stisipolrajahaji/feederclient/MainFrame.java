@@ -4,20 +4,22 @@
  */
 package id.ac.stisipolrajahaji.feederclient;
 
-import java.awt.Color;
+import id.ac.stisipolrajahaji.feederclient.perkuliahan.KelasPerkuliahanFrame;
+import id.ac.stisipolrajahaji.feederclient.perkuliahan.MatakuliahPerkuliahanFrame;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author admin
  */
-public class MainFrame extends javax.swing.JFrame {
-
+public class MainFrame extends javax.swing.JFrame {    
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
-        initComponents();
-        setBackground(new Color(0, 0, 0, 0));
+        initComponents();                
     }
 
     /**
@@ -29,66 +31,128 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        roundPanel1 = new components.RoundPanel();
-        header1 = new components.Header();
-        menu1 = new components.Menu();
+        dekstopPaneChild = new javax.swing.JDesktopPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        menuMatakuliahPerkuliahan = new javax.swing.JMenuItem();
+        menuKelasPerkuliahan = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Feeder Client");
+        setExtendedState(6);
         setName("MainFrame"); // NOI18N
-        setUndecorated(true);
         setResizable(false);
 
-        roundPanel1.setBackground(new java.awt.Color(21, 21, 21));
-
-        javax.swing.GroupLayout header1Layout = new javax.swing.GroupLayout(header1);
-        header1.setLayout(header1Layout);
-        header1Layout.setHorizontalGroup(
-            header1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 706, Short.MAX_VALUE)
+        javax.swing.GroupLayout dekstopPaneChildLayout = new javax.swing.GroupLayout(dekstopPaneChild);
+        dekstopPaneChild.setLayout(dekstopPaneChildLayout);
+        dekstopPaneChildLayout.setHorizontalGroup(
+            dekstopPaneChildLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 745, Short.MAX_VALUE)
         );
-        header1Layout.setVerticalGroup(
-            header1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 42, Short.MAX_VALUE)
+        dekstopPaneChildLayout.setVerticalGroup(
+            dekstopPaneChildLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 605, Short.MAX_VALUE)
         );
 
-        javax.swing.GroupLayout roundPanel1Layout = new javax.swing.GroupLayout(roundPanel1);
-        roundPanel1.setLayout(roundPanel1Layout);
-        roundPanel1Layout.setHorizontalGroup(
-            roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(roundPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(header1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
-            .addGroup(roundPanel1Layout.createSequentialGroup()
-                .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        roundPanel1Layout.setVerticalGroup(
-            roundPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(roundPanel1Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(header1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Perkuliahan");
+
+        menuMatakuliahPerkuliahan.setText("Matakuliah");
+        menuMatakuliahPerkuliahan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuMatakuliahPerkuliahanActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuMatakuliahPerkuliahan);
+
+        menuKelasPerkuliahan.setText("Kelas Perkuliahan");
+        menuKelasPerkuliahan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuKelasPerkuliahanActionPerformed(evt);
+            }
+        });
+        jMenu2.add(menuKelasPerkuliahan);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(roundPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(dekstopPaneChild)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(roundPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(dekstopPaneChild, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuKelasPerkuliahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuKelasPerkuliahanActionPerformed
+        
+        KelasPerkuliahanFrame frmKelasPerkuliahan = new KelasPerkuliahanFrame();
+        frmKelasPerkuliahan.pack();
+        
+        if (dekstopPaneChild.getAllFrames().length == 0)
+        {
+            dekstopPaneChild.add(frmKelasPerkuliahan);
+            frmKelasPerkuliahan.setVisible(true);
+        }
+        else
+        {
+            dekstopPaneChild.remove(0);
+            dekstopPaneChild.add(frmKelasPerkuliahan);
+            frmKelasPerkuliahan.setVisible(true);
+            revalidate();
+            repaint();
+        }
+        
+        try 
+        {
+            frmKelasPerkuliahan.setMaximum(true);
+        }
+        catch (PropertyVetoException ex)
+        {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menuKelasPerkuliahanActionPerformed
+
+    private void menuMatakuliahPerkuliahanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMatakuliahPerkuliahanActionPerformed
+        MatakuliahPerkuliahanFrame frmMatakuliahPerkuliahan = new MatakuliahPerkuliahanFrame();
+        frmMatakuliahPerkuliahan.pack();
+        
+        if (dekstopPaneChild.getAllFrames().length == 0)
+        {
+            dekstopPaneChild.add(frmMatakuliahPerkuliahan);
+            frmMatakuliahPerkuliahan.setVisible(true);
+        }
+        else
+        {
+            dekstopPaneChild.remove(0);
+            dekstopPaneChild.add(frmMatakuliahPerkuliahan);
+            frmMatakuliahPerkuliahan.setVisible(true);
+            revalidate();
+            repaint();
+        }
+        
+        try 
+        {
+            frmMatakuliahPerkuliahan.setMaximum(true);
+        }
+        catch (PropertyVetoException ex)
+        {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_menuMatakuliahPerkuliahanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -126,8 +190,11 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private components.Header header1;
-    private components.Menu menu1;
-    private components.RoundPanel roundPanel1;
+    private javax.swing.JDesktopPane dekstopPaneChild;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem menuKelasPerkuliahan;
+    private javax.swing.JMenuItem menuMatakuliahPerkuliahan;
     // End of variables declaration//GEN-END:variables
 }

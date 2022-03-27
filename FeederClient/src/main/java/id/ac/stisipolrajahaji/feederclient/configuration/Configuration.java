@@ -50,7 +50,7 @@ public final class Configuration {
             
             boolean recordAdded;
             
-            for (int i = 1; i <= 5; i++) 
+            for (int i = 1; i <= 9; i++) 
             {
                 sql = "SELECT config_id FROM configuration WHERE config_id = ?";
                 pstmt  = conn.prepareStatement(sql);
@@ -76,6 +76,10 @@ public final class Configuration {
                         case 3 -> pstmt.setString(2, "feeder_password");
                         case 4 -> pstmt.setString(2, "ingat_password");
                         case 5 -> pstmt.setString(2, "token_feeder");
+                        case 6 -> pstmt.setString(2, "api_host");
+                        case 7 -> pstmt.setString(2, "api_username");
+                        case 8 -> pstmt.setString(2, "api_password");
+                        case 9 -> pstmt.setString(2, "api_token");
                     }
                     
                     pstmt.setString(3, "");

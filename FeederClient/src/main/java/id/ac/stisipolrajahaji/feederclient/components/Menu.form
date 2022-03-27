@@ -39,7 +39,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="components.RoundPanel" name="roundPanel1">
+    <Container class="id.ac.stisipolrajahaji.feederclient.components.RoundPanel" name="roundPanel1">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="33" green="33" red="33" type="rgb"/>
@@ -104,7 +104,7 @@
         </Container>
       </SubComponents>
     </Container>
-    <Container class="components.RoundPanel" name="roundPanel2">
+    <Container class="id.ac.stisipolrajahaji.feederclient.components.RoundPanel" name="roundPanel2">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="33" green="33" red="33" type="rgb"/>

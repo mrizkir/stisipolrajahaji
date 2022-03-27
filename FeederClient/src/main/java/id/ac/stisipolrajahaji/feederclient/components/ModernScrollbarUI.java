@@ -1,4 +1,4 @@
-package components;
+package id.ac.stisipolrajahaji.feederclient.components;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
