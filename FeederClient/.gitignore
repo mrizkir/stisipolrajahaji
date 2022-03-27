@@ -4,3 +4,4 @@ feederclient.db
 /target/maven-archiver
 /target/maven-status
 /target/test-classes
+!/target/FeederClient-1.0-SNAPSHOT.jar
