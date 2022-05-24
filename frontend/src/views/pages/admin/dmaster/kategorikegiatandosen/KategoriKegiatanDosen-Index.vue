@@ -120,6 +120,20 @@
             </b-card>
           </b-col>
         </b-row>
+        <b-modal
+          id="modal-delete"
+          header-bg-variant="danger"
+          centered
+          @hidden="resetModal"
+          @ok="handleDelete"
+        >
+          <template #modal-title>
+            Hapus Data
+          </template>
+          <div class="d-block">
+            Nama kategori kegiatan dosen "{{dataItem.nama_kategori}}" akan dihapus ?
+          </div>
+        </b-modal>
       </b-container>
     </template>
   </DMasterLayout>
@@ -130,7 +144,7 @@
     name: 'KategoriKegiatanDosenIndex',
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
-      	name: 'kategoriaktivitas',
+      	name: 'kategorikegiatan',
         loaded: false,
         perPage: this.perPage,
         currentPage: this.currentPage,
@@ -214,7 +228,7 @@
       },
       async initialize() {
         this.datatableLoading = true
-        var page = this.$store.getters['uiadmin/Page']('jenisaktivitas')
+        var page = this.$store.getters['uiadmin/Page']('kategorikegiatan')
         var url = '/dmaster/dosen/kategorikegiatan?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
 
         if (page.loaded && page.search != null) {

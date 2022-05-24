@@ -19,6 +19,23 @@
           </template>
           <b-card-body>
             <b-form-group
+              label="Kode Kategori:"
+              label-for="txtKode"
+            >
+              <b-form-input
+                id="txtKode"
+                v-model="v$.formdata.kode_kategori.$model"
+                placeholder="Kode Kategori Kegiatan Dosen"
+                :state="validateState('kode_kategori')"
+                aria-describedby="frmdata-kode"
+              />
+              <b-form-invalid-feedback
+                id="frmdata-mode"
+              >
+                Kode kategori kegiatan tidak boleh kosong, silahkan diisi !!!.
+              </b-form-invalid-feedback>
+            </b-form-group>
+            <b-form-group
               label="Nama Kategori:"
               label-for="txtNama"
             >
@@ -32,7 +49,7 @@
               <b-form-invalid-feedback
                 id="frmdata-nama"
               >
-                Nama jenis aktivitas tidak boleh kosong, silahkan diisi !!!.
+                Nama kategori kegiatan tidak boleh kosong, silahkan diisi !!!.
               </b-form-invalid-feedback>
             </b-form-group>
           </b-card-body>
@@ -95,6 +112,7 @@
           
           this.$ajax.post('/dmaster/dosen/kategorikegiatan/store',
             {
+            	kode_kategori: this.formdata.kode_kategori,
             	nama_kategori: this.formdata.nama_kategori,
       	    },
             {

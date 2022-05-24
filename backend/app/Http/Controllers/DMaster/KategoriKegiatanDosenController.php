@@ -82,13 +82,15 @@ class KategoriKegiatanDosenController extends Controller
 		$this->hasPermissionTo('DMASTER-DOSEN-KATEGORI-KEGIATAN_STORE');
 
 		$rule=[            
-			'nama_kategori'=>'required|string|unique:pe3_jenis_aktivitas,nama_kategori',      
+			'kode_kategori'=>'required|numeric|unique:pe3_kategori_kegiatan_dosen,nama_kategori',      
+			'nama_kategori'=>'required|string|unique:pe3_kategori_kegiatan_dosen,nama_kategori',      
 		];
 	
 		$this->validate($request, $rule);
 						
 		$kategorikegiatan=KategoriKegiatanDosenModel::create([
-			'idjenis'=>Uuid::uuid4()->toString(),
+			'idkategori'=>Uuid::uuid4()->toString(),
+			'kode_kategori'=>strtoupper($request->input('kode_kategori')),       
 			'nama_kategori'=>strtoupper($request->input('nama_kategori')),       
 		]);                 
 
@@ -122,13 +124,19 @@ class KategoriKegiatanDosenController extends Controller
 		else
 		{					
 			$this->validate($request, [
+				'kode_kategori'=>[
+					'required',    
+					'numeric',
+					Rule::unique('pe3_kategori_kegiatan_dosen')->ignore($kategorikegiatan->kode_kategori, 'kode_kategori')           
+				],						
 				'nama_kategori'=>[
 					'required',    
 					'string',
-					Rule::unique('pe3_jenis_aktivitas')->ignore($kategorikegiatan->nama_kategori, 'nama_kategori')           
+					Rule::unique('pe3_kategori_kegiatan_dosen')->ignore($kategorikegiatan->nama_kategori, 'nama_kategori')           
 				],						
 			]); 
 	
+			$kategorikegiatan->kode_kategori = strtoupper($request->input('kode_kategori'));
 			$kategorikegiatan->nama_kategori = strtoupper($request->input('nama_kategori'));
 			$kategorikegiatan->save();
 

@@ -69,6 +69,19 @@ const routes = [
         '../views/pages/admin/dmaster/kategorikegiatandosen/KategoriKegiatanDosen-Create.vue'
       ),
   },
+  {
+    path: '/dmaster/dosen/kategorikegiatan/:idkategori/edit',
+    name: 'DMasterKategoriKegiatanDosenEdit',
+    meta: {
+      title: 'DOSEN - KATEGORI KEGIATAN',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/dmaster/kategorikegiatandosen/KategoriKegiatanDosen-Edit.vue'
+      ),
+  },
   //feeder
   {
     path: '/feeder',
