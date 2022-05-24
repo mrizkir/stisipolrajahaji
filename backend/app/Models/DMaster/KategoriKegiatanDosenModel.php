@@ -6,28 +6,28 @@ namespace App\Models\DMaster;
 
 use Illuminate\Database\Eloquent\Model;
 
-class JenisKegiatanDosenModel extends Model {    
+class KategoriKegiatanDosenModel extends Model {    
 	 /**
 	 * nama tabel model ini.
 	 *
 	 * @var string
 	 */
-	protected $table = 'pe3_jenis_kegiaatan_dosen';
+	protected $table = 'pe3_kategori_kegiatan_dosen';
 	/**
 	 * primary key tabel ini.
 	 *
 	 * @var string
 	 */
-	protected $primaryKey = 'idjenis';
+	protected $primaryKey = 'idkategori';
 	/**
 	 * The attributes that are mass assignable.
 	 *
 	 * @var array
 	 */
 	protected $fillable = [
-		'idjenis',
-		'kode_kegiatan',		
-		'nama_aktivitas',		
+		'idkategori',
+		'kode_kategori',		
+		'nama_kategori',		
 	];
 	/**
 	 * enable auto_increment.

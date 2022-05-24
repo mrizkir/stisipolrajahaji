@@ -4,9 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-use Ramsey\Uuid\Uuid;
-
-class CreateJenisKegiatanDosenTables extends Migration
+class CreateKategoriKegiatanDosenTables extends Migration
 {
   /**
    * Run the migrations.
@@ -16,10 +14,10 @@ class CreateJenisKegiatanDosenTables extends Migration
   public function up()
   {   
     Schema::defaultStringLength(191);
-    Schema::create('pe3_jenis_kegiatan_dosen', function (Blueprint $table) {        
-      $table->uuid('idjenis')->primary();                        
-      $table->string('kode_kegiatan', 25)->unique();        
-      $table->string('nama_kegiatan');        
+    Schema::create('pe3_kategori_kegiatan_dosen', function (Blueprint $table) {        
+      $table->uuid('idkategori')->primary();                        
+      $table->string('kode_kategori', 25)->unique();        
+      $table->string('nama_kategori');        
       $table->timestamps();            
     });
   }
@@ -31,6 +29,6 @@ class CreateJenisKegiatanDosenTables extends Migration
    */
   public function down()
   {
-    Schema::dropIfExists('pe3_jenis_kegiatan_dosen');
+    Schema::dropIfExists('pe3_kategori_kegiatan_dosen');
   }
 }

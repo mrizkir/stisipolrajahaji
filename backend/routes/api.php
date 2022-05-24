@@ -22,6 +22,14 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	//ui admin
 	$router->get('/system/setting/uiadmin',['uses'=>'System\UIController@admin','as'=>'ui.admin']);
 
+	//dmaster - dosen - kategori kegiatan
+	//kemahasiswaan - jenis aktivitas
+	$router->get('/dmaster/dosen/kategorikegiatan',['middleware'=>['role:superadmin|manajemen|programstudi|dosen'],'uses'=>'DMaster\KategoriKegiatanDosenController@index','as'=>'dmaster-dosen-kategorikegiatan.index']);				
+	$router->post('/dmaster/dosen/kategorikegiatan/store',['middleware'=>['role:superadmin|manajemen'],'uses'=>'DMaster\KategoriKegiatanDosenController@store','as'=>'dmaster-dosen-kategorikegiatan.store']);
+	$router->get('/dmaster/dosen/kategorikegiatan/{id}',['middleware'=>['role:superadmin|manajemen|'],'uses'=>'DMaster\KategoriKegiatanDosenController@show','as'=>'dmaster-dosen-kategorikegiatan.show']);
+	$router->put('/dmaster/dosen/kategorikegiatan/{id}',['middleware'=>['role:superadmin|manajemen|'],'uses'=>'DMaster\KategoriKegiatanDosenController@update','as'=>'dmaster-dosen-kategorikegiatan.update']);
+	$router->delete('/dmaster/dosen/kategorikegiatan/{id}',['middleware'=>['role:superadmin|manajemen|'],'uses'=>'DMaster\KategoriKegiatanDosenController@destroy','as'=>'dmaster-dosen-kategorikegiatan.destroy']);
+	
 	//kemahasiswaan	
 	$router->post('/kemahasiswaan/daftarmhs',['middleware'=>['role:superadmin|manajemen|operator nilai|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@index','as'=>'daftarmhs.index']);
 	$router->get('/kemahasiswaan/daftarmhs/all',['middleware'=>['role:superadmin|manajemen|operator nilai|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@all','as'=>'daftarmhs.all']);
