@@ -1,8 +1,6 @@
 <template>
   <PenggunaSistemLayout>
-    <template v-slot:page-header>
-      Permission
-    </template>
+    <template v-slot:page-header>Permission</template>
     <template v-slot:page-breadcrumb>
       <b-breadcrumb-item to="/sistem-pengguna">
         Pengguna Sistem
@@ -10,7 +8,10 @@
       <b-breadcrumb-item active>Permission</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
-      <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_BROWSE')">
+      <b-container
+        fluid
+        v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_BROWSE')"
+      >
         <b-row>
           <b-col>
             <b-card no-body class="card-primary card-outline">
@@ -31,7 +32,11 @@
                     size="xs"
                     variant="outline-primary"
                     @click.stop="showModalAdd"
-                    v-if="$store.getters['auth/can']('SYSTEM-SETTING-PERMISSIONS_STORE')"
+                    v-if="
+                      $store.getters['auth/can'](
+                        'SYSTEM-SETTING-PERMISSIONS_STORE'
+                      )
+                    "
                     v-b-tooltip.hover
                     title="Tambah Permission"
                   >
@@ -41,9 +46,18 @@
               </template>
               <b-card-body>
                 <div class="input-group input-group-sm">
-                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />
+                  <b-form-input
+                    class="float-right"
+                    placeholder="Cari"
+                    v-model="search"
+                  />
                   <div class="input-group-append">
-                    <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
+                    <button
+                      type="submit"
+                      class="btn btn-default"
+                      @click.stop="handleSearch"
+                      :disabled="btnLoading"
+                    >
                       <b-icon icon="search" />
                     </button>
                   </div>
@@ -68,15 +82,21 @@
                   small
                 >
                   <template #table-busy>
-                    <div class="text-center text-danger my-2">
-                      &nbsp;
-                    </div>
+                    <div class="text-center text-danger my-2">&nbsp;</div>
                   </template>
                   <template #cell(aksi)="{ item }">
-                    <b-button :id="'btDelete' + item.id" variant="outline-danger p-1" size="xs" @click.stop="showModalDelete(item)" :disabled="btnLoading">
+                    <b-button
+                      :id="'btDelete' + item.id"
+                      variant="outline-danger p-1"
+                      size="xs"
+                      @click.stop="showModalDelete(item)"
+                      :disabled="btnLoading"
+                    >
                       <b-icon icon="trash" class="p-0 m-0"></b-icon>
                     </b-button>
-                    <b-tooltip :target="'btDelete' + item.id" variant="danger">Hapus permission</b-tooltip>
+                    <b-tooltip :target="'btDelete' + item.id" variant="danger">
+                      Hapus permission
+                    </b-tooltip>
                   </template>
                   <template #emptytext>
                     tidak ada data yang bisa ditampilkan
@@ -106,11 +126,9 @@
           @hidden="resetModal"
           @ok="handleDelete"
         >
-          <template #modal-title>
-            Hapus Data
-          </template>
+          <template #modal-title>Hapus Data</template>
           <div class="d-block">
-            Nama permission "{{dataItem.name}}" akan dihapus ?
+            Nama permission "{{ dataItem.name }}" akan dihapus ?
           </div>
         </b-modal>
         <b-modal
@@ -120,15 +138,10 @@
           @hidden="resetModalAddPermission"
           hide-footer
         >
-          <template #modal-title>
-            Tambah Data
-          </template>
+          <template #modal-title>Tambah Data</template>
           <div class="d-block">
             <b-form @submit.prevent="save" name="frmdata" id="frmdata">
-              <b-form-group
-                label="Nama Permission:"
-                label-for="txtName"
-              >
+              <b-form-group label="Nama Permission:" label-for="txtName">
                 <b-form-input
                   id="txtName"
                   v-model="v$.formdata.name.$model"
@@ -136,9 +149,7 @@
                   :state="validateState('name')"
                   aria-describedby="frmdata-name"
                 />
-                <b-form-invalid-feedback
-                  id="frmdata-name"
-                >
+                <b-form-invalid-feedback id="frmdata-name">
                   Nama permission tidak boleh kosong, silahkan diisi !!!.
                 </b-form-invalid-feedback>
               </b-form-group>
@@ -194,7 +205,6 @@
     data: () => ({
       datatableLoading: false,
       btnLoading: false,
-      
       //setting table
       currentPage: 1,
       perPage: 10,
@@ -235,7 +245,7 @@
       return {
         formdata: {
           name: {
-            required 
+            required,
           },
         },
       }
@@ -260,38 +270,47 @@
         page.search = null
         this.$store.dispatch('uiadmin/updatePage', page)
 
-        this.$bvToast.toast('Setting halaman sudah kembali ke default, silahkan refresh', {
-          title: 'Pesan Sistem',
-          variant: 'info',
-          autoHideDelay: 5000,
-          appendToast: false,
-        })
+        this.$bvToast.toast(
+          'Setting halaman sudah kembali ke default, silahkan refresh',
+          {
+            title: 'Pesan Sistem',
+            variant: 'info',
+            autoHideDelay: 5000,
+            appendToast: false,
+          }
+        )
       },
       async initialize() {
         this.datatableLoading = true
         var page = this.$store.getters['uiadmin/Page']('permission')
-        var url = '/system/setting/permissions?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
+        var url =
+          '/system/setting/permissions?page=' +
+          page.currentPage +
+          '&sortby=' +
+          page.sortBy +
+          '&sortdesc=' +
+          page.sortDesc
 
         if (page.loaded && page.search != null) {
           this.search = page.search
           url = page.search.length > 0 ? url + '&search=' + page.search : url
         }
-        
-        await this.$ajax.get(url, {
-          headers: {
-            Authorization: this.$store.getters['auth/Token'],
-          },
-        })
-        .then(({ data }) => {
-          this.totalRows = data.permissions.total
-          this.datatable = data.permissions.data
-          page.loaded = true
-          this.$store.dispatch('uiadmin/updatePage', page)
-          this.$nextTick(() => {
-            this.currentPage = page.currentPage
+        await this.$ajax
+          .get(url, {
+            headers: {
+              Authorization: this.$store.getters['auth/Token'],
+            },
           })
-          this.datatableLoading = false
-        }) 
+          .then(({ data }) => {
+            this.totalRows = data.permissions.total
+            this.datatable = data.permissions.data
+            page.loaded = true
+            this.$store.dispatch('uiadmin/updatePage', page)
+            this.$nextTick(() => {
+              this.currentPage = page.currentPage
+            })
+            this.datatableLoading = false
+          })
       },
       handleSearch() {
         this.currentPage = 1
@@ -324,35 +343,40 @@
       async save() {
         if (!this.v$.formdata.$invalid) {
           this.btnLoading = true
-          await this.$ajax.post('/system/setting/permissions/store',
-            {
-              name: this.formdata.name.toLowerCase(),
-              group: this.formdata.group,
-            },
-            {
-              headers: {
-                Authorization: this.$store.getters['auth/Token'],
+          await this.$ajax
+            .post(
+              '/system/setting/permissions/store',
+              {
+                name: this.formdata.name.toLowerCase(),
+                group: this.formdata.group,
+              },
+              {
+                headers: {
+                  Authorization: this.$store.getters['auth/Token'],
+                },
               }
-            }
-          ).then(() => {
-            this.$router.go()
-          }).catch(() => {
-            this.btnLoading = false;
-          })     
+            )
+            .then(() => {
+              this.$router.go()
+            })
+            .catch(() => {
+              this.btnLoading = false
+            })
         }
       },
       handleDelete(event) {
         event.preventDefault()
         this.btnLoading = true
-        this.$ajax.post(
-          '/system/setting/permissions/' + this.dataItem.id,
+        this.$ajax
+          .post(
+            '/system/setting/permissions/' + this.dataItem.id,
             {
               _method: 'DELETE',
             },
             {
               headers: {
                 Authorization: this.$store.getters['auth/Token'],
-              }
+              },
             }
           )
           .then(() => {
@@ -362,7 +386,6 @@
           .catch(() => {
             this.btnLoading = false
           })
-          
         // Hide the modal manually
         this.$nextTick(() => {
           this.dataItem = {}

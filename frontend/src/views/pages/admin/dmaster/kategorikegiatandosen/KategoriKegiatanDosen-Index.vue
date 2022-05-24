@@ -1,22 +1,19 @@
 <template>
-  <PenggunaSistemLayout>
-    <template v-slot:page-header>Pengguna Manajemen</template>
-    <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/sistem-pengguna">
-        Pengguna Sistem
-      </b-breadcrumb-item>
-      <b-breadcrumb-item active>Pengguna Manajemen</b-breadcrumb-item>
+  <DMasterLayout>
+    <template v-slot:page-header>
+      Kategori Kegiatan Dosen
+    </template>
+    <template v-slot:page-breadcrumb>      
+      <b-breadcrumb-item to="/dmaster">Data Master</b-breadcrumb-item>
+      <b-breadcrumb-item active>Kategori Kegiatan Dosen</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
-      <b-container
-        fluid
-        v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_BROWSE')"
-      >
+      <b-container fluid v-if="$store.getters['auth/can']('DMASTER-DOSEN-KATEGORI-KEGIATAN_BROWSE')">
         <b-row>
           <b-col>
             <b-card no-body class="card-primary card-outline">
               <template #header>
-                <h3 class="card-title">Daftar Pengguna</h3>
+                <h3 class="card-title">Daftar Kategori Kegiatan</h3>
                 <div class="card-tools">
                   <b-button
                     size="xs"
@@ -31,14 +28,10 @@
                   <b-button
                     size="xs"
                     variant="outline-primary"
-                    @click.stop="
-                      $router.push('/sistem-pengguna/manajemen/create')
-                    "
-                    v-if="
-                      $store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_STORE')
-                    "
+                    @click.stop="$router.push(url + '/create')"
+                    v-if="$store.getters['auth/can']('DMASTER-DOSEN-KATEGORI-KEGIATAN_STORE')"
                     v-b-tooltip.hover
-                    title="Tambah Pengguna"
+                    title="Tambah Kategori Kegiatan"
                   >
                     <b-icon icon="plus-circle" />
                   </b-button>
@@ -46,18 +39,9 @@
               </template>
               <b-card-body>
                 <div class="input-group input-group-sm">
-                  <b-form-input
-                    class="float-right"
-                    placeholder="Cari"
-                    v-model="search"
-                  />
+                  <b-form-input class="float-right" placeholder="Cari" v-model="search" />
                   <div class="input-group-append">
-                    <button
-                      type="submit"
-                      class="btn btn-default"
-                      @click.stop="handleSearch"
-                      :disabled="btnLoading"
-                    >
+                    <button type="submit" class="btn btn-default" @click.stop="handleSearch" :disabled="btnLoading">
                       <b-icon icon="search" />
                     </button>
                   </div>
@@ -66,11 +50,11 @@
               <b-card-body class="p-0">
                 <b-table
                   id="datatable"
-                  primary-key="id"
+                  primary-key="idkategori"
                   :fields="fields"
                   :items="datatable"
                   :sort-by.sync="sortBy"
-                  :sort-desc.sync="sortDesc"
+                  :sort-desc.sync="sortDesc" 
                   :current-page="currentPage"
                   :busy="datatableLoading"
                   outlined
@@ -82,75 +66,38 @@
                   small
                 >
                   <template #table-busy>
-                    <div class="text-center text-danger my-2">&nbsp;</div>
+                    <div class="text-center text-danger my-2">
+                      &nbsp;
+                    </div>
                   </template>
                   <template #cell(no)="{ index }">
                     {{ index + from }}
                   </template>
                   <template #cell(active)="{ item }">
-                    <b-badge
-                      :variant="item.active == 1 ? 'primary' : 'secondary'"
-                    >
-                      {{ item.active == 1 ? 'aktif' : 'tidak aktif' }}
-                    </b-badge>
+                    <b-badge :variant="item.active == 1 ? 'primary' : 'secondary'">{{ item.active == 1 ? 'aktif' : 'tidak aktif' }}</b-badge>
                   </template>
-                  <template #cell(aksi)="{ item }">
+                  <template #cell(aksi)="{ item, index }">
                     <b-button
-                      :id="'btDetail' + item.userid"
-                      variant="outline-primary p-1 mr-1"
+                      :id="'btEdit' + index" variant="outline-primary p-1 mr-1"
                       size="xs"
-                      :to="
-                        '/sistem-pengguna/manajemen/' + item.userid + '/detail'
-                      "
+                      :to="url + '/' + item.idkategori + '/edit'"
                       :disabled="btnLoading"
-                      v-if="
-                        $store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_SHOW')
-                      "
+                      v-if="$store.getters['auth/can']('DMASTER-DOSEN-KATEGORI-KEGIATAN_UPDATE')"
                     >
-                      <b-icon icon="eye" class="p-0 m-0"></b-icon>
-                    </b-button>
+                      <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>          
+                      <b-tooltip :target="'btEdit' + index" variant="primary" placement="rightbottom">Ubah Kategori Kegiatan</b-tooltip>
+                    </b-button>        
                     <b-button
-                      :id="'btEdit' + item.userid"
-                      variant="outline-primary p-1 mr-1"
-                      size="xs"
-                      :to="
-                        '/sistem-pengguna/manajemen/' + item.userid + '/edit'
-                      "
-                      :disabled="btnLoading"
-                      v-if="
-                        $store.getters['auth/can'](
-                          'SYSTEM-USERS-AKADEMIK_UPDATE'
-                        )
-                      "
-                    >
-                      <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>
-                    </b-button>
-                    <b-tooltip
-                      :target="'btEdit' + item.userid"
-                      variant="primary"
-                    >
-                      Ubah Pengguna
-                    </b-tooltip>
-                    <b-button
-                      :id="'btDelete' + item.userid"
+                      :id="'btDelete' + index"
                       variant="outline-danger p-1"
                       size="xs"
                       @click.stop="showModalDelete(item)"
                       :disabled="btnLoading"
-                      v-if="
-                        $store.getters['auth/can'](
-                          'SYSTEM-USERS-AKADEMIK_DESTROY'
-                        )
-                      "
+                      v-if="$store.getters['auth/can']('DMASTER-DOSEN-KATEGORI-KEGIATAN_DESTROY')"
                     >
                       <b-icon icon="trash" class="p-0 m-0"></b-icon>
+                      <b-tooltip :target="'btDelete' + index" variant="danger" placement="rightbottom">Hapus Kategori Kegiatan</b-tooltip>
                     </b-button>
-                    <b-tooltip
-                      :target="'btDelete' + item.userid"
-                      variant="danger"
-                    >
-                      Hapus Pengguna
-                    </b-tooltip>
                   </template>
                   <template #emptytext>
                     tidak ada data yang bisa ditampilkan
@@ -158,7 +105,6 @@
                 </b-table>
               </b-card-body>
               <template #footer>
-                Total {{ totalRows }} data
                 <b-pagination
                   v-model="currentPage"
                   :total-rows="totalRows"
@@ -174,29 +120,17 @@
             </b-card>
           </b-col>
         </b-row>
-        <b-modal
-          id="modal-delete"
-          header-bg-variant="danger"
-          centered
-          @hidden="resetModal"
-          @ok="handleDelete"
-        >
-          <template #modal-title>Hapus Data</template>
-          <div class="d-block">
-            User dengan username "{{ dataItem.username }}" akan dihapus ?
-          </div>
-        </b-modal>
       </b-container>
     </template>
-  </PenggunaSistemLayout>
+  </DMasterLayout>
 </template>
 <script>
-  import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'
+  import DMasterLayout from '@/views/layouts/DMasterLayout'
   export default {
-    name: 'PenggunaManajemenIndex',
+    name: 'KategoriKegiatanDosenIndex',
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
-        name: 'pengguna-manajemen',
+      	name: 'kategoriaktivitas',
         loaded: false,
         perPage: this.perPage,
         currentPage: this.currentPage,
@@ -205,12 +139,18 @@
         search: this.search,
       })
     },
+    setup() {
+      return {
+        url: '/dmaster/dosen/kategorikegiatan',
+      }
+    },
     mounted() {
       this.initialize()
     },
     data: () => ({
       datatableLoading: false,
       btnLoading: false,
+      
       //setting table
       from: 1,
       currentPage: 1,
@@ -224,23 +164,12 @@
           thStyle: 'width: 50px',
         },
         {
-          key: 'username',
-          label: 'Username',
-          sortable: true,
-          thStyle: 'width: 150px',
+          key: 'kode_kategori',
+          label: 'Kode',
         },
         {
-          key: 'nama',
+          key: 'nama_kategori',
           label: 'Nama',
-          thStyle: 'width: 250px',
-        },
-        {
-          key: 'email',
-          label: 'Email',
-        },
-        {
-          key: 'active',
-          label: 'Status',
         },
         {
           label: 'Aksi',
@@ -248,14 +177,14 @@
           thStyle: 'width: 150px',
         },
       ],
-      sortBy: 'username',
+      sortBy: 'nama_kategori',
       sortDesc: false,
       search: null,
       dataItem: {},
     }),
     methods: {
-      updatesettingpage() {
-        var page = this.$store.getters['uiadmin/Page']('pengguna-manajemen')
+       updatesettingpage() {
+        var page = this.$store.getters['uiadmin/Page']('kategorikegiatan')
         page.perPage = this.perPage
         page.currentPage = this.currentPage
         page.sortBy = this.sortBy
@@ -264,11 +193,11 @@
         this.$store.dispatch('uiadmin/updatePage', page)
       },
       clearsettingpage() {
-        var page = this.$store.getters['uiadmin/Page']('pengguna-manajemen')
+        var page = this.$store.getters['uiadmin/Page']('kategorikegiatan')
         page.loaded = false
         page.perPage = 10
         page.currentPage = 1
-        page.sortBy = 'username'
+        page.sortBy = 'nama_kategori'
         page.sortDesc = false
         page.search = null
         this.$store.dispatch('uiadmin/updatePage', page)
@@ -285,20 +214,13 @@
       },
       async initialize() {
         this.datatableLoading = true
-        var page = this.$store.getters['uiadmin/Page']('pengguna-manajemen')
-        var url =
-          '/system/usersmanajemen?page=' +
-          page.currentPage +
-          '&sortby=' +
-          page.sortBy +
-          '&sortdesc=' +
-          page.sortDesc
+        var page = this.$store.getters['uiadmin/Page']('jenisaktivitas')
+        var url = '/dmaster/dosen/kategorikegiatan?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
 
         if (page.loaded && page.search != null) {
           this.search = page.search
           url = page.search.length > 0 ? url + '&search=' + page.search : url
         }
-
         await this.$ajax
           .get(url, {
             headers: {
@@ -339,12 +261,12 @@
         this.btnLoading = true
         this.$ajax
           .post(
-            '/system/usersmanajemen/' + this.dataItem.userid,
+            '/dmaster/dosen/kategorikegiatan/' + this.dataItem.idkategori,
             {
               _method: 'DELETE',
             },
             {
-              headers: {
+            headers: {
                 Authorization: this.$store.getters['auth/Token'],
               },
             }
@@ -356,7 +278,6 @@
           .catch(() => {
             this.btnLoading = false
           })
-
         // Hide the modal manually
         this.$nextTick(() => {
           this.dataItem = {}
@@ -365,7 +286,7 @@
       },
     },
     components: {
-      PenggunaSistemLayout,
-    },
+      DMasterLayout,
+		},
   }
 </script>

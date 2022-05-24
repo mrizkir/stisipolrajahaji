@@ -14,6 +14,6 @@
     name: 'PenggunaSistem',
     components: {
       PenggunaSistemLayout,
-    }
+    },
   }
 </script>

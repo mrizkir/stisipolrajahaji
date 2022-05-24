@@ -35,6 +35,40 @@ const routes = [
     },
     component: () => import('../views/pages/admin/Dashboard.vue'),
   },
+  //dmaster
+  {
+    path: '/dmaster',
+    name: 'DMaster',
+    meta: {
+      title: 'DATA MASTER',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () => import('../views/pages/admin/dmaster/DMaster.vue'),
+  },
+  {
+    path: '/dmaster/dosen/kategorikegiatan',
+    name: 'DMasterKategoriKegiatanDosen',
+    meta: {
+      title: 'DOSEN - KATEGORI KEGIATAN',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () => import('../views/pages/admin/dmaster/kategorikegiatandosen/KategoriKegiatanDosen-Index.vue'),
+  },
+  {
+    path: '/dmaster/dosen/kategorikegiatan/create',
+    name: 'DMasterKategoriKegiatanDosenCreate',
+    meta: {
+      title: 'DOSEN - KATEGORI KEGIATAN',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/dmaster/kategorikegiatandosen/KategoriKegiatanDosen-Create.vue'
+      ),
+  },
   //feeder
   {
     path: '/feeder',

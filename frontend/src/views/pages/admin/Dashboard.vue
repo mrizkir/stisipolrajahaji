@@ -2,7 +2,7 @@
   <div>
     <navbar classBNavbar="none" />
     <b-container fluid>
-      <b-row class="mt-2">
+      <b-row class="mt-2">        
         <b-col md="3" sm="6" xs="12" v-if="$store.getters['auth/can']('SYSTEM-USERS-GROUP')">
           <b-card
             bg-variant="dark"
@@ -13,6 +13,18 @@
               Mengatur roles, permission, dan pengguna
             </b-card-text>
             <b-button variant="primary" to="/sistem-pengguna">GO</b-button>
+          </b-card>
+        </b-col>
+        <b-col md="3" sm="6" xs="12" v-if="$store.getters['auth/can']('DMASTER-GROUP')">
+          <b-card
+            bg-variant="dark"
+            text-variant="white"
+            title="Data Master"  
+          >
+            <b-card-text>
+              Mengatur data referensi dalam sistem
+            </b-card-text>
+            <b-button variant="primary" to="/dmaster">GO</b-button>
           </b-card>
         </b-col>
         <b-col md="3" sm="6" xs="12" v-if="$store.getters['auth/can']('AKADEMIK-GROUP')">
@@ -27,7 +39,7 @@
             <b-button variant="primary" to="/akademik">GO</b-button>
           </b-card>
         </b-col>
-        <b-col md="3" sm="6" xs="12" v-if="$store.getters['auth/can']('Feeder-GROUP')">
+        <b-col md="3" sm="6" xs="12" v-if="$store.getters['auth/can']('FEEDER-GROUP')">
           <b-card
             bg-variant="dark"
             text-variant="white"

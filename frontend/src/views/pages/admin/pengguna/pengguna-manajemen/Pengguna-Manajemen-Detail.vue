@@ -1,25 +1,35 @@
 <template>
   <PenggunaSistemLayout>
-    <template v-slot:page-header>
-      Pengguna Manajemen
-    </template>
+    <template v-slot:page-header>Pengguna Manajemen</template>
     <template v-slot:page-breadcrumb>
       <b-breadcrumb-item to="/sistem-pengguna">
         Pengguna Sistem
       </b-breadcrumb-item>
-      <b-breadcrumb-item to="/sistem-pengguna/manajemen">Pengguna Manajemen</b-breadcrumb-item>
+      <b-breadcrumb-item to="/sistem-pengguna/manajemen">
+        Pengguna Manajemen
+      </b-breadcrumb-item>
       <b-breadcrumb-item active>Detail</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
-      <b-container fluid v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_SHOW')">
+      <b-container
+        fluid
+        v-if="$store.getters['auth/can']('SYSTEM-USERS-AKADEMIK_SHOW')"
+      >
         <b-row>
           <b-col>
-            <DetailUser :data_user="data_user" urlfront="/sistem-pengguna/manajemen" />
+            <DetailUser
+              :data_user="data_user"
+              urlfront="/sistem-pengguna/manajemen"
+            />
           </b-col>
         </b-row>
         <b-row>
           <b-col>
-            <UserPermissions :user_id="user_id" urlfront="/sistem-pengguna/manajemen" v-if="data_user.hasOwnProperty('userid')" />
+            <UserPermissions
+              :user_id="user_id"
+              urlfront="/sistem-pengguna/manajemen"
+              v-if="data_user.hasOwnProperty('userid')"
+            />
           </b-col>
         </b-row>
       </b-container>
@@ -43,20 +53,21 @@
     methods: {
       async initialize() {
         var url = '/system/usersmanajemen/' + this.user_id
-        await this.$ajax.get(url, {
-          headers: {
-            Authorization: this.$store.getters['auth/Token'],
-          },
-        })
-        .then(({ data }) => {
-          this.data_user = data.user
-        })
+        await this.$ajax
+          .get(url, {
+            headers: {
+              Authorization: this.$store.getters['auth/Token'],
+            },
+          })
+          .then(({ data }) => {
+            this.data_user = data.user
+          })
       },
     },
     components: {
       PenggunaSistemLayout,
       DetailUser,
       UserPermissions,
-    }
+    },
   }
 </script>
