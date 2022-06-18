@@ -37,8 +37,7 @@ class Feeder extends Job
     try {
       $response = $this->feeder->koneksi();
 
-      $path = \Storage::path('feeder/koneksi.json');
-      \Log::channel(self::LOG_CHANNEL)->error("alamat dari Storage $path");
+      $path = \Storage::path('feeder/koneksi.json');      
       
       if (is_null($response))
       {
@@ -48,7 +47,8 @@ class Feeder extends Job
       {
         throw new Exception("Koneksi GAGAL ke server feeder {$this->feeder->getFeederHost()} cek username dan password di .env");
       }      
-      if ($response['error_code'] == 0) {        
+      if ($response['error_code'] == 0) {
+        \Log::channel(self::LOG_CHANNEL)->error("alamat dari Storage $path");
         Storage::disk('local')->put('feeder/koneksi.json', json_encode($response));
       } else {
         Storage::disk('local')->put('feeder/koneksi.json', json_encode($response));

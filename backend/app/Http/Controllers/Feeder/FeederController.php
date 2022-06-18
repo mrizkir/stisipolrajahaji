@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Feeder;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 use Exception;
 
 use App\Helpers\HelperFeeder;
@@ -25,7 +27,7 @@ class FeederController extends Controller
       if ($response['error_code'] == 0) {
         $response['error_desc'] = "Koneksi berhasil ke server feeder {$feeder->getFeederAPI()}";
       }
-      \Log::channel(self::LOG_CHANNEL)->info("FeederController::teskoneksi() Berhasil");
+      \Log::channel(self::LOG_CHANNEL)->info("FeederController::teskoneksi() Berhasil" . \Storage::path('feeder/koneksi.json'));
       return Response()->json($response, 200); 
     }
     catch(Exception $e) 
