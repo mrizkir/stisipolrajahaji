@@ -20,10 +20,10 @@ class FeederController extends Controller
 
       if (!isset($response['error_code']))
       {
-        throw new Exception("Koneksi GAGAL ke server feeder {$feeder->getFeederHost()} cek username dan password di .env");
+        throw new Exception("Koneksi GAGAL ke server feeder {$feeder->getFeederAPI()} cek username dan password di .env");
       }      
       if ($response['error_code'] == 0) {
-        $response['error_desc'] = "Koneksi berhasil ke server feeder {$feeder->getFeederHost()}";
+        $response['error_desc'] = "Koneksi berhasil ke server feeder {$feeder->getFeederAPI()}";
       }
       \Log::channel(self::LOG_CHANNEL)->info("FeederController::teskoneksi() Berhasil");
       return Response()->json($response, 200); 
@@ -69,7 +69,7 @@ class FeederController extends Controller
       $response = $feeder->getKRSMahasiswa('nama_mahasiswa ASC', $perPage, $currentPage, "id_periode='$id_periode' AND nama_program_studi LIKE '%$nama_prodi%'");      
       if (!isset($response['error_code']))
       {
-        throw new Exception("Koneksi GAGAL ke server feeder {$feeder->getFeederHost()} cek username dan password di .env");
+        throw new Exception("Koneksi GAGAL ke server feeder {$feeder->getFeederAPI()} cek username dan password di .env");
       } 
       if ($response['error_code'] != 0) {
         throw new Exception($response['error_desc']);
