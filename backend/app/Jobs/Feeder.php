@@ -35,9 +35,7 @@ class Feeder extends Job
   public function handle()
   {
     try {
-      $response = $this->feeder->koneksi();
-
-      $path = \Storage::path('feeder/koneksi.json');      
+      $response = $this->feeder->koneksi();   
       
       if (is_null($response))
       {
@@ -57,7 +55,7 @@ class Feeder extends Job
     }
     catch(Exception $e) 
     {
-      // Storage::disk('local')->put('feeder/koneksi.json', json_encode($response));      
+      Storage::disk('local')->put('feeder/koneksi.json', json_encode($response));      
       \Log::channel(self::LOG_CHANNEL)->error("Jobs: Feeder::handle() " . $e->getMessage());
       return Response()->json([$e->getMessage()], 422); 
     } 

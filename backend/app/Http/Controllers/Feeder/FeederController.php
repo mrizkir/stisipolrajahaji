@@ -27,7 +27,7 @@ class FeederController extends Controller
       if ($response['error_code'] == 0) {
         $response['error_desc'] = "Koneksi berhasil ke server feeder {$feeder->getFeederAPI()}";
       }
-      \Log::channel(self::LOG_CHANNEL)->info("FeederController::teskoneksi() Berhasil" . \Storage::path('feeder/koneksi.json'));
+      \Log::channel(self::LOG_CHANNEL)->info("FeederController::teskoneksi() Berhasil");
       return Response()->json($response, 200); 
     }
     catch(Exception $e) 
