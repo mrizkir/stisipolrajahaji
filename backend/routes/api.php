@@ -10,6 +10,10 @@ $router->group(['prefix'=>'v2'], function () use ($router)
 
 	//untuk uifront
 	$router->get('/system/setting/uifront',['uses'=>'System\UIController@frontend','as'=>'uifront.frontend']);
+	
+	//setting - cron
+	$router->get('/system/cron/run',['uses'=>'System\CronController@run','as'=>'cron.run']);
+
 });
 
 $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($router)
