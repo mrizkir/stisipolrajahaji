@@ -87,6 +87,8 @@ $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 |--------------------------------------------------------------------------
 */
 $app->alias('cache', \Illuminate\Cache\CacheManager::class);
+$app->alias('Helper', \App\Helpers\Helper::class);
+$app->alias('HelperDMaster', \App\Helpers\HelperDMaster::class);
 
 /*
 |--------------------------------------------------------------------------

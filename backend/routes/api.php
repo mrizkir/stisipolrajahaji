@@ -14,6 +14,10 @@ $router->group(['prefix'=>'v2'], function () use ($router)
 	//setting - cron
 	$router->get('/system/cron/run',['uses'=>'System\CronController@run','as'=>'cron.run']);
 
+	//perkuliahan - jadwal kuliah
+	$router->post('/perkuliahan/jadwalkuliah',['uses'=>'Perkuliahan\JadwalKuliahController@index','as'=>'perkuliahan-jadwalkuliah.index']);				
+	$router->get('/perkuliahan/jadwalkuliah/{id}/peserta',['uses'=>'Perkuliahan\JadwalKuliahController@peserta','as'=>'perkuliahan-jadwalkuliah.peserta']);				
+	
 });
 
 $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($router)
