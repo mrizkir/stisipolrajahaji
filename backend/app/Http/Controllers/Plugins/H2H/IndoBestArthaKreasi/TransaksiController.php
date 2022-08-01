@@ -122,7 +122,7 @@ class TransaksiController extends Controller {
 						t.tanggal,
 						t.date_added
 					'))
-				->join('v_datamhs AS vdm', 'vdm.nim', 't.no_formulir')
+				->join('v_datamhs AS vdm', 'vdm.nim', 't.nim')
 				->join('kelas AS k', 'k.idkelas', 'vdm.idkelas')
 				->where('t.no_transaksi', $kode_billing)
 				->first();
