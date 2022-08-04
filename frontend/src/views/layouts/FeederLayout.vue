@@ -47,7 +47,7 @@
               PERKULIAHAN
             </li>
             <b-nav-item
-              to="/feeder/krs"
+              to="/feeder/perkuliahan/kelas"
               v-if="
                 $store.getters['auth/can'](
                   'Feeder-KRS_BROWSE'
@@ -55,7 +55,7 @@
               "
             >
               <b-icon icon="arrow-right" />
-              KRS
+              KELAS PERKULIAHAN
             </b-nav-item>
           </b-nav>
         </nav>

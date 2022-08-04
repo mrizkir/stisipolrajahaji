@@ -1,24 +1,24 @@
 <template>
   <FeederLayout :showsubheader="true">
-    <template v-slot:page-header>KRS</template>
+    <template v-slot:page-header>Kelas Perkuliahan</template>
     <template v-slot:page-sub-header>
       Program Studi <strong>{{ nama_prodi }}</strong> T.A <strong>{{ tahun_akademik }}</strong>
       Semester <strong>{{ $store.getters["uiadmin/getNamaSemester"](semester_akademik) }}</strong>
     </template>
     <template v-slot:page-breadcrumb>
-      <b-breadcrumb-item to="/Feeder">Feeder</b-breadcrumb-item>
-      <b-breadcrumb-item active>KRS</b-breadcrumb-item>
+      <b-breadcrumb-item to="/feeder">Feeder</b-breadcrumb-item>
+      <b-breadcrumb-item active>Kelas Perkuliahan</b-breadcrumb-item>
     </template>
     <template v-slot:page-content>
       <b-container
         fluid
-        v-if="$store.getters['auth/can']('FEEDER-KRS_BROWSE')"
+        v-if="$store.getters['auth/can']('FEEDER-PERKULIAHAN-KELAS_BROWSE')"
       >
         <b-row>
           <b-col>
             <b-card no-body class="card-primary card-outline">
               <template #header>
-                <h3 class="card-title">Daftar KRS</h3>
+                <h3 class="card-title">Daftar Kelas Perkuliahan</h3>
                 <div class="card-tools">
                   <b-button
                     size="xs"

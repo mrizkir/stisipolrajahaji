@@ -94,14 +94,14 @@ const routes = [
     component: () => import('../views/pages/admin/feeder/Feeder.vue'),
   },
   {
-    path: '/feeder/krs',
-    name: 'FeederKRS',
+    path: '/feeder/perkuliahan/kelas',
+    name: 'FeederPerkuliahanKelas',
     meta: {
-      title: 'Feeder - KRS',
+      title: 'Feeder - Perkuliahan - Kelas',
       bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
-    component: () => import('../views/pages/admin/feeder/feeder-krs/Feeder-KRS-Index.vue'),
+    component: () => import('../views/pages/admin/feeder/perkuliahan/Feeder-Kelas-Perkuliahan-Index.vue'),
   },
   //akademik
   {
