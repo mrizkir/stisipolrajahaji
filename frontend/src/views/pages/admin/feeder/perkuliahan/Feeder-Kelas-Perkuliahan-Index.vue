@@ -93,15 +93,15 @@
   import FeederLayout from '@/views/layouts/FeederLayout'
   import Filter6 from '@/components/widgets/FilterMode6'
   export default {
-    name: 'FeederKRSIndex',
+    name: 'FeederKelasPerkuliahanIndex',
     setup() {
       return {
-        url: '/feeder/mahasiswa/getkrsmahasiswa',
+        url: '/feeder/perkuliahan/kelas',
       }
     },
     created() {
       this.$store.dispatch('uiadmin/addToPages', {
-        name: 'feeder-krs',
+        name: 'feeder-kelas-perkuliahan',
         loaded: false,
         from: this.from,
         perPage: this.perPage,
@@ -114,19 +114,19 @@
         semester_akademik: this.$store.getters['uiadmin/getSemesterAkademik'],
       })
       this.prodi_id = this.$store.getters['uiadmin/AtributeValueOfPage'](
-        'feeder-krs',
+        'feeder-kelas-perkuliahan',
         'prodi_id'
       )
       this.nama_prodi = this.$store.getters['uiadmin/getProdiName'](
         this.prodi_id
       )
       this.tahun_akademik = this.$store.getters['uiadmin/AtributeValueOfPage'](
-        'feeder-krs',
+        'feeder-kelas-perkuliahan',
         'tahun_akademik'
       )
       this.semester_akademik =
         this.$store.getters['uiadmin/AtributeValueOfPage'](
-          'feeder-krs',
+          'feeder-kelas-perkuliahan',
           'semester_akademik'
         )
     },
@@ -198,7 +198,7 @@
     }),
     methods: {
       updatesettingpage() {
-        var page = this.$store.getters['uiadmin/Page']('feeder-krs')
+        var page = this.$store.getters['uiadmin/Page']('feeder-kelas-perkuliahan')
         page.from = this.from
         page.perPage = this.perPage
         page.currentPage = this.currentPage
@@ -208,7 +208,7 @@
         this.$store.dispatch('uiadmin/updatePage', page)
       },
       clearsettingpage() {
-        var page = this.$store.getters['uiadmin/Page']('feeder-krs')      
+        var page = this.$store.getters['uiadmin/Page']('feeder-kelas-perkuliahan')      
         page.loaded = false
         page.from = 1
         page.perPage = 10
@@ -234,7 +234,7 @@
       },
       changeProdi(val) {
         this.prodi_id = val
-        var page = this.$store.getters['uiadmin/Page']('feeder-krs')
+        var page = this.$store.getters['uiadmin/Page']('feeder-kelas-perkuliahan')
         page.prodi_id = this.prodi_id
         this.$store.dispatch('uiadmin/updatePage', page)
         this.nama_prodi = this.$store.getters['uiadmin/getProdiName'](
@@ -243,19 +243,19 @@
       },
       changeTahunAkademik(val) {
         this.tahun_akademik = val
-        var page = this.$store.getters['uiadmin/Page']('feeder-krs')
+        var page = this.$store.getters['uiadmin/Page']('feeder-kelas-perkuliahan')
         page.tahun_akademik = this.tahun_akademik
         this.$store.dispatch('uiadmin/updatePage', page)
       },
       changeSemesterAkademik(val) {
         this.semester_akademik = val
-        var page = this.$store.getters['uiadmin/Page']('feeder-krs')
+        var page = this.$store.getters['uiadmin/Page']('feeder-kelas-perkuliahan')
         page.semester_akademik = this.semester_akademik
         this.$store.dispatch('uiadmin/updatePage', page)
       },
       async initialize() {
         this.datatableLoading = true
-        var page = this.$store.getters['uiadmin/Page']('feeder-krs')
+        var page = this.$store.getters['uiadmin/Page']('feeder-kelas-perkuliahan')
         await this.$ajax
           .post(this.url, 
           {

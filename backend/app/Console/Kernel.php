@@ -6,7 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
 //job feeder
-use App\Jobs\Feeder;
+use App\Jobs\FeederJob;
 
 class Kernel extends ConsoleKernel
 {
@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
   protected function schedule(Schedule $schedule)
   {
     //job feeder
-    $schedule->job(new Feeder, 'feeder')
+    $schedule->job(new FeederJob, 'feeder')
       ->everyMinute()
       // ->hourly()
       ->sendOutputTo(storage_path() . '/logs/laravel.log')      

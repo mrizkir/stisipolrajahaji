@@ -36,7 +36,10 @@ class KelasPerkuliahanModel extends Model {
     'persen_uts',
     'persen_uas',
     'persen_absen',
-    'isi_nilai'
+    'isi_nilai',
+    'feederid',
+    'lastsync',
+    'feedermessage',
 	];
 	/**
 	 * enable auto_increment.
