@@ -55,13 +55,26 @@
                     </div>
                   </template>
                   <template #cell(no)="{ index }">
-                    {{ index + parseInt(from) }}
+                    {{ index + from }}
                   </template>               
                   <template #emptytext>
                     tidak ada data yang bisa ditampilkan
                   </template>
                 </b-table>
               </b-card-body>
+              <template #footer>
+                <b-pagination
+                  v-model="currentPage"
+                  :total-rows="totalRows"
+                  :per-page="perPage"
+                  aria-controls="datatable"
+                  class="pagination-sm m-0 float-right"
+                  @change="handlePageChange"
+                  responsive
+                  pills
+                >
+                </b-pagination>
+              </template>
             </b-card>
           </b-col>
         </b-row>
@@ -81,7 +94,7 @@
         <b-col>
           Tampilkan data per <b-form-input v-model="perPage" type="number" size="xs" /> baris
           pada halaman ke <b-form-input v-model="from" type="number" size="xs" />
-          <b-button variant="primary" @click.stop="filterKRS">
+          <b-button variant="primary" @click.stop="filterKelasKuliah">
             Filter
           </b-button>
         </b-col>
@@ -156,40 +169,30 @@
           thStyle: 'width: 50px',
         },
         {
-          key: 'nim',
-          label: 'NIRM',
+          key: 'kode_matkul',
+          label: 'Kode',
           thStyle: 'width: 100px',
         },
         {
-          key: 'nama_mahasiswa',
-          label: 'Nama Mahasiswa',
+          key: 'nmatkul',
+          label: 'Nama Mata Kuliah',
           thStyle: 'width: 250px',
+        },        
+        {
+          key: 'nama_dosen',
+          label: 'Nama Dosen',
+          thStyle: 'width: 230px',
         },
         {
-          key: 'angkatan',
-          label: 'Angk.',
-          thStyle: 'width: 70px',
-        },
-        {
-          key: 'kode_mata_kuliah',
-          label: 'Kode',
-          thStyle: 'width: 70px',
-        },
-        {
-          key: 'nama_mata_kuliah',
-          label: 'Nama Matakuliah',
+          key: 'namakelas',
+          label: 'Kelas',
           thStyle: 'width: 200px',
         },
         {
-          key: 'sks_mata_kuliah',
-          label: 'SKS',
+          key: 'jumlah_peserta_kelas',
+          label: 'Jumlah',
           thStyle: 'width: 50px',
-        },
-        {
-          key: 'nama_kelas_kuliah',
-          label: 'Kelas',
-          thStyle: 'width: 50px',
-        },
+        },        
       ],
       sortBy: 'nama_aktivitas',
       sortDesc: false,
@@ -276,14 +279,31 @@
             }
           })
           .then(({ data }) => {
-            this.datatable = data.data            
+            this.from = data.result.from
+            this.totalRows = data.result.total
+            this.datatable = data.result.data
+            page.loaded = true
+            this.$store.dispatch('uiadmin/updatePage', page)
+            this.$nextTick(() => {
+              this.currentPage = page.currentPage
+            })
             this.datatableLoading = false
           })
       },
-      filterKRS() {
+      filterKelasKuliah() {
         this.updatesettingpage()
         this.initialize()
-      }
+      },
+      handleSearch() {
+        this.currentPage = 1
+        this.updatesettingpage()
+        this.initialize()
+      },
+      handlePageChange(value) {
+        this.currentPage = value
+        this.updatesettingpage()
+        this.initialize()
+      },
     },
     components: {
       FeederLayout,

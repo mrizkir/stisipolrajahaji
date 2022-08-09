@@ -4,45 +4,20 @@ namespace App\Http\Controllers\Feeder;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 use Exception;
 
-use App\Helpers\HelperFeeder;
+use App\Helpers\HelperAkademik;
+use App\Helpers\HelperDMaster;
 
 class FeederKelasPerkuliahanController extends Controller
-{      
-	const LOG_CHANNEL = 'feeder';
-
-  public function teskoneksi()
-  {
-    $feeder = new HelperFeeder();    
-    try {
-      $response = $feeder->koneksi();   
-
-      if (!isset($response['error_code']))
-      {
-        throw new Exception("Koneksi GAGAL ke server feeder {$feeder->getFeederAPI()} cek username dan password di .env");
-      }      
-      if ($response['error_code'] == 0) {
-        $response['error_desc'] = "Koneksi berhasil ke server feeder {$feeder->getFeederAPI()}";
-      }
-      \Log::channel(self::LOG_CHANNEL)->info("FeederController::teskoneksi() Berhasil");
-      return Response()->json($response, 200); 
-    }
-    catch(Exception $e) 
-    {
-      \Log::channel(self::LOG_CHANNEL)->error("FeederController::teskoneksi() gagal karena " . $e->getMessage());
-      return Response()->json([$e->getMessage()], 422); 
-    }    
-  }
+{ 
   /**
-   * mahasiswa - GetKRSMahasiswa()
+   * index = daftar kelas
    */
-  public function getkrsmahasiswa(Request $request) {
+  public function index(Request $request) {
     
-    $rule=[
-      'token'=>'required',			
+    $rule=[      
 			'perPage'=>'required|numeric',      
 			'currentPage'=>'required|numeric',      
 			'sortBy'=>'required',
@@ -55,7 +30,6 @@ class FeederKelasPerkuliahanController extends Controller
     
 		$this->validate($request, $rule);
 
-    $token = $request->input('token');
     $perPage = $request->input('perPage');
     $currentPage = $request->input('currentPage');
     $sortBy = $request->input('sortBy');
@@ -66,16 +40,54 @@ class FeederKelasPerkuliahanController extends Controller
     $tahun_akademik = $request->input('tahun_akademik');
 
     try {
-      $feeder = new HelperFeeder($token);
-      $id_periode = $tahun_akademik.$semester_akademik;      
-      $response = $feeder->getKRSMahasiswa('nama_mahasiswa ASC', $perPage, $currentPage, "id_periode='$id_periode' AND nama_program_studi LIKE '%$nama_prodi%'");      
-      if (!isset($response['error_code']))
-      {
-        throw new Exception("Koneksi GAGAL ke server feeder {$feeder->getFeederAPI()} cek username dan password di .env");
-      } 
-      if ($response['error_code'] != 0) {
-        throw new Exception($response['error_desc']);
-      }
+      $data = \DB::table('kelas_mhs AS A')
+      ->select(\DB::raw('
+        A.idkelas_mhs,
+        A.idkelas,
+        A.nama_kelas,
+        A.hari,
+        A.jam_masuk,
+        A.jam_keluar,
+        "" AS kode_matkul,
+        "" AS namakelas,
+        0 AS jumlah_peserta_kelas,
+        B.kmatkul,
+        B.nmatkul,
+        B.nama_dosen,
+        B.nidn,
+        C.namaruang,
+        C.kapasitas
+      '))
+      ->join('v_pengampu_penyelenggaraan AS B', 'B.idpengampu_penyelenggaraan', 'A.idpengampu_penyelenggaraan')
+      ->leftJoin('ruangkelas AS C', 'C.idruangkelas', 'A.idruangkelas') 
+      ->where('B.idsmt', $semester_akademik)
+      ->where('B.tahun', $tahun_akademik)
+      ->where('kjur', $prodi_id)
+      ->orderBy('A.idkelas', 'ASC')
+      ->orderBy('A.hari', 'ASC')
+      ->orderBy('nmatkul', 'ASC');
+
+      $data = $data->paginate(10);
+      
+      $data->transform(function ($item, $key) {
+        $kmatkul = $item->kmatkul;
+        $item->kode_matkul = HelperAkademik::getKMatkul($kmatkul); 
+        $item->namakelas = HelperDMaster::getNamaKelasByID($item->idkelas).'-'.chr($item->nama_kelas + 64);
+        $jumlah_peserta_kelas = \DB::table('kelas_mhs_detail')
+        ->where('idkelas_mhs', $item->idkelas_mhs)
+        ->count();
+        $item->jumlah_peserta_kelas = $jumlah_peserta_kelas;
+  
+        return $item;
+      });
+
+      $response = [
+        'status'=>1,
+			  'pid'=>'fetch',
+        'message' => "Data kelas perkuliahan ({$tahun_akademik}{$tahun_akademik}) berhasil diperoleh",
+        'result' => $data,
+      ];
+      
       return Response()->json($response, 200); 
     }
     catch(Exception $e) 
