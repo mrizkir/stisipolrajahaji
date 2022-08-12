@@ -50,12 +50,23 @@
               to="/feeder/perkuliahan/kelas"
               v-if="
                 $store.getters['auth/can'](
-                  'Feeder-KRS_BROWSE'
+                  'Feeder-TRAKD_BROWSE'
                 )
               "
             >
               <b-icon icon="arrow-right" />
               KELAS PERKULIAHAN
+            </b-nav-item>
+            <b-nav-item
+              to="/feeder/perkuliahan/trakm"
+              v-if="
+                $store.getters['auth/can'](
+                  'FEEDER-PERKULIAHAN-TRAKM_BROWSE'
+                )
+              "
+            >
+              <b-icon icon="arrow-right" />
+              AKTIVITAS KULIAH
             </b-nav-item>
           </b-nav>
         </nav>

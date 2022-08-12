@@ -15,8 +15,8 @@ class FeederKelasPerkuliahanController extends Controller
   /**
    * index = daftar kelas
    */
-  public function index(Request $request) {
-    
+  public function index(Request $request)
+  {    
     $rule=[      
 			'perPage'=>'required|numeric',      
 			'currentPage'=>'required|numeric',      

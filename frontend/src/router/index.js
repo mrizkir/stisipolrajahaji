@@ -93,6 +93,7 @@ const routes = [
     },
     component: () => import('../views/pages/admin/feeder/Feeder.vue'),
   },
+  //feeder - perkuliahan - kelas (trakd)
   {
     path: '/feeder/perkuliahan/kelas',
     name: 'FeederPerkuliahanKelas',
@@ -102,6 +103,18 @@ const routes = [
       requiresAuth: true,
     },
     component: () => import('../views/pages/admin/feeder/perkuliahan/Feeder-Kelas-Perkuliahan-Index.vue'),
+  },
+
+  //feeder - perkuliahan - aktivitas kuliah mahasiswa
+  {
+    path: '/feeder/perkuliahan/trakm',
+    name: 'FeederPerkuliahanTRAKM',
+    meta: {
+      title: 'Feeder - Perkuliahan - Aktivitas Kuliah',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () => import('../views/pages/admin/feeder/perkuliahan/Feeder-TRAKM-Index.vue'),
   },
   //akademik
   {

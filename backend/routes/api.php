@@ -67,6 +67,9 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	//feeder - kelas - perkuliahan
 	$router->post('/feeder/perkuliahan/kelas',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Feeder\FeederKelasPerkuliahanController@index','as'=>'feederkelas.index']);				
 	
+	//feeder - perkuliahan - trakm
+	$router->post('/feeder/perkuliahan/trakm',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Feeder\FeederPerkuliahanTRAKMController@index','as'=>'feedertrakm.index']);				
+	
 	$router->post('/feeder/mahasiswa/getkrsmahasiswa',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Feeder\FeederController@getkrsmahasiswa','as'=>'feeder-mahasiswa.getkrsmahasiswa']);				
 
 	//setting - permissions

@@ -213,9 +213,10 @@ class UIController extends Controller {
                             ->get();
       $idkelas='A';
 
-      $daftar_status_mhs=StatusMahasiswaModel::select(\DB::raw('k_status AS id,n_status AS text'))
-                          ->get();
-      $k_status='A';
+      $daftar_status_mhs=StatusMahasiswaModel::select(\DB::raw('k_status AS id, n_status AS text'))
+        ->get();
+        
+      $k_status = 'A';
       $theme = 'default';
       return Response()->json([
         'status'=>1,

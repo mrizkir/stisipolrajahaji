@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-class HelperAkademik {
+class HelperAkademik extends HelperMahasiswa {
 	/**
 	 * daftar semester
 	 */
@@ -353,13 +353,18 @@ class HelperAkademik {
 	 */
 	public function isKrsSah ($tahun,$idsmt) {		
 		$nim=$this->DataMHS['nim'];
-		$str = "SELECT sah FROM krs WHERE idsmt=$idsmt AND tahun=$tahun AND nim='$nim'";			
-		$this->db->setFieldTable(array('sah'));
-		$r=$this->db->getRecord($str);
-		$bool=false;
-		if (isset($r[1])) {
-				$bool=$r[1]['sah'];			
-		}
+		
+		$krs = \DB::table('krs')
+		->select(\DB::raw('
+			sah
+		'))
+		->where('idsmt', $idsmt)
+		->where('tahun', $tahun)
+		->where('nim', $nim)
+		->first();	
+		
+		$bool = is_null($krs) ? false : $krs->sah == 1;
+		
 		return $bool;
 	}
 	/**
