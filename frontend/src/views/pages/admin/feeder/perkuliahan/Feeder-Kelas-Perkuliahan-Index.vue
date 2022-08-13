@@ -12,7 +12,7 @@
     <template v-slot:page-content>
       <b-container
         fluid
-        v-if="$store.getters['auth/can']('FEEDER-PERKULIAHAN-KELAS_BROWSE')"
+        v-if="$store.getters['auth/can']('FEEDER-PERKULIAHAN-TRAKD_BROWSE')"
       >
         <b-row>
           <b-col>

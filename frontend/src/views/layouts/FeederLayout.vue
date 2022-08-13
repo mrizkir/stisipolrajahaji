@@ -50,7 +50,7 @@
               to="/feeder/perkuliahan/kelas"
               v-if="
                 $store.getters['auth/can'](
-                  'Feeder-TRAKD_BROWSE'
+                  'FEEDER-PERKULIAHAN-TRAKD_BROWSE'
                 )
               "
             >

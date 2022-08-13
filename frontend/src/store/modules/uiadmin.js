@@ -82,7 +82,6 @@ const mutations = {
   setStatusMahasiswa(state, k_status) {
     state.k_status = k_status
   },
-  
   //feeder
   setFeederToken(state, token) {
     state.feeder_token = token

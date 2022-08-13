@@ -102,4 +102,29 @@ class FeederPerkuliahanTRAKMController extends Controller
       return Response()->json([$e->getMessage()], 422); 
     }        
   } 
+  public function printtoexcel1(Request $request)
+  {
+    $rule = [
+			'nama_prodi'=>'required',
+			'prodi_id'=>'required|exists:program_studi,kjur',
+			'semester_akademik'=>'required|in:1,2',
+			'tahun_akademik'=>'required|numeric',
+      'pid' => 'required|in:fake,real'
+		];
+		
+    $this->validate($request, $rule);
+
+    if ($request->input('pid') == 'real')
+    {
+      $data_report=[
+        'nama_prodi'=>$request->input('nama_prodi'),			
+        'prodi_id'=>$request->input('prodi_id'),
+        'tahun_akademik'=>$request->input('tahun_akademik'),
+        'semester_akademik'=>$request->input('semester_akademik'), 			
+      ];
+  
+      $report= new \App\Models\Report\ReportTRAKMModel ($data_report);     
+      return $report->printtoexcel1();
+    }		
+  }
 }

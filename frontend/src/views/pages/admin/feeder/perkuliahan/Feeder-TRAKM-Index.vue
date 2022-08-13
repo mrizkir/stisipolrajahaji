@@ -29,7 +29,17 @@
                     class="mr-1"
                   >
                     <b-icon icon="trash2" />
-                  </b-button>                
+                  </b-button>
+                  <b-button
+                    size="xs"
+                    variant="outline-primary"
+                    @click.stop="printtoexcel"
+                    v-b-tooltip.hover
+                    title="Cetak"
+                    :disabled="btnLoading"
+                  >
+                    <b-icon icon="printer" />
+                  </b-button>
                 </div>
               </template>
               <b-card-body class="p-0">
@@ -56,16 +66,21 @@
                   </template>
                   <template #cell(no)="{ index }">
                     {{ index + from }}
-                  </template>               
+                  </template>
                   <template #cell(k_status)="{ item }">
-                    {{ $store.getters['uiadmin/getStatusMahasiswa'](item.k_status) }}
-                  </template>               
+                    {{
+                      $store.getters['uiadmin/getStatusMahasiswa'](
+                        item.k_status
+                      )
+                    }}
+                  </template>
                   <template #emptytext>
                     tidak ada data yang bisa ditampilkan
                   </template>
                 </b-table>
               </b-card-body>
               <template #footer>
+                <strong>Total Record:</strong> {{ totalRows }}
                 <b-pagination
                   v-model="currentPage"
                   :total-rows="totalRows"
@@ -140,19 +155,18 @@
         'feeder-perkuliahan-trakm',
         'tahun_akademik'
       )
-      this.semester_akademik =
-        this.$store.getters['uiadmin/AtributeValueOfPage'](
-          'feeder-perkuliahan-trakm',
-          'semester_akademik'
-        )
+      this.semester_akademik = this.$store.getters[
+        'uiadmin/AtributeValueOfPage'
+      ]('feeder-perkuliahan-trakm', 'semester_akademik')
     },
     mounted() {
       this.firstloading = false
-      this.$refs.filter6.setFirstTimeLoading(this.firstloading)      
+      this.$refs.filter6.setFirstTimeLoading(this.firstloading)
       this.initialize()
     },
     data: () => ({
       datatableLoading: false,
+      btnLoading: false,
       firstloading: true,
       prodi_id: null,
       nama_prodi: null,
@@ -166,7 +180,7 @@
       totalRows: 0,
       datatable: [],
       fields: [
-        {          
+        {
           key: 'no',
           label: 'No.',
           thStyle: 'width: 50px',
@@ -219,7 +233,9 @@
     }),
     methods: {
       updatesettingpage() {
-        var page = this.$store.getters['uiadmin/Page']('feeder-perkuliahan-trakm')
+        var page = this.$store.getters['uiadmin/Page'](
+          'feeder-perkuliahan-trakm'
+        )
         page.from = this.from
         page.perPage = this.perPage
         page.currentPage = this.currentPage
@@ -229,7 +245,9 @@
         this.$store.dispatch('uiadmin/updatePage', page)
       },
       clearsettingpage() {
-        var page = this.$store.getters['uiadmin/Page']('feeder-perkuliahan-trakm')      
+        var page = this.$store.getters['uiadmin/Page'](
+          'feeder-perkuliahan-trakm'
+        )
         page.loaded = false
         page.from = 1
         page.perPage = 10
@@ -255,7 +273,9 @@
       },
       changeProdi(val) {
         this.prodi_id = val
-        var page = this.$store.getters['uiadmin/Page']('feeder-perkuliahan-trakm')
+        var page = this.$store.getters['uiadmin/Page'](
+          'feeder-perkuliahan-trakm'
+        )
         page.prodi_id = this.prodi_id
         this.$store.dispatch('uiadmin/updatePage', page)
         this.nama_prodi = this.$store.getters['uiadmin/getProdiName'](
@@ -264,38 +284,48 @@
       },
       changeTahunAkademik(val) {
         this.tahun_akademik = val
-        var page = this.$store.getters['uiadmin/Page']('feeder-perkuliahan-trakm')
+        var page = this.$store.getters['uiadmin/Page'](
+          'feeder-perkuliahan-trakm'
+        )
         page.tahun_akademik = this.tahun_akademik
         this.$store.dispatch('uiadmin/updatePage', page)
       },
       changeSemesterAkademik(val) {
         this.semester_akademik = val
-        var page = this.$store.getters['uiadmin/Page']('feeder-perkuliahan-trakm')
+        var page = this.$store.getters['uiadmin/Page'](
+          'feeder-perkuliahan-trakm'
+        )
         page.semester_akademik = this.semester_akademik
         this.$store.dispatch('uiadmin/updatePage', page)
       },
       async initialize() {
         this.datatableLoading = true
-        var page = this.$store.getters['uiadmin/Page']('feeder-perkuliahan-trakm')
+        var page = this.$store.getters['uiadmin/Page'](
+          'feeder-perkuliahan-trakm'
+        )
         await this.$ajax
-          .post(this.url, 
-          {
-            token: this.$store.getters['uiadmin/getFeederToken'],
-            perPage: page.perPage,
-            currentPage: page.currentPage,
-            sortBy: page.sortBy,
-            sortDesc: page.sortDesc,
-            search: page.search,
-            prodi_id: page.prodi_id,
-            nama_prodi: this.$store.getters['uiadmin/getProdiNameForFeeder'](page.prodi_id),
-            semester_akademik: this.semester_akademik,
-            tahun_akademik: this.tahun_akademik,
-          },
-          {
-            headers: {
-              Authorization: this.$store.getters['auth/Token'],
+          .post(
+            this.url,
+            {
+              token: this.$store.getters['uiadmin/getFeederToken'],
+              perPage: page.perPage,
+              currentPage: page.currentPage,
+              sortBy: page.sortBy,
+              sortDesc: page.sortDesc,
+              search: page.search,
+              prodi_id: page.prodi_id,
+              nama_prodi: this.$store.getters['uiadmin/getProdiNameForFeeder'](
+                page.prodi_id
+              ),
+              semester_akademik: this.semester_akademik,
+              tahun_akademik: this.tahun_akademik,
+            },
+            {
+              headers: {
+                Authorization: this.$store.getters['auth/Token'],
+              },
             }
-          })
+          )
           .then(({ data }) => {
             this.from = data.result.from
             this.totalRows = data.result.total
@@ -322,6 +352,71 @@
         this.updatesettingpage()
         this.initialize()
       },
+      async printtoexcel() {
+				this.btnLoading = true
+        var page = this.$store.getters['uiadmin/Page'](
+          'feeder-perkuliahan-trakm'
+        )
+        this.$ajax
+					.post(
+						'/feeder/perkuliahan/trakm/printtoexcel1',
+						{
+              prodi_id: page.prodi_id,
+              nama_prodi: this.$store.getters['uiadmin/getProdiNameForFeeder'](
+                page.prodi_id
+              ),
+              semester_akademik: this.semester_akademik,
+              tahun_akademik: this.tahun_akademik,
+              pid: 'fake',
+            },
+						{
+							headers: {
+								Authorization: this.$store.getters['auth/Token'],
+							},							
+						}
+					)
+					.then(() => {						
+						this.btnLoading = false;
+					})
+					.catch(() => {
+						this.btnLoading = false;
+					})
+				await this.$ajax
+					.post(
+						'/feeder/perkuliahan/trakm/printtoexcel1',
+						{
+              prodi_id: page.prodi_id,
+              nama_prodi: this.$store.getters['uiadmin/getProdiNameForFeeder'](
+                page.prodi_id
+              ),
+              semester_akademik: this.semester_akademik,
+              tahun_akademik: this.tahun_akademik,
+              pid: 'real',
+            },
+						{
+							headers: {
+								Authorization: this.$store.getters['auth/Token'],
+							},
+							responseType: 'arraybuffer',
+						}
+					)
+					.then(({ data, status }) => {
+						if (status == 200) {
+							const url = window.URL.createObjectURL(new Blob([data]))
+							const link = document.createElement('a')
+							link.href = url;
+							link.setAttribute('download', 'daftar_trakm_' + Date.now() + '.xlsx')
+							link.setAttribute('id', 'download_laporan')
+							document.body.appendChild(link)
+							link.click()
+							document.body.removeChild(link)
+						}
+						this.btnLoading = false;
+					})
+					.catch(() => {
+						this.btnLoading = false;
+					})
+			},
     },
     components: {
       FeederLayout,

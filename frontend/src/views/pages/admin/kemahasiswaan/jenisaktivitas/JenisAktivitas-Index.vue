@@ -103,6 +103,7 @@
                 </b-table>
               </b-card-body>
               <template #footer>
+                <strong>Total Record:</strong> {{ totalRows }}
                 <b-pagination
                   v-model="currentPage"
                   :total-rows="totalRows"

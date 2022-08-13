@@ -230,6 +230,6 @@ class Helper {
 	}
 	public static function exported_path()
 	{
-		return app()->basePath('storage/app/public/exported/');
+		return app()->basePath('storage/app/public/exported');
 	}
 }
