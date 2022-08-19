@@ -451,6 +451,8 @@ class TransaksiController extends Controller {
 						vdm.nama_ps,
 						vdm.idkelas,
 						vdm.k_status,
+						vdm.tahun_masuk,
+						vdm.semester_masuk,
 						k.nkelas AS nama_kelas,
 						t.dibayarkan AS totaltagihan,
 						t.commited,
