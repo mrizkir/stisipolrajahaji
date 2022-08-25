@@ -18,7 +18,7 @@ export default new Vuex.Store({
 	},
   plugins: [
 		createPersistedState({
-			key: 'stisipolrh-pe2',
+			key: 'stisipolrh-pe2-1',
 			storage: {
 				getItem: key => ls.get(key),
 				setItem: (key, value) => ls.set(key, value),

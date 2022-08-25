@@ -56,6 +56,7 @@ class FeederPerkuliahanTRAKMController extends Controller
       ->where('B.idsmt', $semester_akademik)
       ->where('B.tahun', $tahun_akademik)
       ->where('A.kjur', $prodi_id)
+      ->whereRaw('(B.k_status="A" OR B.k_status="N" OR B.k_status="C")')
       ->orderBy('A.tahun_masuk', 'ASC')
       ->orderBy('A.nama_mhs', 'ASC');      
 
