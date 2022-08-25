@@ -115,34 +115,7 @@ class ReportTRAKMModel extends ReportModel
       ->where('A.kjur', $prodi_id)
       ->orderBy('A.tahun_masuk', 'ASC')
       ->orderBy('A.nama_mhs', 'ASC')
-      ->get();      
-      
-    $data->transform(function ($item, $key) use ($tahun_akademik, $semester_akademik) {      
-      $helper = new HelperNilai();
-      $helper->setDataMHS([
-        'nim' => $item->nim
-      ]);
-
-      
-      $helper->getKHS($tahun_akademik, $semester_akademik);
-      $item->ips = $helper->getIPS();
-      $item->sks = $helper->getTotalSKS();
-      $dataipk = $helper->getIPKSampaiTASemester($tahun_akademik, $semester_akademik, 'ipksks');	                                
-      $item->ipk = $dataipk['ipk'];
-
-      $helper = new HelperKeuangan();
-      $helper->setDataMHS([
-        'nim' => $item->nim,
-        'tahun_masuk' => $item->tahun_masuk,
-        'idsmt' => $semester_akademik,
-        'idkelas' => $item->idkelas,
-      ]);
-
-      $spp = $helper->getTotalBiayaMhsPeriodePembayaran('lama');
-      $item->spp = $helper->formatUang($spp);
-    
-      return $item;
-    });
+      ->get();  
     
 		$row+=1;
 		$row_awal=$row; 		
@@ -161,10 +134,10 @@ class ReportTRAKMModel extends ReportModel
       
       $helper_nilai->getKHS($tahun_akademik, $semester_akademik);
       $ips = $helper_nilai->getIPS();
-      $sks = $helper_nilai->getTotalSKS();
-			$skskum = 0;
+      $sks = $helper_nilai->getTotalSKS();			
       $dataipk = $helper_nilai->getIPKSampaiTASemester($tahun_akademik, $semester_akademik, 'ipksks');	                                
       $ipk = $dataipk['ipk'];
+			$skskum = $dataipk['sks'];
       
       $helper_keuangan->setDataMHS([
         'nim' => $v->nim,
