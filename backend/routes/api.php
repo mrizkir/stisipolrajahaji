@@ -161,19 +161,26 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	$router->delete('/system/usersdosen/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersDosenController@destroy','as'=>'usersdosen.destroy']);
 
 });
-
-//payment - [bank riau kepri]
+//h2h - [iak (link)]
 $router->group(['prefix'=>'v2/h2h/iak', 'middleware'=>'auth:api'], function () use ($router)
 {
 	//inquiry tagihan
-	$router->post('/inquiry-tagihan',['uses'=>'Plugins\H2H\IndoBestArthaKreasi\TransaksiController@inquiryTagihan','as'=>'iak.transaksi.inquiry-tagihan']);
+	$router->post('/inquiry-tagihan',['uses'=>'Plugins\H2H\IndoBestArthaKreasi\IAKTransaksiController@inquiryTagihan','as'=>'iak.transaksi.inquiry-tagihan']);
 	//payment
-	$router->post('/payment',['uses'=>'Plugins\H2H\IndoBestArthaKreasi\TransaksiController@payment','as'=>'iak.transaksi.payment']);
+	$router->post('/payment',['uses'=>'Plugins\H2H\IndoBestArthaKreasi\IAKTransaksiController@payment','as'=>'iak.transaksi.payment']);
 });
 
-//android - [gss]
-$router->group(['prefix'=>'android'], function () use ($router)
+//h2h - [bank riau kepri]
+$router->group(['prefix'=>'v2/h2h/brk'], function () use ($router)
 {
-	//khs mahasiswa
-	$router->get('/khs',['uses'=>'Plugins\Android\AndroidKHSController@index','as'=>'android.khs.index']);
+	//auth login
+	$router->post('/auth/login',['uses'=>'Plugins\H2H\BRK\BRKAuthController@login','as'=>'brk.auth.login']);
+});
+
+$router->group(['prefix'=>'v2/h2h/brk', 'middleware'=>'auth:api'], function () use ($router)
+{
+	//inquiry tagihan
+	$router->post('/inquiry-tagihan',['uses'=>'Plugins\H2H\BRK\BRKTransaksiController@inquiryTagihan','as'=>'brk.transaksi.inquiry-tagihan']);
+	//payment
+	$router->post('/payment',['uses'=>'Plugins\H2H\BRK\BRKTransaksiController@payment','as'=>'brk.transaksi.payment']);
 });

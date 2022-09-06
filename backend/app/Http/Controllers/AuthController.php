@@ -31,7 +31,7 @@ class AuthController extends Controller
 		
 		try 
 		{
-			$result = User::where('username',$username)
+			$result = User::where('username', $username)
 				->first();
 			if (is_null($result)) 
 			{
