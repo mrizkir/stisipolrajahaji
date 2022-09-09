@@ -15,7 +15,7 @@ use App\Helpers\HelperKeuangan;
 
 use Exception;
 
-class TransaksiController extends Controller {  
+class IAKTransaksiController extends Controller {  
 	public function inquiryTagihan(Request $request)
 	{
 		$this->validate($request, [
