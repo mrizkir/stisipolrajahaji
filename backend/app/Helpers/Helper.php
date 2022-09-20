@@ -232,4 +232,11 @@ class Helper {
 	{
 		return app()->basePath('storage/app/public/exported');
 	}
+	/**
+	 * digunakan untuk mengecek apakah sebuah json valid atau tidak
+	 */
+	public static function isJson($str) {
+    $json = json_decode($str);
+    return $json && $str != $json;
+	}
 }

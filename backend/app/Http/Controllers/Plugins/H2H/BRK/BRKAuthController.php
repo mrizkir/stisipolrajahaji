@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\System\ConfigurationModel;
 
+use App\Helpers\Helper;
 use Exception;
 
 class BRKAuthController extends Controller
@@ -20,20 +21,23 @@ class BRKAuthController extends Controller
 	 */
 	public function login(Request $request)
 	{
-		$this->validate($request, [            
-			'username'=>'required',
-			'password'=>'required',			                    
-		]);
-
-		$username = $request->input('username');
-		$password = $request->input('password');		
-
+		$response = trim(str_replace("\n", "", $request->getContent()));		
+		
 		try 
 		{
+
+			if (!Helper::isJson($response)) {
+				throw new Exception (10);
+			}
+			
+			$data_user = json_decode($response);			
+			$username = $data_user->username;
+			$password = $data_user->password;
+
 			$result = User::where('username', $username)
 				->where('page', 'api')
 				->first();
-
+			
 			if (is_null($result)) 
 			{
 				throw new Exception (11);
@@ -64,6 +68,12 @@ class BRKAuthController extends Controller
 			$code = $e->getMessage();
 			switch($code)
 			{
+				case 10:
+					$result = [
+						'status'=>'10',
+						'message'=>'Format JSON tidak valid'
+					];
+				break;
 				case 11:
 					$result = [
 						'status'=>'11',
