@@ -213,7 +213,7 @@ class BRKTransaksiController extends Controller {
 				default:
 					$result = [
 						'status'=>'98',
-						'message'=>'Token tidak terdaftar',
+						'message'=>'Token tidak terdaftar atau ' . $e->getMessage(),
 						'data' => $payload,
 					];
 			}
