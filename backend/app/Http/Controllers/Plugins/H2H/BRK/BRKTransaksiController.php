@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use App\Helpers\Helper;
 use App\Helpers\HelperAkademik;
 use App\Models\SPMB\FormulirPendaftaranOnlineModel;
 use App\Models\DMaster\ProgramStudiModel;
@@ -18,18 +19,26 @@ use Exception;
 class BRKTransaksiController extends Controller {  
 	public function inquiryTagihan(Request $request)
 	{
-		$this->validate($request, [
-			'kode_billing'=>'required'
-		]);
+		$response = trim(str_replace("\n", "", $request->getContent()));		
 		
-		$kode_billing = $request->input('kode_billing');
-		
-		$tipe_transaksi=substr($kode_billing, 0,2);
-
-		switch ($tipe_transaksi)
+		try 
 		{
-			case 10: //bayar biasa
-				$data = \DB::table('transaksi AS t')
+			if (!Helper::isJson($response)) {
+				throw new Exception (10);
+			}
+
+			$data = json_decode($response);			
+			$kode_billing = $data->kode_billing;
+			$token = $data->token;
+
+			$kode_billing = $request->input('kode_billing');		
+			$tipe_transaksi=substr($kode_billing, 0,2);
+
+			$payload = [];
+			switch($tipe_transaksi)
+			{
+				case 10://bayar biasa
+					$data = \DB::table('transaksi AS t')
 					->select(\DB::raw('
 						t.no_transaksi,
 						t.no_faktur,
@@ -50,129 +59,169 @@ class BRKTransaksiController extends Controller {
 					->leftJoin('kelas AS k', 'k.idkelas', 't.idkelas')
 					->where('t.no_transaksi', $kode_billing)
 					->first();
-				
-				if (is_null($data))        {
-					return Response()->json([
-						'status'=>'14',
-						'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"											
-					], 200); 
-				}
-				else if ($data->commited==1)
-				{
-					return Response()->json([
-						'status'=>'88',
-						'message'=>"Tagihan sudah dibayarkan."
-						
-					], 200); 
-				}
-				else
-				{
-					$payload['kode_billing'] = $data->no_transaksi;
-					$payload['no_formulir'] = $data->no_formulir;
+					
+					if (is_null($data))        
+					{
+						throw new Exception(14);
+					}
+					
+					if ($data->commited == 1)
+					{
+						throw new Exception(88);
+					}
+					
 					if ($data->nama_mhs == '' || $data->nim == '' || $data->kjur == 0)
 					{
 						$mahasiswa = FormulirPendaftaranOnlineModel::find($data->no_formulir);				
-						$payload['nama_mhs'] = is_null($mahasiswa) ? '' : $mahasiswa->nama_mhs;
-						$payload['keterangan'] = 'MAHASISWA BARU';
+						$nama_mhs = is_null($mahasiswa) ? '' : $mahasiswa->nama_mhs;	
+						$nim = '-';					
 					}
 					else
 					{
-						$payload['nama_mhs'] = $data->nama_mhs;
-						$payload['keterangan'] = 'MAHASISWA LAMA';
-					}
-					$payload['kode_billing'] = $data->no_transaksi;
-					$payload['no_faktur']=$data->no_faktur;
-					$payload['kjur']=$data->kjur;
-					$payload['tahun']=$data->tahun;
-					$payload['idsmt']=$data->idsmt;						
-					$payload['idkelas']=$data->idkelas;	
-					$payload['nama_prodi']=ProgramStudiModel::find($payload['kjur'])->value('nama_ps');
-					$payload['semester']=HelperAkademik::getSemester($payload['idsmt']);	
-					$payload['nama_kelas']=$data->nkelas;
-					$payload['totaltagihan']=\DB::table('transaksi_detail')
+						$nama_mhs = $data->nama_mhs;
+						$nim = $data->nim;
+					}	
+					
+					$nominal = \DB::table('transaksi_detail')
 						->where('no_transaksi', $data->no_transaksi)
 						->sum('dibayarkan');
+					
+					$payload = [
+						"kode_billing" => $data->no_transaksi, 
+						"no_formulir" => $data->no_formulir, 
+						"nim" => $nim,
+						"nama_mhs" => $nama_mhs, 
+						"universitas" => "STISIPOL RAJA HAJI TANJUNGPINANG", 
+						"fakultas" => "-",
+						"prodi" => ProgramStudiModel::find($data->kjur)->value('nama_ps'), 
+						"jenis_pembayaran" => "FORMULIR PENDAFTARAN / SPP", 
+						"idsmt" => $data->idsmt,
+						"ta" => $data->tahun,
+						"periode" => $data->tahun.$data->idsmt,
+						"nominal" => $nominal,
+						"denda" => "0",
+						"status" => $data->commited, 
+						"updated_at_konfirm" => "N.A"
+					];
+					
+				break;
+				case 11: //bayar cuti
+					$data = \DB::table('transaksi_cuti AS t')
+						->select(\DB::raw('
+							t.no_transaksi,
+							t.no_faktur,
+							t.tahun,
+							t.idsmt,
+							vdm.no_formulir,
+							t.nim,
+							vdm.nama_mhs,
+							vdm.kjur,
+							vdm.nama_ps,
+							vdm.idkelas,
+							k.nkelas AS nama_kelas,
+							t.dibayarkan AS totaltagihan,
+							t.commited,
+							t.tanggal,
+							t.date_added
+						'))
+					->join('v_datamhs AS vdm', 'vdm.nim', 't.nim')
+					->join('kelas AS k', 'k.idkelas', 'vdm.idkelas')
+					->where('t.no_transaksi', $kode_billing)
+					->first();
 
-					$payload['commited']=$data->commited;
+					if (is_null($data))        
+					{
+						throw new Exception(14);
+					}
+					
+					if ($data->commited == 1)
+					{
+						throw new Exception(88);
+					}
 
-					return response()->json([						
-						'status'=>'00',
-						'message'=>'Request Data Berhasil',
-						'data'=>$payload,						
-					], 200); 			
-
-				}			
-			break;
-			case 11: //bayar cuti
-				$data = \DB::table('transaksi_cuti AS t')
-					->select(\DB::raw('
-						t.no_transaksi,
-						t.no_faktur,
-						t.tahun,
-						t.idsmt,
-						vdm.no_formulir,
-						t.nim,
-						vdm.nama_mhs,
-						vdm.kjur,
-						vdm.nama_ps,
-						vdm.idkelas,
-						k.nkelas AS nama_kelas,
-						t.dibayarkan AS totaltagihan,
-						t.commited,
-						t.tanggal,
-						t.date_added
-					'))
-				->join('v_datamhs AS vdm', 'vdm.nim', 't.nim')
-				->join('kelas AS k', 'k.idkelas', 'vdm.idkelas')
-				->where('t.no_transaksi', $kode_billing)
-				->first();
+					$payload = [
+						"kode_billing" => $data->no_transaksi, 
+						"no_formulir" => $data->no_formulir, 
+						"nim" => $data->nim,
+						"nama_mhs" => $data->nama_mhs, 
+						"universitas" => "STISIPOL RAJA HAJI TANJUNGPINANG", 
+						"fakultas" => "-",
+						"prodi" => ProgramStudiModel::find($data->kjur)->value('nama_ps'), 
+						"jenis_pembayaran" => "CUTI", 
+						"idsmt" => $data->idsmt,
+						"ta" => $data->tahun,
+						"periode" => $data->tahun.$data->idsmt,
+						"nominal" => $data->totaltagihan,
+						"denda" => "0",
+						"status" => $data->commited, 
+						"updated_at_konfirm" => "N.A"
+					];
+				break;
+			}
 			
-				if (is_null($data))        {
-					return Response()->json([
-						'status'=>'14',
-						'message'=>"request KODE_BILLING ($kode_billing) tidak sesuai"												
-					], 200); 
-				}
-				else if ($data->commited==1)
-				{
-					return Response()->json([
-						'status'=>'88',
-						'message'=>"Tagihan sudah dibayarkan."											
-					], 200); 
-				}
-				else
-				{
-					$payload['kode_billing'] = $data->no_transaksi;
-					$payload['no_faktur']=$data->no_faktur;
-					$payload['no_formulir'] = $data->no_formulir;
-					$payload['nim'] = $data->nim;
-					$payload['nama_mhs'] = $data->nama_mhs;					
-					$payload['nama_ps']=$data->nama_ps;
-					$payload['kjur']=$data->kjur;
-					$payload['tahun']=$data->tahun;
-					$payload['idsmt']=$data->idsmt;						
-					$payload['idkelas']=$data->idkelas;	
-					$payload['nama_kelas']=$data->nama_kelas;						
-					$payload['semester']=HelperAkademik::getSemester($payload['idsmt']);
-					$payload['nama_prodi']=ProgramStudiModel::find($payload['kjur'])->value('nama_ps');
-					$payload['keterangan']='CUTI';
-					$payload['totaltagihan']=$data->totaltagihan;						
-					$payload['commited']=$data->commited;	
-					$payload['tanggal']=$data->tanggal;	
-					$payload['date_added']=$data->date_added;	
-				}
-				return response()->json([					
-					'status'=>'00',
-					'message'=>'Request Data Berhasil',
-					'data'=>$payload,				
-				], 200);
-			break;
-			default:
-				return response()->json([					
-					'status'=>30,
-					'message'=>'Proses Login telah berhasil, namun ada error yaitu tipe_transaksi tidak dikenal.',						
-				], 200);
+			return response()->json([
+				'Result' => [
+					'status' => '00',
+					'message' => 'Request Data Berhasil',
+					'data' => $payload,
+				],
+			], 200);
 		}
+		catch(Exception $e)
+		{
+			$payload = [
+				"kode_billing" => "-", 
+				"no_formulir" => "-", 
+				"nim" => "-",
+				"nama_mhs" => "-", 
+				"universitas" => "-", 
+				"fakultas" => "-",
+				"prodi" => "-", 
+				"jenis_pembayaran" => "-", 
+				"idsmt" => "-",
+				"ta" => "-",
+				"periode" => "-",
+				"nominal" => "-",
+				"denda" => "-",
+				"status" => "-", 
+				"updated_at_konfirm" => "-"
+			];
+			$code = $e->getMessage();
+			switch($code)
+			{
+				case 10:
+					$result = [
+						'status'=>'10',
+						'message'=>'Format JSON tidak valid',
+						'data' => $payload,
+					];
+				break;
+				case 14:
+					$result = [
+						'status'=>'14',
+						'message'=>'Tagihan tidak ditemukan',
+						'data' => $payload,
+					];
+				break;				
+				case 88:
+					$result = [
+						'status'=>'14',
+						'message'=>'Tagihan sudah pernah dibayarkan',
+						'data' => $payload,
+					];
+				break;		
+				default:
+					$result = [
+						'status'=>'98',
+						'message'=>'Token tidak terdaftar',
+						'data' => $payload,
+					];
+			}
+
+			return response()->json([
+				'Result' => $result
+			], 200);
+		}	
 	}
 	public function payment(Request $request)
 	{
