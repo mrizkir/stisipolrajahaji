@@ -46,7 +46,7 @@ class BRKAuthController extends Controller
 			$pass = hash('sha256', $result->salt . hash('sha256', $password));
 
 			if ($result->userpassword == $pass && $result->active == 1) {
-				$token = $this->guard()->login($result);
+				$token = $this->guard()->setTTL(1440)->login($result);
 				// ConfigurationModel::toCache();  
 				return response()->json([
 					'Result' => [
@@ -86,6 +86,11 @@ class BRKAuthController extends Controller
 						'message'=>"User $username sudah tidak aktif"
 					];
 				break;
+				default:
+					$result = [
+						'status'=>'11',
+						'message'=>$e->getMessage()
+					];
 			}
 
 			return response()->json([
