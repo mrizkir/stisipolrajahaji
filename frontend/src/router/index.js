@@ -127,6 +127,17 @@ const routes = [
     },
     component: () => import('../views/pages/admin/akademik/Akademik.vue'),
   },
+  //akademik - perkuliahan - laporan status mahasiswa
+  {
+    path: '/akademik/laporan/statusmahasiswa',
+    name: 'AkademikLaporanStatusMahasiswa',
+    meta: {
+      title: 'AKADEMIK - LAPORAN - STATUS MAHASISWA',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () => import('../views/pages/admin/akademik/perkuliahan/ReportStatusMahasiswa.vue'),
+  },
   //kemahasiswaan
   {
     path: '/kemahasiswaan',

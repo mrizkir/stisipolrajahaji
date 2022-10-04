@@ -43,29 +43,12 @@
               DASHBOARD
             </b-nav-item>
             <li class="nav-header">PERKULIAHAN</li>
-            <li>
-              <b-button v-b-toggle.collapse-perkuliahan variant="primary">
-                Penyelenggaraan
-              </b-button>
-              <b-collapse
-                id="collapse-perkuliahan"
-                class="mt-2"
-                tag="ul"
-                is-nav
-              >
-                <b-nav-item
-                  to="/akademik/perkuliahan/penyelenggaraan"
-                  v-if="
-                    $store.getters['auth/can'](
-                      'AKADEMIK-PENYELENGGARAAN_BROWSE'
-                    )
-                  "
-                >
-                  <b-icon icon="arrow-right" />
-                  PENYELENGGARAAN
-                </b-nav-item>
-              </b-collapse>
-            </li>
+            <b-nav-item
+              to="/akademik/laporan/statusmahasiswa"             
+            >
+              <b-icon icon="arrow-right" />
+              STATUS MAHASISWA
+            </b-nav-item>
           </b-nav>
         </nav>
       </template>
