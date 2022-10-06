@@ -278,7 +278,7 @@ class BRKTransaksiController extends Controller {
 					$total_tagihan = \DB::table('transaksi_detail')
 						->where('no_transaksi', $data->no_transaksi)
 						->sum('dibayarkan');
-
+					
 					if ($amount < $total_tagihan)
 					{
 						throw new Exception(13);
@@ -491,7 +491,7 @@ class BRKTransaksiController extends Controller {
 								"idsmt" => $data->idsmt,
 								"ta" => $data->tahun,
 								"periode" => $data->tahun.$data->idsmt,
-								"nominal" => $data->totaltagihan,
+								"nominal" => $total_tagihan,
 								"denda" => "0",
 								"status" => $data->commited, 
 								"updated_at_konfirm" => "N.A"
@@ -666,7 +666,7 @@ class BRKTransaksiController extends Controller {
 							"idsmt" => $data->idsmt,
 							"ta" => $data->tahun,
 							"periode" => $data->tahun.$data->idsmt,
-							"nominal" => $data->totaltagihan,
+							"nominal" => $total_tagihan,
 							"denda" => "0",
 							"status" => $data->commited, 
 							"updated_at_konfirm" => "N.A"
