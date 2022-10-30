@@ -50,7 +50,7 @@ class BRKAuthController extends Controller
 				// ConfigurationModel::toCache();  
 				return response()->json([
 					'Result' => [
-						'status'=>'00',
+						'status'=>'true',
 						'token'=>$token,
 						'message'=>'Request berhasil'
 					]
@@ -121,7 +121,7 @@ class BRKAuthController extends Controller
 		// ConfigurationModel::toCache();  
 		// return response()->json([
 		// 		'Result' => [
-		// 		'status'=>'00',
+		// 		'status'=>'true',
 		// 		'token'=>$token,
 		// 		'message'=>'Request berhasil'
 		// 	]
