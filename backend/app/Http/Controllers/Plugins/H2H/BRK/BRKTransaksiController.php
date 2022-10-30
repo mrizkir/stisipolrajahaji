@@ -296,6 +296,7 @@ class BRKTransaksiController extends Controller {
 							->where('no_transaksi', $no_transaksi)
 							->update([
 								'no_faktur'=>$no_ref,
+								'tanggal' => $tanggal_terima,
 								'commited'=> 1
 							]);
 						
