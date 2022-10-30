@@ -339,7 +339,7 @@ class BRKTransaksiController extends Controller {
 							\DB::statement($sql);
 
 							return 	[
-								'status'=>'true',
+								'status'=>'00',
 								'kode_billing'=>$data->no_transaksi,
 								'message'=>'Pembayaran Berhasil',
 								'noref'=>$no_ref,
@@ -677,7 +677,7 @@ class BRKTransaksiController extends Controller {
 			}
 			return response()->json([
 				'Result' => [
-					'status' => 'true',
+					'status' => '00',
 					'message' => 'Pembayaran Data Berhasil',
 					'data' => $payload,
 				],
