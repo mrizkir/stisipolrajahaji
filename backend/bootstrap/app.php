@@ -65,6 +65,7 @@ $app->routeMiddleware([
     'permission' => Spatie\Permission\Middlewares\PermissionMiddleware::class,
     'role'=> Spatie\Permission\Middlewares\RoleMiddleware::class,
     'h2hiak'=> App\Http\Middleware\H2HIAKJWTCheckMiddleware::class,
+    'h2hbrk'=> App\Http\Middleware\H2HBRKJWTCheckMiddleware::class,
 ]);
 
 /*
