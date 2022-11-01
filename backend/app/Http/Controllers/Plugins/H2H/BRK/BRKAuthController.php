@@ -46,7 +46,7 @@ class BRKAuthController extends Controller
 			$pass = hash('sha256', $result->salt . hash('sha256', $password));
 
 			if ($result->userpassword == $pass && $result->active == 1) {
-				$token = $this->guard()->setTTL(1440)->login($result);
+				$token = $this->guard()->setTTL(14400)->login($result);
 				// ConfigurationModel::toCache();  
 				return response()->json([
 					'Result' => [
