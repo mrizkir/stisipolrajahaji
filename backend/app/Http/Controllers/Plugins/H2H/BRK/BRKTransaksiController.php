@@ -84,7 +84,7 @@ class BRKTransaksiController extends Controller {
 					
 					$nominal = \DB::table('transaksi_detail')
 						->where('no_transaksi', $data->no_transaksi)
-						->sum('dibayarkan');
+						->sum('dibayarkan');					
 					
 					$payload = [
 						"kode_billing" => $data->no_transaksi, 
@@ -93,7 +93,7 @@ class BRKTransaksiController extends Controller {
 						"nama_mhs" => $nama_mhs, 
 						"universitas" => "STISIPOL RAJA HAJI TANJUNGPINANG", 
 						"fakultas" => "-",
-						"prodi" => ProgramStudiModel::find($data->kjur)->value('nama_ps'), 
+						"prodi" => ProgramStudiModel::find($data->kjur)->nama_ps, 
 						"jenis_pembayaran" => "FORMULIR PENDAFTARAN / SPP", 
 						"idsmt" => $data->idsmt,
 						"ta" => $data->tahun,
@@ -138,7 +138,7 @@ class BRKTransaksiController extends Controller {
 					{
 						throw new Exception(88);
 					}
-
+					
 					$payload = [
 						"kode_billing" => $data->no_transaksi, 
 						"no_formulir" => $data->no_formulir, 
@@ -146,7 +146,7 @@ class BRKTransaksiController extends Controller {
 						"nama_mhs" => $data->nama_mhs, 
 						"universitas" => "STISIPOL RAJA HAJI TANJUNGPINANG", 
 						"fakultas" => "-",
-						"prodi" => ProgramStudiModel::find($data->kjur)->value('nama_ps'), 
+						"prodi" => $data->nama_ps, 
 						"jenis_pembayaran" => "CUTI", 
 						"idsmt" => $data->idsmt,
 						"ta" => $data->tahun,
@@ -487,7 +487,7 @@ class BRKTransaksiController extends Controller {
 								"nama_mhs" => $data->nama_mhs, 
 								"universitas" => "STISIPOL RAJA HAJI TANJUNGPINANG", 
 								"fakultas" => "-",
-								"prodi" => ProgramStudiModel::find($data->kjur)->value('nama_ps'), 
+								"prodi" => ProgramStudiModel::find($data->kjur)->nama_ps, 
 								"jenis_pembayaran" => "SPP", 
 								"idsmt" => $data->idsmt,
 								"ta" => $data->tahun,
@@ -662,7 +662,7 @@ class BRKTransaksiController extends Controller {
 							"nama_mhs" => $data->nama_mhs, 
 							"universitas" => "STISIPOL RAJA HAJI TANJUNGPINANG", 
 							"fakultas" => "-",
-							"prodi" => ProgramStudiModel::find($data->kjur)->value('nama_ps'), 
+							"prodi" => ProgramStudiModel::find($data->kjur)->nama_ps, 
 							"jenis_pembayaran" => "CUTI", 
 							"idsmt" => $data->idsmt,
 							"ta" => $data->tahun,
