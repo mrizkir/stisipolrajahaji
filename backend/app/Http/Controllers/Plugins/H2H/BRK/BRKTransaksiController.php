@@ -161,7 +161,7 @@ class BRKTransaksiController extends Controller {
 			
 			return response()->json([
 				'Result' => [
-					'status' => '00',
+					'status' => 'true',
 					'message' => 'Request Data Berhasil',
 					'data' => $payload,
 				],
