@@ -50,7 +50,7 @@ class BRKAuthController extends Controller
 				// ConfigurationModel::toCache();  
 				return response()->json([
 					'Result' => [
-						'status'=>'true',
+						'status'=>'00',
 						'token'=>$token,
 						'message'=>'Request berhasil'
 					]
@@ -96,36 +96,7 @@ class BRKAuthController extends Controller
 			return response()->json([
 				'Result' => $result
 			], 200);
-		}
-
-		// $credentials = $request->only('username', 'password');
-		// $credentials['active']=1;
-
-		// if (! $token = $this->guard()->attempt($credentials, ['exp' => \Carbon\Carbon::now()->addDays(1)->timestamp])) {
-		// 	$result=[
-		// 		'status'=>'11',
-		// 		'message'=>'Username atau Password salah'
-		// 	];
-		// 	return response()->json([
-		// 		'Result' => $result
-		// 	], 200);
-		// }
-		// //log user loggin
-		// \App\Models\System\ActivityLog::log($request,[
-		// 	'object' => $this->guard()->user(), 
-		// 	'object_id'=>$this->getUserid(), 
-		// 	'user_id' => $this->getUserid(), 
-		// 	'message' => 'user '.$credentials['username'].' berhasil login'
-		// ]);
-
-		// ConfigurationModel::toCache();  
-		// return response()->json([
-		// 		'Result' => [
-		// 		'status'=>'true',
-		// 		'token'=>$token,
-		// 		'message'=>'Request berhasil'
-		// 	]
-		// ], 200);   
+		}   
 	}
 	/**
 	 * Get the authenticated User.
