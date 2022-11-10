@@ -157,6 +157,8 @@ class BRKTransaksiController extends Controller {
 						"updated_at_konfirm" => "N.A"
 					];
 				break;
+				default:
+					throw new Exception(14);
 			}
 			
 			return response()->json([
