@@ -10,3 +10,4 @@ Homestead.yaml
 .phpunit.result.cache
 .editorconfig
 composer.lock
+phpunit.xml

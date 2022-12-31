@@ -210,7 +210,7 @@ class UIController extends Controller {
         $tahun_akademik = $config['default_ta'];
       }
       $daftar_kelas=\App\Models\DMaster\KelasModel::select(\DB::raw('idkelas AS id,nkelas AS text'))
-                            ->get();
+      ->get();
       $idkelas='A';
 
       $daftar_status_mhs=StatusMahasiswaModel::select(\DB::raw('k_status AS id, n_status AS text'))

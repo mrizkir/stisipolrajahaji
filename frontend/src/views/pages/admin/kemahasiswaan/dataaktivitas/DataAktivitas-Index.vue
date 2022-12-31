@@ -96,7 +96,7 @@
                     <b-button
                       :id="'btDetail' + item.id" variant="outline-primary p-1 mr-1"
                       size="xs"
-                      :to="url_da + '/' + item.id + '/detail'"
+                      :to="url + '/' + item.id + '/detail'"
                       :disabled="btnLoading"
                       v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_SHOW')"
                     >
@@ -105,7 +105,7 @@
                     <b-button
                       :id="'btEdit' + item.id" variant="outline-primary p-1 mr-1"
                       size="xs"
-                      :to="url_da + '/' + item.id + '/edit'"
+                      :to="url + '/' + item.id + '/edit'"
                       :disabled="btnLoading"
                       v-if="$store.getters['auth/can']('KEMAHASISWAAN-AKTIVITAS_UPDATE')"
                     >
@@ -180,7 +180,7 @@
     name: 'DataAktivitasIndex',
     setup() {
       return {
-        url_da: '/kemahasiswaan/dataaktivitas',
+        url: '/kemahasiswaan/dataaktivitas',
       }
     },
     created() {
@@ -332,14 +332,14 @@
       async initialize() {
         this.datatableLoading = true
         var page = this.$store.getters['uiadmin/Page']('dataaktivitas')
-        var url_da = this.url_da + '?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
+        var url = this.url + '?page=' + page.currentPage + '&sortby=' + page.sortBy + '&sortdesc=' + page.sortDesc
 
         if (page.loaded && page.search != null) {
           this.search = page.search
-          url_da = page.search.length > 0 ? url_da + '&search=' + page.search : url_da
+          url = page.search.length > 0 ? url + '&search=' + page.search : url
         }
         
-        await this.$ajax.get(url_da, {
+        await this.$ajax.get(url, {
           headers: {
             Authorization: this.$store.getters['auth/Token'],
           },
@@ -368,7 +368,7 @@
       },
       addAktivitas() {
         if (this.prodi_id > 0) {
-          this.$router.push(this.url_da + '/create')
+          this.$router.push(this.url + '/create')
         } else {
           this.$bvToast.toast(
             'Tidak bisa menambah, silahkan pilih Prodi, Tahun Akademik, dan Semester',
@@ -393,7 +393,7 @@
         this.btnLoading = true
         this.$ajax
           .post(
-            this.url_da + '/' + this.dataItem.id,
+            this.url + '/' + this.dataItem.id,
             {
               _method: 'DELETE',
             },

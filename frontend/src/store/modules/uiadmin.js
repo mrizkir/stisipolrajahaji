@@ -224,6 +224,7 @@ const actions = {
               nama_prodi_feeder: element.nama_jenjang + ' ' + element.nama_ps,
             }
           })
+          console.log(prodi);
           commit('setDaftarProdi', prodi)
           commit('setProdiID', data.prodi_id)
 
