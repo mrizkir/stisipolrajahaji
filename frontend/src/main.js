@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import VueCompositionAPI from '@vue/composition-api'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -16,7 +15,6 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 
-Vue.use(VueCompositionAPI)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(api);
