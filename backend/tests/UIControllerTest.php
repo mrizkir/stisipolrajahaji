@@ -19,8 +19,14 @@ class UIControllerTest extends TestCase
 
     foreach($daftar_user as $user)
     {
-      $response = $this->actingAs($user)->call('get', '/v2/system/setting/uiadmin');
-      
+      print ("\nUserid : ".$user->userid);
+      print ("\nUsername : ".$user->username);
+      print ("\nPage : ".$user->page);
+      print ("\n===================");
+
+      $response = $this->actingAs($user)->call('get', '/v2/system/setting/uiadmin');      
+      $this->assertEquals(200, $response->status());
+
       $daftar_prodi = $response->getData()->daftar_prodi;
       $this->assertFalse(is_null($daftar_prodi));
       

@@ -69,6 +69,13 @@
               MANAJEMEN
             </b-nav-item>
             <b-nav-item
+              to="/sistem-pengguna/keuangan"
+              v-if="$store.getters['auth/can']('SYSTEM-USERS-KEUANGAN_BROWSE')"
+            >
+              <b-icon icon="arrow-right" />
+              KEUANGAN
+            </b-nav-item>
+            <b-nav-item
               to="/sistem-pengguna/dosen"
               v-if="$store.getters['auth/can']('SYSTEM-USERS-DOSEN_BROWSE')"
             >

@@ -397,6 +397,46 @@ const routes = [
         '../views/pages/admin/pengguna/pengguna-manajemen/Pengguna-Manajemen-Detail.vue'
       ),
   },
+  //pengguna keuangan
+  {
+    path: '/sistem-pengguna/keuangan',
+    name: 'PenggunaKeuangan',
+    meta: {
+      title: 'PENGGUNA - DOSEN',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/pengguna/pengguna-keuangan/Pengguna-Keuangan-Index.vue'
+      ),
+  },
+  {
+    path: '/sistem-pengguna/keuangan/:user_id/edit',
+    name: 'PenggunaKeuanganEdit',
+    meta: {
+      title: 'PENGGUNA - DOSEN',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/pengguna/pengguna-keuangan/Pengguna-Keuangan-Edit.vue'
+      ),
+  },
+  {
+    path: '/sistem-pengguna/keuangan/:user_id/detail',
+    name: 'PenggunaKeuanganDetail',
+    meta: {
+      title: 'PENGGUNA - DOSEN',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/pengguna/pengguna-keuangan/Pengguna-Keuangan-Detail.vue'
+      ),
+  },
   //pengguna dosen
   {
     path: '/sistem-pengguna/dosen',
