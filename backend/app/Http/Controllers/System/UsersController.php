@@ -319,7 +319,8 @@ class UsersController extends Controller
 					$join->on('user_permission.permission_id','=','A.permission_id');
 				})
 				->where('A.role_id', $role_id)
-				->orderByRaw('CASE WHEN  selected IS NULL THEN 1 ELSE 0 END')
+				->orderByRaw('CASE WHEN selected IS NULL THEN 1 ELSE 0 END')
+				->orderBy('B.name', 'ASC')
 				->get();
 
 			return Response()->json([

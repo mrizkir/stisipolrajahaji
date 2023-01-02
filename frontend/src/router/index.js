@@ -138,6 +138,18 @@ const routes = [
     },
     component: () => import('../views/pages/admin/akademik/perkuliahan/ReportStatusMahasiswa.vue'),
   },
+  //kepegawaian
+  {
+    path: '/kepegawaian',
+    name: 'Kepegawaian',
+    meta: {
+      title: 'KEPEGAWAIAN',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import('../views/pages/admin/kepegawaian/Kepegawaian.vue'),
+  },
   //kemahasiswaan
   {
     path: '/kemahasiswaan',
