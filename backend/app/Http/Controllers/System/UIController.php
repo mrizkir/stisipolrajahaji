@@ -65,13 +65,7 @@ class UIController extends Controller {
         ->orderBy('tahun','asc')
         ->get();
 
-        $daftar_prodi=ProgramStudiModel::select(\DB::raw('
-          program_studi.*,
-          jenjang_studi.njenjang AS nama_jenjang
-        '))
-        ->where('kjur', '!=', 0)
-        ->join('jenjang_studi', 'jenjang_studi.kjenjang', 'program_studi.kjenjang')
-        ->get();
+        $daftar_prodi=$this->getDaftarProdi();
         
         $prodi_id=$config['default_kjur'];
 
@@ -85,17 +79,11 @@ class UIController extends Controller {
                 ->get();
 
         $userid=$this->getUserid();
-        $daftar_prodi=$this->guard()->user()->prodi;
+
+        $kjur=$this->guard()->user()->kjur;        
+        $daftar_prodi=$this->getDaftarProdi($kjur); 
+        $prodi_id=$kjur > 0 ? $daftar_prodi[0]->id : $config['default_kjur'];        
         
-        if ($daftar_prodi->count() > 0)
-        {
-          $prodi_id=$daftar_prodi[0]->id;
-        }
-        else
-        {
-          $daftar_prodi=ProgramStudiModel::all();
-          $prodi_id=$config['default_kjur'];
-        }
         $tahun_pendaftaran = $config['default_tahun_pendaftaran'];
         $tahun_akademik = $config['default_ta'];
       }
@@ -106,17 +94,11 @@ class UIController extends Controller {
                 ->get();
 
         $userid=$this->getUserid();
-        $daftar_prodi=$this->guard()->user()->prodi;
         
-        if ($daftar_prodi->count()>0)
-        {
-          $prodi_id=$daftar_prodi[0]->id;
-        }
-        else
-        {
-          $daftar_prodi=ProgramStudiModel::all();
-          $prodi_id=$config['default_kjur'];
-        }
+        $kjur=$this->guard()->user()->kjur;        
+        $daftar_prodi=$this->getDaftarProdi($kjur); 
+        $prodi_id=$kjur > 0 ? $daftar_prodi[0]->id : $config['default_kjur'];        
+
         $tahun_pendaftaran = $config['default_tahun_pendaftaran'];
         $tahun_akademik = $config['default_ta'];
       }
@@ -127,25 +109,10 @@ class UIController extends Controller {
                 ->get();
 
         $userid=$this->getUserid();
-        $kjur=$this->guard()->user()->kjur;
-
-        $daftar_prodi = ProgramStudiModel::select(\DB::raw('
-          program_studi.*,
-          jenjang_studi.njenjang AS nama_jenjang
-        '))          
-        ->join('jenjang_studi', 'jenjang_studi.kjenjang', 'program_studi.kjenjang');
-
-        if ($kjur > 0)
-        {
-          $daftar_prodi = $daftar_prodi->where('kjur', $kjur);
-          $prodi_id=$kjur;
-        }
-        else
-        {
-          $daftar_prodi = $daftar_prodi->where('kjur', '!=', 0);
-          $prodi_id=$config['default_kjur'];
-        }
-        $daftar_prodi = $daftar_prodi->get();
+        
+        $kjur=$this->guard()->user()->kjur;        
+        $daftar_prodi=$this->getDaftarProdi($kjur); 
+        $prodi_id=$kjur > 0 ? $daftar_prodi[0]->id : $config['default_kjur'];        
         
         $tahun_pendaftaran = $config['default_tahun_pendaftaran'];
         $tahun_akademik = $config['default_ta'];
@@ -158,9 +125,10 @@ class UIController extends Controller {
                 ->where('tahun','>=',$formulir->ta)
                 ->orderBy('tahun','asc')
                 ->get();
-
-        $daftar_prodi=ProgramStudiModel::where('id',$formulir->kjur1)->get();
-        $prodi_id=$formulir->kjur1;
+        
+        $kjur=$formulir->kjur1;        
+        $daftar_prodi=$this->getDaftarProdi($kjur); 
+        $prodi_id=$kjur > 0 ? $daftar_prodi[0]->id : $config['default_kjur'];        
 
         $tahun_pendaftaran = $formulir->ta;
         $tahun_akademik = $config['default_ta'];
@@ -172,8 +140,9 @@ class UIController extends Controller {
                   ->select(\DB::raw('tahun AS value,tahun_akademik AS text'))
                   ->get();
 
-        $daftar_prodi=ProgramStudiModel::where('id',$formulir->kjur1)->get();
-        $prodi_id=$formulir->kjur1;
+        $kjur=$formulir->kjur1;        
+        $daftar_prodi=$this->getDaftarProdi($kjur); 
+        $prodi_id=$kjur > 0 ? $daftar_prodi[0]->id : $config['default_kjur'];        
 
         $tahun_pendaftaran = $formulir->ta;
         $tahun_akademik = $formulir->ta;
@@ -184,15 +153,9 @@ class UIController extends Controller {
                 ->orderBy('tahun','asc')
                 ->get();
 
-        $daftar_prodi=ProgramStudiModel::select(\DB::raw('
-          program_studi.*,
-          jenjang_studi.njenjang AS nama_jenjang
-        '))
-        ->where('kjur', '!=', 0)
-        ->join('jenjang_studi', 'jenjang_studi.kjenjang', 'program_studi.kjenjang')
-        ->get();
-        
-        $prodi_id=$config['default_kjur'];
+        $kjur=$this->guard()->user()->kjur;        
+        $daftar_prodi=$this->getDaftarProdi($kjur); 
+        $prodi_id=$kjur > 0 ? $daftar_prodi[0]->id : $config['default_kjur'];        
 
         $tahun_pendaftaran = $config['default_tahun_pendaftaran'];
         $tahun_akademik = $config['default_ta'];
@@ -206,31 +169,34 @@ class UIController extends Controller {
                 ->get();
 
         $userid=$this->getUserid();
-        $daftar_prodi=$this->guard()->user()->prodi;
 
-        $prodi_id=$daftar_prodi[0]->id;
+        $kjur=$this->guard()->user()->kjur;        
+        $daftar_prodi=$this->getDaftarProdi($kjur); 
+        $prodi_id=$kjur > 0 ? $daftar_prodi[0]->id : $config['default_kjur'];        
 
         $tahun_pendaftaran = $config['default_tahun_pendaftaran'];
         $tahun_akademik = $config['default_ta'];
       }
-      elseif ($this->hasRole(['dosen','dosenwali']))
+      elseif ($this->hasRole(['dosen', 'dosenwali']))
       {
         $daftar_ta=TAModel::select(\DB::raw('tahun AS value,tahun_akademik AS text'))
                 ->orderBy('tahun','asc')
                 ->get();
 
-        $daftar_prodi=ProgramStudiModel::all();
-        $prodi_id=$config['default_kjur'];
+        $kjur=$this->guard()->user()->kjur;        
+        $daftar_prodi=$this->getDaftarProdi($kjur); 
+        $prodi_id=$kjur > 0 ? $daftar_prodi[0]->id : $config['default_kjur'];        
 
         $tahun_pendaftaran = $config['default_tahun_pendaftaran'];
         $tahun_akademik = $config['default_ta'];
       }
+
       $daftar_kelas=\App\Models\DMaster\KelasModel::select(\DB::raw('idkelas AS id,nkelas AS text'))
       ->get();
       $idkelas='A';
 
       $daftar_status_mhs=StatusMahasiswaModel::select(\DB::raw('k_status AS id, n_status AS text'))
-        ->get();
+      ->get();
         
       $k_status = 'A';
       $theme = 'default';
@@ -260,5 +226,26 @@ class UIController extends Controller {
         'message'=>'Fetch data ui gagal karena roles kosong.'
       ], 422);
     }
+  }
+  private function getDaftarProdi($kjur = 0)
+  {
+    $daftar_prodi=ProgramStudiModel::select(\DB::raw('
+      program_studi.*,
+      jenjang_studi.njenjang AS nama_jenjang
+    '))
+    ->where('kjur', '!=', 0)
+    ->join('jenjang_studi', 'jenjang_studi.kjenjang', 'program_studi.kjenjang');
+
+    if ($kjur > 0)
+    {
+      $daftar_prodi = $daftar_prodi->where('kjur', $kjur);      
+    }
+    else
+    {
+      $daftar_prodi = $daftar_prodi->where('kjur', '!=', 0);      
+    }
+    $daftar_prodi = $daftar_prodi->get();
+
+    return $daftar_prodi;
   }
 }

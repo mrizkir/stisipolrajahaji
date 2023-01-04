@@ -42,13 +42,13 @@ class UsersDosenController extends UsersController
 		$role = Role::findByName('dosen');
 
 		return Response()->json([
-				'status'=>1,
-				'pid'=>'fetchdata',
-				'role'=>$role,
-				'result'=>$data,
-				'user'=>$this->getUsername(),
-				'message'=>'Fetch data user dosen berhasil diperoleh'
-			], 200);  
+			'status'=>1,
+			'pid'=>'fetchdata',
+			'role'=>$role,
+			'result'=>$data,
+			'user'=>$this->getUsername(),
+			'message'=>'Fetch data user dosen berhasil diperoleh'
+		], 200);  
 	}    	
 	/**
 	 * Store a newly created resource in storage.
