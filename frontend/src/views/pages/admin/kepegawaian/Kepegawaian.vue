@@ -18,9 +18,7 @@
             </RingkasanProfil>
           </b-col>
           <b-col>
-            <RingkasanProfil>
-
-            </RingkasanProfil>
+            test
           </b-col>
         </b-row>
       </b-container>
