@@ -33,6 +33,17 @@
           md="3"
           sm="6"
           xs="12"
+          v-if="$store.getters['auth/can']('SPMB-GROUP')"
+        >
+          <b-card bg-variant="dark" text-variant="white" title="SPMB">
+            <b-card-text>Mengatur data spmb</b-card-text>
+            <b-button variant="primary" to="/spmb">GO</b-button>
+          </b-card>
+        </b-col>
+        <b-col
+          md="3"
+          sm="6"
+          xs="12"
           v-if="$store.getters['auth/can']('AKADEMIK-GROUP')"
         >
           <b-card bg-variant="dark" text-variant="white" title="Akademik">

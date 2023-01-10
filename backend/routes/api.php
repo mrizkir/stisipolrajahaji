@@ -38,6 +38,9 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	$router->put('/dmaster/dosen/kategorikegiatan/{id}',['middleware'=>['role:superadmin|manajemen|'],'uses'=>'DMaster\KategoriKegiatanDosenController@update','as'=>'dmaster-dosen-kategorikegiatan.update']);
 	$router->delete('/dmaster/dosen/kategorikegiatan/{id}',['middleware'=>['role:superadmin|manajemen|'],'uses'=>'DMaster\KategoriKegiatanDosenController@destroy','as'=>'dmaster-dosen-kategorikegiatan.destroy']);
 
+	//spmb
+	$router->get('/spmb/soalpmb/all', ['middleware'=>['role:superadmin|manajemen|pmb'], 'uses'=>'SPMB\PMBSoalController@all','as'=>'spmb-pmbsoal.all']);
+
 	//kemahasiswaan
 	$router->post('/kemahasiswaan/daftarmhs',['middleware'=>['role:superadmin|manajemen|operator nilai|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@index','as'=>'daftarmhs.index']);
 	$router->get('/kemahasiswaan/daftarmhs/all',['middleware'=>['role:superadmin|manajemen|operator nilai|keuangan'],'uses'=>'Kemahasiswaan\DaftarMahasiswaController@all','as'=>'daftarmhs.all']);

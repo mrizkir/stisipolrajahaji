@@ -82,6 +82,17 @@ const routes = [
         '../views/pages/admin/dmaster/kategorikegiatandosen/KategoriKegiatanDosen-Edit.vue'
       ),
   },
+  //spmb
+  {
+    path: '/spmb',
+    name: 'SPMB',
+    meta: {
+      title: 'SPMB',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () => import('../views/pages/admin/spmb/SPMB.vue'),
+  },
   //feeder
   {
     path: '/feeder',
