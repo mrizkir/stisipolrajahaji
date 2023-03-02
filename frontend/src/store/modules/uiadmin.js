@@ -186,7 +186,6 @@ const getters = {
     }
     return nama_status
   },
-
   getFeederToken: (state) => {
     return state.feeder_token
   },

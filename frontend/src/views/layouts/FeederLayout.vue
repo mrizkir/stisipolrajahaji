@@ -47,6 +47,17 @@
               PERKULIAHAN
             </li>
             <b-nav-item
+              to="/feeder/perkuliahan/makul"
+              v-if="
+                $store.getters['auth/can'](
+                  'FEEDER-PERKULIAHAN-TRAKD_BROWSE'
+                )
+              "
+            >
+              <b-icon icon="arrow-right" />
+              MATA KULIAH
+            </b-nav-item>
+            <b-nav-item
               to="/feeder/perkuliahan/kelas"
               v-if="
                 $store.getters['auth/can'](

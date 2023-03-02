@@ -39,6 +39,13 @@
   import FeederLayout from '@/views/layouts/FeederLayout'
   export default {
     name: 'PDDIKTI',
+    created() {
+      let token = this.$store.getters['uiadmin/getFeederToken'];
+      if(token) {
+        this.message_test = 'Connected.';
+        this.token = token;
+      }
+    },
     data: () => ({
       btnLoading: false,
       message_test: null,

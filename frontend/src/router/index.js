@@ -104,7 +104,18 @@ const routes = [
     },
     component: () => import('../views/pages/admin/feeder/Feeder.vue'),
   },
-  //feeder - perkuliahan - kelas (trakd)
+  //feeder - perkuliahan - matakuliah
+  {
+    path: '/feeder/perkuliahan/makul',
+    name: 'FeederMatakuliah',
+    meta: {
+      title: 'Feeder - Perkuliahan - Mata Kuliah',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () => import('../views/pages/admin/feeder/perkuliahan/Feeder-Matakuliah-Index.vue'),
+  },
+
   {
     path: '/feeder/perkuliahan/kelas',
     name: 'FeederPerkuliahanKelas',
