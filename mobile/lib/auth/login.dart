@@ -9,11 +9,31 @@ class Login extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Login"),
       ),
-      body: const Center(
-        child: Text(
-          "Silahkan masukan username atau password",
-          style: TextStyle(fontSize: 12),
-        ),
+      body: Column(
+        children: [
+          Container(
+            width: 200,
+            height: 50,
+            child: Text(
+              "Silahkan masukan username atau password",
+              style: TextStyle(fontSize: 12),
+            ),
+          ),
+          Container(
+            width: 200,
+            height: 50,
+            child: TextField(
+              autocorrect: false,
+            ),
+          ),
+          Container(
+            width: 200,
+            height: 50,
+            child: TextField(
+              autocorrect: false,
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

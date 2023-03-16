@@ -14,8 +14,8 @@ class KHS extends StatelessWidget {
         children: [
           Row(
             children: [
-              TextButton(onPressed: () {}, child: Text("Back")),
-              TextButton(onPressed: () {}, child: Text("Next"))
+              TextButton(onPressed: () {}, child: const Text("Back")),
+              TextButton(onPressed: () {}, child: const Text("Next"))
             ],
           )
         ],
