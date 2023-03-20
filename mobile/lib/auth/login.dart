@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -106,7 +108,21 @@ class LoginFormState extends State<WrapperLoginForm> {
         ElevatedButton(
           onPressed: () {
             // Navigator.of(context).pushNamed('/admin/dashboard');
-            print(cmbRole);
+            Uri url = Uri.parse(
+                "https://backend.stisipolrajahaji.ac.id/v2/auth/login");
+            final response = http.post(
+              url,
+              headers: <String, String>{
+                'Content-Type': 'application/json; charset=UTF-8',
+              },
+              body: {
+                'username': txtUsername.text,
+                'userpassword': txtUserpassword.text,
+                'page': cmbRole,
+              },
+            );
+
+            print(response);
           },
           child: const Text("Login"),
         ),
@@ -118,6 +134,7 @@ class LoginFormState extends State<WrapperLoginForm> {
   void dispose() {
     txtUsername.dispose();
     txtUserpassword.dispose();
+    cmbRole = '';
     super.dispose();
   }
 }
