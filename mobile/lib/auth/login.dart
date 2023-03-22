@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:mobile/helpers/helperstorage.dart';
+
 class Login extends StatelessWidget {
   const Login({super.key});
   @override
@@ -107,7 +109,6 @@ class LoginFormState extends State<WrapperLoginForm> {
         ),
         ElevatedButton(
           onPressed: () async {
-            // Navigator.of(context).pushNamed('/admin/dashboard');
             Uri url = Uri.parse(
                 "https://backend.stisipolrajahaji.ac.id/v2/auth/login");
             final response = await http.post(
@@ -126,9 +127,11 @@ class LoginFormState extends State<WrapperLoginForm> {
             if (response.statusCode == 200) {
               var jsonResponse = jsonDecode(response.body);
               pesan = 'Berhasil login';
-              print(jsonResponse);
+              await HelperStorage.setToken("test");
+              print(jsonResponse.toString());
+              // Navigator.of(context).pushNamed('/admin/dashboard');
             } else {
-              pesan = jsonDecode(response.body);
+              pesan = 'Gagal Login';
             }
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
