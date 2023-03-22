@@ -106,23 +106,34 @@ class LoginFormState extends State<WrapperLoginForm> {
               }).toList()),
         ),
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             // Navigator.of(context).pushNamed('/admin/dashboard');
             Uri url = Uri.parse(
                 "https://backend.stisipolrajahaji.ac.id/v2/auth/login");
-            final response = http.post(
+            final response = await http.post(
               url,
               headers: <String, String>{
                 'Content-Type': 'application/json; charset=UTF-8',
               },
-              body: {
+              body: jsonEncode({
                 'username': txtUsername.text,
-                'userpassword': txtUserpassword.text,
+                'password': txtUserpassword.text,
                 'page': cmbRole,
-              },
+              }),
             );
 
-            print(response);
+            String pesan = '';
+            if (response.statusCode == 200) {
+              var jsonResponse = jsonDecode(response.body);
+              pesan = 'Berhasil login';
+              print(jsonResponse);
+            } else {
+              pesan = jsonDecode(response.body);
+            }
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text('Kode : ${response.statusCode} Pesan: $pesan')),
+            );
           },
           child: const Text("Login"),
         ),
