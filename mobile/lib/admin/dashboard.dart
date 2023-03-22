@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../components/panelinformasi.dart';
+import 'package:mobile/helpers/helperstorage.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
@@ -40,7 +41,10 @@ class Dashboard extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          var token = await HelperStorage.getToken();
+          print(token);
+        },
         child: const Icon(Icons.exit_to_app),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

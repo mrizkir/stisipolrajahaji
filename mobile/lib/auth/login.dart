@@ -127,9 +127,8 @@ class LoginFormState extends State<WrapperLoginForm> {
             if (response.statusCode == 200) {
               var jsonResponse = jsonDecode(response.body);
               pesan = 'Berhasil login';
-              await HelperStorage.setToken("test");
-              print(jsonResponse.toString());
-              // Navigator.of(context).pushNamed('/admin/dashboard');
+              await HelperStorage.setToken(jsonResponse['access_token']);
+              Navigator.of(context).pushNamed('/admin/dashboard');
             } else {
               pesan = 'Gagal Login';
             }

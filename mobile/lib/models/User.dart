@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class User {
   late final int userid;
   late final int idbank;
