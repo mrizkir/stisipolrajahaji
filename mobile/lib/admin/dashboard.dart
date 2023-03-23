@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../components/panelinformasi.dart';
-import 'package:mobile/helpers/helperstorage.dart';
+import '../components/panel_informasi.dart';
+import 'package:mobile/helpers/helper_storage.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});

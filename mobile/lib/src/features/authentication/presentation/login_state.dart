@@ -2,32 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'package:mobile/helpers/helperstorage.dart';
+import 'package:mobile/helpers/helper_storage.dart';
 
-class Login extends StatelessWidget {
-  const Login({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text("Login"),
-      ),
-      body: const WrapperLoginForm(),
-    );
-  }
-}
-
-class WrapperLoginForm extends StatefulWidget {
-  const WrapperLoginForm({super.key});
-
+class LoginState extends StatefulWidget {
+  const LoginState({super.key});
   @override
   State<StatefulWidget> createState() {
-    return LoginFormState();
+    return _LoginState();
   }
 }
 
-class LoginFormState extends State<WrapperLoginForm> {
+class _LoginState extends State<LoginState> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController txtUsername = TextEditingController();
@@ -36,7 +21,6 @@ class LoginFormState extends State<WrapperLoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    // final List<String> listRoles = ['manajemen'];
     final listRoles = [
       {"key": "sa", "value": "Super Admin"},
       {"key": "m", "value": "Manajemen"},

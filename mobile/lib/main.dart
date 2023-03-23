@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
-import 'admin/dashboard.dart';
-import 'admin/perkuliahan/khs.dart';
-import 'auth/login.dart';
+import 'src/routing/routes_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,13 +21,8 @@ class PortalEkampusApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const Login(),
-      initialRoute: '/login',
-      routes: {
-        '/login': (context) => const Login(),
-        '/admin/dashboard': (context) => const Dashboard(),
-        '/admin/perkuliahan/khs': (context) => const KHS(),
-      },
+      initialRoute: '/authentication/login',
+      routes: routesApp,
     );
   }
 }
