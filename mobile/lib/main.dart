@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'dart:io';
 
 import 'src/routing/routes_app.dart';
@@ -12,6 +13,7 @@ void main() async {
   SecurityContext.defaultContext
       .setTrustedCertificatesBytes(data.buffer.asUint8List());
 
+  await GlobalConfiguration().loadFromAsset("dev");
   runApp(const PortalEkampusApp());
 }
 

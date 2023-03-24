@@ -27,14 +27,14 @@ class _LatihanStatefullState extends State<LatihanStatefull> {
                       counter++;
                     });
                   },
-                  child: Icon(Icons.add)),
+                  child: const Icon(Icons.add)),
               ElevatedButton(
                   onPressed: () {
                     setState(() {
                       counter--;
                     });
                   },
-                  child: Icon(Icons.remove)),
+                  child: const Icon(Icons.remove)),
             ])
           ],
         ));

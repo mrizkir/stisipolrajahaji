@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:global_configuration/global_configuration.dart';
 
 import 'package:mobile/helpers/helper_storage.dart';
 
@@ -94,7 +95,8 @@ class _LoginState extends State<LoginState> {
         ElevatedButton(
           onPressed: () async {
             Uri url = Uri.parse(
-                "https://backend.stisipolrajahaji.ac.id/v2/auth/login");
+                GlobalConfiguration().getString("BASE_URL_API") +
+                    ('/auth/login'));
             final response = await http.post(
               url,
               headers: <String, String>{
