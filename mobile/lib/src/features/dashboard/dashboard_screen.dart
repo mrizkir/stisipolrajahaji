@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/src/features/authentication/data/user_repository.dart';
 
-import '../components/panel_informasi.dart';
-import 'package:mobile/helpers/helper_storage.dart';
-
-class Dashboard extends StatelessWidget {
-  const Dashboard({super.key});
+class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
   @override
   Widget build(BuildContext context) {
     final widthApp = MediaQuery.of(context).size.width;
@@ -25,24 +23,14 @@ class Dashboard extends StatelessWidget {
         width: widthApp,
         height: heightBody * 0.3,
         color: Colors.grey,
-        child: Row(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            PanelInformasi(
-              widthApp: widthApp,
-            ),
-            PanelInformasi(
-              widthApp: widthApp,
-            ),
-            PanelInformasi(
-              widthApp: widthApp,
-            ),
-          ],
+          children: [Text("Selamat Datang")],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var token = await HelperStorage.getToken();
+          var token = await UserRepository.getToken();
           print(token);
         },
         child: const Icon(Icons.exit_to_app),

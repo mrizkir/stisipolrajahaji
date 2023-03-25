@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class HelperStorage {
+class UserRepository {
   static const _storage = FlutterSecureStorage();
 
   static const _keyToken = 'token';

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:global_configuration/global_configuration.dart';
 
-import 'package:mobile/helpers/helper_storage.dart';
+import 'package:mobile/src/features/authentication/data/user_repository.dart';
+import 'package:mobile/src/utils/network/rest.dart';
 
 class LoginState extends StatefulWidget {
   const LoginState({super.key});
@@ -94,26 +93,16 @@ class _LoginState extends State<LoginState> {
         ),
         ElevatedButton(
           onPressed: () async {
-            Uri url = Uri.parse(
-                GlobalConfiguration().getString("BASE_URL_API") +
-                    ('/auth/login'));
-            final response = await http.post(
-              url,
-              headers: <String, String>{
-                'Content-Type': 'application/json; charset=UTF-8',
-              },
-              body: jsonEncode({
-                'username': txtUsername.text,
-                'password': txtUserpassword.text,
-                'page': cmbRole,
-              }),
-            );
-
+            final response = await Rest.httPostWithoutToken('/auth/login', {
+              'username': txtUsername.text,
+              'password': txtUserpassword.text,
+              'page': cmbRole,
+            });
             String pesan = '';
             if (response.statusCode == 200) {
               var jsonResponse = jsonDecode(response.body);
               pesan = 'Berhasil login';
-              await HelperStorage.setToken(jsonResponse['access_token']);
+              await UserRepository.setToken(jsonResponse['access_token']);
               Navigator.of(context).pushNamed('/admin/dashboard');
             } else {
               pesan = 'Gagal Login';
