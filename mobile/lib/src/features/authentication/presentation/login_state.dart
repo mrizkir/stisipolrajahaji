@@ -103,7 +103,7 @@ class _LoginState extends State<LoginState> {
               var jsonResponse = jsonDecode(response.body);
               pesan = 'Berhasil login';
               await UserRepository.setToken(jsonResponse['access_token']);
-              Navigator.of(context).pushNamed('/admin/dashboard');
+              Navigator.of(context).pushReplacementNamed('/admin/dashboard');
             } else {
               pesan = 'Gagal Login';
             }
