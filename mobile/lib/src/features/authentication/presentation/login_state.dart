@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:mobile/src/features/authentication/data/user_repository.dart';
-import 'package:mobile/src/features/authentication/model/user.dart';
 import 'package:mobile/src/utils/network/rest.dart';
 
 class LoginState extends StatefulWidget {

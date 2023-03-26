@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class User {
   final int userid;
   final int idbank;
