@@ -1,25 +1,26 @@
+import 'dart:convert';
+
 class User {
-  late final int userid;
-  late final int idbank;
-  late final String username;
-  late final String page;
-  late final int groupId;
-  late final int kjur;
-  late final String nama;
-  late final String email;
-  late final int active;
-  late final int isdeleted;
-  late final String theme;
-  late final String foto;
-  late final String token;
-  late final String ipaddress;
-  late final String logintime;
-  late final String dateAdded;
-  late final String roleName;
-  late final String detail;
-  late final String role;
-  late final String issuperadmin;
-  late final String permission;
+  final int userid;
+  final int idbank;
+  final String username;
+  final String page;
+  final int groupId;
+  final int kjur;
+  final String nama;
+  final String email;
+  final int active;
+  final int isdeleted;
+  final String theme;
+  final String foto;
+  final String ipaddress;
+  final String logintime;
+  final String dateAdded;
+  final String roleName;
+  final String detail;
+  final String role;
+  final bool issuperadmin;
+  final Map permission;
 
   User(
       {required this.userid,
@@ -34,7 +35,6 @@ class User {
       required this.isdeleted,
       required this.theme,
       required this.foto,
-      required this.token,
       required this.ipaddress,
       required this.logintime,
       required this.dateAdded,
@@ -58,14 +58,13 @@ class User {
         isdeleted: json['isdeleted'],
         theme: json['theme'],
         foto: json['foto'],
-        token: json['token'],
-        ipaddress: json['ipaddress'],
+        ipaddress: json['ipaddress'] ?? '',
         logintime: json['logintime'],
         dateAdded: json['date_added'],
         roleName: json['role_name'],
-        detail: json['detail'],
+        detail: json['detail'] ?? '',
         role: json['role'],
         issuperadmin: json['issuperadmin'],
-        permission: json['permission']);
+        permission: json['permission'] ?? {});
   }
 }

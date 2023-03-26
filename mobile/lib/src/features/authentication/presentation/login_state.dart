@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:mobile/src/features/authentication/data/user_repository.dart';
+import 'package:mobile/src/features/authentication/model/user.dart';
 import 'package:mobile/src/utils/network/rest.dart';
 
 class LoginState extends StatefulWidget {
@@ -103,6 +104,10 @@ class _LoginState extends State<LoginState> {
               var jsonResponse = jsonDecode(response.body);
               pesan = 'Berhasil login';
               await UserRepository.setToken(jsonResponse['access_token']);
+              var me = Rest.httGetWithToken('/auth/me');
+              me.then((value) async {
+                await UserRepository.setUser(value.body);
+              });
               Navigator.of(context).pushReplacementNamed('/admin/dashboard');
             } else {
               pesan = 'Gagal Login';
