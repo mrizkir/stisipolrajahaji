@@ -93,6 +93,9 @@ class _LoginState extends State<LoginState> {
         ),
         ElevatedButton(
           onPressed: () async {
+            final navigator = Navigator.of(context);
+            final snackBar = ScaffoldMessenger.of(context);
+
             final response = await Rest.httPostWithoutToken('/auth/login', {
               'username': txtUsername.text,
               'password': txtUserpassword.text,
@@ -107,11 +110,11 @@ class _LoginState extends State<LoginState> {
               me.then((value) async {
                 await UserRepository.setUser(value.body);
               });
-              Navigator.of(context).pushReplacementNamed('/dashboard');
+              navigator.pushReplacementNamed('/dashboard');
             } else {
               pesan = 'Gagal Login';
             }
-            ScaffoldMessenger.of(context).showSnackBar(
+            snackBar.showSnackBar(
               SnackBar(
                   content: Text('Kode : ${response.statusCode} Pesan: $pesan')),
             );

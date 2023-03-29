@@ -1,35 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/src/features/authentication/data/user_repository.dart';
-import 'package:mobile/src/features/authentication/model/user.dart';
 
-class DrawerPerkuliahan extends StatefulWidget {
-  const DrawerPerkuliahan({super.key});
+class DrawerPerkuliahan extends StatelessWidget {
+  final String username;
+  final String email;
 
-  @override
-  State<DrawerPerkuliahan> createState() => _DrawerPerkuliahan();
-}
-
-class _DrawerPerkuliahan extends State<DrawerPerkuliahan> {
-  late User user;
-
-  void setDataUser() async {
-    User temp = await UserRepository.getUser();
-    setState(() {
-      user = temp;
-    });
-  }
-
-  @override
-  void initState() {
-    setDataUser();
-    super.initState();
-  }
+  const DrawerPerkuliahan(
+      {super.key, required this.username, required this.email});
 
   @override
   Widget build(BuildContext context) {
-    String username = user.username;
-    String email = user.email;
-
     return Drawer(
       child: ListView(
         children: [

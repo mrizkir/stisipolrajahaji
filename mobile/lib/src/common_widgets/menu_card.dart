@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/src/features/authentication/data/user_repository.dart';
+import 'package:mobile/src/features/authentication/model/user.dart';
+import 'package:mobile/src/features/authentication/model/user_argument.dart';
 
 class MenuCard extends StatelessWidget {
   final String title;
@@ -17,8 +20,14 @@ class MenuCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.all(8),
       child: InkWell(
-        onTap: () {
-          Navigator.of(context).pushNamed(url);
+        onTap: () async {
+          final navigator = Navigator.of(context);
+          User user = await UserRepository.getUser();
+          String? token = await UserRepository.getToken();
+
+          navigator.pushNamed(url,
+              arguments: UserArgument1(
+                  user.userid, user.username, user.email, token.toString()));
         },
         splashColor: Colors.amber.shade100,
         child: Column(

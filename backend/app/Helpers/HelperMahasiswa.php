@@ -2,7 +2,16 @@
 
 namespace App\Helpers;
 
-class HelperMahasiswa extends Helper {					
+class HelperMahasiswa extends Helper
+{
+	/**
+	 * digunakan untuk mendapatkan tipe pembiayaan
+	 */
+	private $jenis_pembiayaan = [
+		1 => 'MANDIRI',
+		2 => 'BEASISWA TIDAK PENUH',
+		3 => 'BEASISWA PENUH',
+	];
 	/**
 	* property DataMHS
 	*/
@@ -30,9 +39,23 @@ class HelperMahasiswa extends Helper {
 		else
 		{
 			return 'N.A';
-		}
-									
+		}									
 	}
+	  /**
+   * digunakan untuk memperoleh list jenis pembiayaan mahasiswa
+   * @param id_pembiayaan
+   */
+  public function getJenisPembiayaan($id_pembiayaan=null)
+  {
+    if ($id_pembiayaan == NULL)
+    {
+      return $this->jenis_pembiayaan;
+    }
+    else
+    {
+      return $this->jenis_pembiayaan[$id_pembiayaan];
+    }
+  }
 	/**
 	* apakah mahasiswa telah lulus SPMB
 	* @param $with_nilai bila true return dengan nilai
