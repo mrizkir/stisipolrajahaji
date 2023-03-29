@@ -107,7 +107,7 @@ class _LoginState extends State<LoginState> {
               me.then((value) async {
                 await UserRepository.setUser(value.body);
               });
-              Navigator.of(context).pushReplacementNamed('/admin/dashboard');
+              Navigator.of(context).pushReplacementNamed('/dashboard');
             } else {
               pesan = 'Gagal Login';
             }

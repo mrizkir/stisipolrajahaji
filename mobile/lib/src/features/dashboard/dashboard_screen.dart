@@ -15,12 +15,13 @@ class DashboardScreen extends StatelessWidget {
       appBar: aplikasiBar,
       backgroundColor: Colors.blue.shade400,
       body: Container(
-        padding: EdgeInsets.all(30),
+        padding: const EdgeInsets.all(30),
         child: GridView.count(crossAxisCount: 2, children: [
           MenuCard(
             title: "PERKULIAHAN",
             icon: Icons.school,
             warnaIcon: Colors.orange,
+            url: '/perkuliahan',
           ),
         ]),
       ),
