@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobile/src/common_widgets/aplikasi_bar.dart';
 import 'package:mobile/src/common_widgets/menu_card.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    final aplikasiBar = AppBar(
-      title: const Text("MENU UTAMA"),
-      backgroundColor: Colors.green.shade300,
-    );
-
     return Scaffold(
-      appBar: aplikasiBar,
+      appBar: const AplikasiBar(
+        title: "MENU UTAMA",
+      ),
       backgroundColor: Colors.blue.shade400,
       body: Container(
         padding: const EdgeInsets.all(30),

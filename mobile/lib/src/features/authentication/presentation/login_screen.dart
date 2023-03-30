@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/src/common_widgets/aplikasi_bar.dart';
 
 import 'login_state.dart';
 
@@ -6,12 +7,12 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text("Login"),
+      appBar: AplikasiBar(
+        title: "LOGIN",
       ),
-      body: const LoginState(),
+      body: LoginState(),
     );
   }
 }

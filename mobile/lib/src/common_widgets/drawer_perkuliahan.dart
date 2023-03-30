@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/src/common_widgets/drawer_item_perkuliahan.dart';
 
 class DrawerPerkuliahan extends StatelessWidget {
   final String username;
@@ -10,12 +11,20 @@ class DrawerPerkuliahan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
+      child: Column(
         children: [
           UserAccountsDrawerHeader(
-              accountName: Text(username), accountEmail: Text(email))
+              accountName: Text(username), accountEmail: Text(email)),
+          DrawerItemPerkuliahan(
+              name: 'KHS',
+              icon: Icons.abc_sharp,
+              onPressed: () => onItemPressed(context, index: 0))
         ],
       ),
     );
+  }
+
+  void onItemPressed(BuildContext context, {required int index}) {
+    print(index);
   }
 }
