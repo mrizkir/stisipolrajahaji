@@ -22,16 +22,16 @@ class _LoginState extends State<LoginState> {
   @override
   Widget build(BuildContext context) {
     final listRoles = [
-      {"key": "sa", "value": "Super Admin"},
-      {"key": "m", "value": "Manajemen"},
-      {"key": "pmb", "value": "PMB"},
-      {"key": "k", "value": "Keuangan"},
-      {"key": "on", "value": "Operator Nilai"},
-      {"key": "d", "value": "Dosen"},
+      // {"key": "sa", "value": "Super Admin"},
+      // {"key": "m", "value": "Manajemen"},
+      // {"key": "pmb", "value": "PMB"},
+      // {"key": "k", "value": "Keuangan"},
+      // {"key": "on", "value": "Operator Nilai"},
+      // {"key": "d", "value": "Dosen"},
       {"key": "mh", "value": "Mahasiswa"},
-      {"key": "mb", "value": "Mahasiswa Baru"},
-      {"key": "al", "value": "Alumni"},
-      {"key": "ot", "value": "Orang Tua Wali"},
+      // {"key": "mb", "value": "Mahasiswa Baru"},
+      // {"key": "al", "value": "Alumni"},
+      // {"key": "ot", "value": "Orang Tua Wali"},
     ];
     return Form(
       key: _formKey,

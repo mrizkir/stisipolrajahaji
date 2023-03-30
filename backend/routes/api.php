@@ -164,6 +164,14 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	$router->put('/system/usersdosen/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersDosenController@update','as'=>'usersdosen.update']);
 	$router->delete('/system/usersdosen/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersDosenController@destroy','as'=>'usersdosen.destroy']);
 
+	//setting - users mahasiswa
+	$router->get('/system/usersmahasiswa',['uses'=>'System\UsersMahasiswaController@index','as'=>'usersmahasiswa.index']);
+	$router->post('/system/usersmahasiswa/store',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersMahasiswaController@store','as'=>'usersmahasiswa.store']);
+	$router->get('/system/usersmahasiswa/{id}',['middleware'=>['role:superadmin|akademik|programstudi|mahasiswa'],'uses'=>'System\UsersMahasiswaController@show','as'=>'usersmahasiswa.show']);
+	$router->get('/system/usersmahasiswa/biodatadiri/{id}',['middleware'=>['role:superadmin|akademik|programstudi|mahasiswa'],'uses'=>'System\UsersMahasiswaController@biodatadiri','as'=>'usersmahasiswa.biodatadiri']);
+	$router->put('/system/usersmahasiswa/biodatadiri/{id}',['middleware'=>['role:superadmin|akademik|programstudi|mahasiswa'],'uses'=>'System\UsersMahasiswaController@updatebiodatadiri','as'=>'usersmahasiswa.updatebiodatadiri']);
+	$router->put('/system/usersmahasiswa/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersMahasiswaController@update','as'=>'usersmahasiswa.update']);
+	$router->delete('/system/usersmahasiswa/{id}',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersMahasiswaController@destroy','as'=>'usersmahasiswa.destroy']);
 });
 //h2h - [iak (link)]
 $router->group(['prefix'=>'v2/h2h/iak', 'middleware'=>'auth:api'], function () use ($router)

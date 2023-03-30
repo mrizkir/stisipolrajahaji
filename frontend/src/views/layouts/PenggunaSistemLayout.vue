@@ -82,6 +82,13 @@
               <b-icon icon="arrow-right" />
               DOSEN
             </b-nav-item>
+            <b-nav-item
+              to="/sistem-pengguna/mahasiswa"
+              v-if="$store.getters['auth/can']('SYSTEM-USERS-MAHASISWA_BROWSE')"
+            >
+              <b-icon icon="arrow-right" />
+              MAHASISWA
+            </b-nav-item>
           </b-nav>
         </nav>
       </template>

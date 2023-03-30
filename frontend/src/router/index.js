@@ -486,6 +486,19 @@ const routes = [
       ),
   },
   {
+    path: '/sistem-pengguna/mahasiswa',
+    name: 'PenggunaMahasiswa',
+    meta: {
+      title: 'PENGGUNA - MAHASISWA',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/pengguna/pengguna-mahasiswa/Pengguna-Mahasiswa-Index.vue'
+      ),
+  },
+  {
     path: '/sistem-pengguna/dosen/:user_id/edit',
     name: 'PenggunaDosenEdit',
     meta: {
