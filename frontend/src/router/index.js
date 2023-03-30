@@ -484,20 +484,7 @@ const routes = [
       import(
         '../views/pages/admin/pengguna/pengguna-dosen/Pengguna-Dosen-Index.vue'
       ),
-  },
-  {
-    path: '/sistem-pengguna/mahasiswa',
-    name: 'PenggunaMahasiswa',
-    meta: {
-      title: 'PENGGUNA - MAHASISWA',
-      bodyClass: 'sidebar-mini layout-fixed',
-      requiresAuth: true,
-    },
-    component: () =>
-      import(
-        '../views/pages/admin/pengguna/pengguna-mahasiswa/Pengguna-Mahasiswa-Index.vue'
-      ),
-  },
+  },  
   {
     path: '/sistem-pengguna/dosen/:user_id/edit',
     name: 'PenggunaDosenEdit',
@@ -524,6 +511,34 @@ const routes = [
         '../views/pages/admin/pengguna/pengguna-dosen/Pengguna-Dosen-Detail.vue'
       ),
   },
+  //pengguna - mahasiswa
+  {
+    path: '/sistem-pengguna/mahasiswa',
+    name: 'PenggunaMahasiswa',
+    meta: {
+      title: 'PENGGUNA - MAHASISWA',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/pengguna/pengguna-mahasiswa/Pengguna-Mahasiswa-Index.vue'
+      ),
+  },
+  {
+    path: '/sistem-pengguna/mahasiswa/create',
+    name: 'PenggunaMahasiswaCreate',
+    meta: {
+      title: 'PENGGUNA - MAHASISWA',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/pengguna/pengguna-mahasiswa/Pengguna-Mahasiswa-Create.vue'
+      ),
+  },
+  // misc
   {
     path: '/404',
     name: 'NotFoundComponent',

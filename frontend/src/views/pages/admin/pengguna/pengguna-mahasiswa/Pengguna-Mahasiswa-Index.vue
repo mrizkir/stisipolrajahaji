@@ -28,6 +28,20 @@
                   >
                     <b-icon icon="trash2" />
                   </b-button>
+                  <b-button
+                    size="xs"
+                    variant="outline-primary"
+                    @click.stop="
+                      $router.push('/sistem-pengguna/mahasiswa/create')
+                    "
+                    v-if="
+                      $store.getters['auth/can']('SYSTEM-USERS-MAHASISWA_STORE')
+                    "
+                    v-b-tooltip.hover
+                    title="Tambah Pengguna"
+                  >
+                    <b-icon icon="plus-circle" />
+                  </b-button>
                 </div>
               </template>
               <b-card-body>

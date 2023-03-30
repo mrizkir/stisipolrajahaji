@@ -33,6 +33,7 @@ class AuthController extends Controller
 		{
 			$result = User::where('username', $username)
 				->first();
+				
 			if (is_null($result)) 
 			{
 				throw new Exception ('Gagal. Silahkan masukan username dan password dengan benar.');
