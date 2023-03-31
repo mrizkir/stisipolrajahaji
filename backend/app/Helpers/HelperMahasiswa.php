@@ -171,17 +171,19 @@ class HelperMahasiswa extends Helper
 		$jumlah=0;
 		switch ($k_status) {
 			case 'A' :
-				$jumlah=$this->db->getCountRowsOfTable("register_mahasiswa WHERE k_status='A'",'nim');		            
+				$jumlah=$this->db->getCountRowsOfTable("register_mahasiswa WHERE k_status='A'", 'nim');		            
 			break;            
 			case 'L' :                
-				$jumlah=$this->db->getCountRowsOfTable("register_mahasiswa WHERE k_status='L'",'nim');		            
+				$jumlah=$this->db->getCountRowsOfTable("register_mahasiswa WHERE k_status='L'", 'nim');		            
 			break;  
 			case 'C' :                
-				$jumlah=$this->db->getCountRowsOfTable("register_mahasiswa WHERE k_status='C'",'nim');		            
+				$jumlah=$this->db->getCountRowsOfTable("register_mahasiswa WHERE k_status='C'", 'nim');		            
 			break;
 			case 'N' :                
-				$jumlah=$this->db->getCountRowsOfTable("register_mahasiswa WHERE k_status='N'",'nim');		            
+				$jumlah=$this->db->getCountRowsOfTable("register_mahasiswa WHERE k_status='N'", 'nim');		            
 			break;
+			default:
+				$jumlah=$this->db->getCountRowsOfTable("register_mahasiswa", 'nim');	
 		}
 		return $jumlah;
 	}

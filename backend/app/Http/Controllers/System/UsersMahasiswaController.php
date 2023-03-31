@@ -49,7 +49,28 @@ class UsersMahasiswaController extends UsersController
 			'user'=>$this->getUsername(),
 			'message'=>'Fetch data user mahasiswa berhasil diperoleh'
 		], 200);  
-	}    	
+	} 
+	/**
+	 * digunakan untuk 
+	*/   	
+	public function create(Request $request)
+	{
+		$this->hasPermissionTo('SYSTEM-USERS-MAHASISWA_STORE');
+
+		$jumlah = \DB::table('register_mahasiswa')->whereNotIn('nim', function($query) {
+			$query->select('username')->from('user');
+		})
+		->where('k_status', 'A')
+		->orderBy('NAMA','ASC')
+		->count();
+
+		return Response()->json([
+			'status'=>1,
+			'pid'=>'create',
+			'jumlah'=>$jumlah,			
+			'message'=>'Fetch jumlah mahasiswa berhasil diperoleh'
+		], 200);  
+	}
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -60,58 +81,57 @@ class UsersMahasiswaController extends UsersController
 	{
 		$this->hasPermissionTo('SYSTEM-USERS-MAHASISWA_STORE');
 
-		$this->validate($request, [
-			'nama'=>'required',
-			'email'=>'required|string|email|unique:user',			
-			'username'=>'required|string|unique:user',
-			'password'=>'required',			
-		]);
-		$user = \DB::transaction(function () use ($request) {			
+		$role = Role::findByName('mahasiswa');
+		$daftar_permission = $role->permissions->pluck('name')->toArray();
+
+		\DB::table('v_datamhs')
+		->select(\DB::raw('
+			`nim`,
+			`nama_mhs`,
+			`email`
+		'))
+		->whereNotIn('nim', function($query) {
+			$query->select('username')->from('user');
+		})
+		->where('k_status', 'A')
+		->orderBy('nama_mhs','ASC')
+		->chunk(50, function ($mahasiswa) use ($daftar_permission) {
 			$now = \Carbon\Carbon::now()->toDateTimeString(); 
 			
-			$data = HelperAuth::createHashPassword($request->input('password'));
+			$data = HelperAuth::createHashPassword(1234);
 			$salt = $data['salt'];
 			$password = $data['password'];           
-			
-			$user=User::create([
-				'idbank'=>0,				
-				'username'=> $request->input('username'),
-				'userpassword'=>$password,    
-				'salt'=>$salt,    
-				'nama'=>$request->input('nama'),
-				'email'=>$request->input('email'),
-				'page'=>'mh',
-				'group_id'=>0,
-				'kjur'=>0,
-				'active'=>1,
-				'isdeleted'=>1,
-				'theme'=>'cube',
-				'default_role'=>'mahasiswa',
-				'foto'=>'resources/userimages/no_photo.png',
-				'logintime'=>$now,				
-				'date_added'=>$now, 				
-			]);       
-			$role='mahasiswa';   
-			$user->assignRole($role);          
-			
-			$permission=Role::findByName('mahasiswa')->permissions;
-			$permissions=$permission->pluck('name');
-			$user->givePermissionTo($permissions);    
 
-			DetailUser::create([
-				'user_id' => $user->userid,				
-			]);
-
-			\Log::channel(self::LOG_CHANNEL)->info("User dengan id ({$user->id} a.n nama ({$user->nama}) role mahasiswa berhasil disimpan oleh {$this->getUsername()}");
-
-			return $user;
-		});
+			foreach ($mahasiswa as $v) {				
+        $user=User::create([
+					'idbank'=>0,				
+					'username'=> $v->nim,
+					'userpassword'=>$password,    
+					'salt'=>$salt,    
+					'nama'=>$v->nama_mhs,
+					'email'=>$v->email,
+					'page'=>'mh',
+					'group_id'=>0,
+					'kjur'=>0,
+					'active'=>1,
+					'isdeleted'=>1,
+					'theme'=>'cube',
+					'default_role'=>'mahasiswa',
+					'foto'=>'resources/userimages/no_photo.png',
+					'logintime'=>$now,				
+					'date_added'=>$now, 				
+				]);     
+				
+				$user->assignRole('mahasiswa');
+				$user->givePermissionTo($daftar_permission);
+    	}
+			return false;
+		});		
 
 		return Response()->json([
 			'status'=>1,
-			'pid'=>'store',
-			'user'=>$user,    
-			'message'=>"Data user Manajemen ({$user->nama}) berhasil disimpan."
+			'pid'=>'store',			
+			'message'=>"Data user mahasiswa berhasil disalin."
 		], 200);
 	}
 	/**

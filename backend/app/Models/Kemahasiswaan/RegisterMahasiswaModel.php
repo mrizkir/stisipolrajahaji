@@ -25,8 +25,20 @@ class RegisterMahasiswaModel extends Model {
 	 * @var array
 	 */
 	protected $fillable = [
-		'nim',                        
-    'nirm',
+		'nim',
+		'nirm',
+		'no_formulir',
+		'tahun',
+		'idsmt',
+		'tanggal',
+		'kjur',
+		'idkonsentrasi',
+		'is_merdeka',
+		'iddosen_wali',
+		'k_status',
+		'idkelas',
+		'perpanjang',
+		'jenis_pembiayaan',
 	];
 	/**
 	 * enable auto_increment.

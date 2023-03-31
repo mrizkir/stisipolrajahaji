@@ -166,6 +166,7 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 
 	//setting - users mahasiswa
 	$router->get('/system/usersmahasiswa',['uses'=>'System\UsersMahasiswaController@index','as'=>'usersmahasiswa.index']);
+	$router->get('/system/usersmahasiswa/create',['middleware'=>['role:superadmin'],'uses'=>'System\UsersMahasiswaController@create','as'=>'usersmahasiswa.create']);
 	$router->post('/system/usersmahasiswa/store',['middleware'=>['role:superadmin|akademik'],'uses'=>'System\UsersMahasiswaController@store','as'=>'usersmahasiswa.store']);
 	$router->get('/system/usersmahasiswa/{id}',['middleware'=>['role:superadmin|akademik|programstudi|mahasiswa'],'uses'=>'System\UsersMahasiswaController@show','as'=>'usersmahasiswa.show']);
 	$router->get('/system/usersmahasiswa/biodatadiri/{id}',['middleware'=>['role:superadmin|akademik|programstudi|mahasiswa'],'uses'=>'System\UsersMahasiswaController@biodatadiri','as'=>'usersmahasiswa.biodatadiri']);
