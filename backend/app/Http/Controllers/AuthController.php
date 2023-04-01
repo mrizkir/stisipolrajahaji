@@ -44,7 +44,17 @@ class AuthController extends Controller
 			}
 			switch ($result->page) {
 				case 'mh':
-					$pass = md5($password);
+					$pass = hash('sha256', $result->salt . hash('sha256', $password));
+
+					$data_user = \DB::table('register_mahasiswa')					
+					->where('nim', $result->username)
+					->first();
+					
+					if (is_null($data_user))
+					{
+						throw new Exception ("Gagal. Data Mahasiswa dengan username $result->username tidak ditemuka.");
+					}
+					
 					if ($result->k_status == 'A' || $result->k_status == 'C' || $result->k_status == 'N') {                                        			
 						$message = 'Gagal. Silahkan masukan username dan password dengan benar.';
 					} else {

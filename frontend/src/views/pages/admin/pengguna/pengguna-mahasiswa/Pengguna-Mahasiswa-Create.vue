@@ -121,7 +121,7 @@
               }
             )
             .then(() => {
-              this.$router.push('/sistem-pengguna/mahasiswa')
+              this.$router.go()
             })
             .catch(() => {
               this.btnLoading = false
