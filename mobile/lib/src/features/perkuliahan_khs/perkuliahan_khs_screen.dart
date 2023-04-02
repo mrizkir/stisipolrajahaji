@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/src/common_widgets/aplikasi_bar.dart';
+import 'package:mobile/src/common_widgets/bottom_navigation.dart';
 import 'package:mobile/src/common_widgets/drawer_perkuliahan.dart';
 import 'package:mobile/src/features/authentication/model/user_argument.dart';
 
@@ -17,6 +18,7 @@ class PerkuliahanKhsScreen extends StatelessWidget {
       backgroundColor: Colors.blue.shade400,
       body: null,
       drawer: DrawerPerkuliahan(username: args.username, email: args.email),
+      bottomNavigationBar: const BottomNavigation(),
     );
   }
 }

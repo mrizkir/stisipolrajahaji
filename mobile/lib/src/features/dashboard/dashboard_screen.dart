@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mobile/src/common_widgets/aplikasi_bar.dart';
+import 'package:mobile/src/common_widgets/bottom_navigation.dart';
 import 'package:mobile/src/common_widgets/menu_card.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -23,14 +23,7 @@ class DashboardScreen extends StatelessWidget {
           ),
         ]),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-        },
-        tooltip: 'Keluar',
-        child: const Icon(Icons.exit_to_app),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      bottomNavigationBar: const BottomNavigation(),
     );
   }
 }
