@@ -64,6 +64,9 @@ $router->group(['prefix'=>'v2', 'middleware'=>'auth:api'], function () use ($rou
 	$router->get('/kemahasiswaan/dataaktivitas/{id}/penguji',['middleware'=>['role:superadmin|manajemen|programstudi|dosen|'],'uses'=>'Kemahasiswaan\DataAktivitasController@penguji','as'=>'kemahasiswaan-dataaktivitas.penguji']);
 	$router->get('/kemahasiswaan/dataaktivitas/{id}/pembimbing',['middleware'=>['role:superadmin|manajemen|programstudi|dosen|'],'uses'=>'Kemahasiswaan\DataAktivitasController@pembimbing','as'=>'kemahasiswaan-dataaktivitas.pembimbing']);
 
+	//akademik - perkuliahan
+	$router->post('/perkuliahan/khs', ['middleware'=>['role:superadmin|manajemen|programstudi|mahasiswa'], 'uses'=>'Perkuliahan\KHSController@index','as'=>'perkuliahan-khs.index']);
+
 	//feeder - koneksi
 	$router->get('/feeder/teskoneksi',['middleware'=>['role:superadmin|manajemen'],'uses'=>'Feeder\FeederController@teskoneksi','as'=>'feeder.teskoneksi']);
 

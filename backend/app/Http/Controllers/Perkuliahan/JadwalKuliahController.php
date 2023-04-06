@@ -10,7 +10,8 @@ use App\Helpers\HelperDMaster;
 
 use App\Models\Akademik\KelasPerkuliahanModel;
 
-class JadwalKuliahController extends Controller {      
+class JadwalKuliahController extends Controller 
+{      
   /**
    * digunakan untuk mendapatkan daftar jadwal kuliah
    *
