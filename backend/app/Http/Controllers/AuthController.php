@@ -95,8 +95,9 @@ class AuthController extends Controller
 					$message = '';
 					$pass = md5($password);
 			}
-			if ($result->userpassword == $pass && $result->active == 1) {
-				$token = $this->guard()->login($result);
+			if ($result->userpassword == $pass && $result->active == 1) 
+			{
+				$token = $this->guard()->login($result);				
 				return $this->respondWithToken($token);
 			}
 			else

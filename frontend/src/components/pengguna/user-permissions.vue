@@ -1,16 +1,16 @@
 <template>
-  <b-card
-    no-body
-    class="card-primary card-outline"
-  >
+  <b-card no-body class="card-primary card-outline">
     <template #header>
-      <h3 class="card-title">Data Hak ({{ selectedPermissions.length }}) </h3>
-      <div class="card-tools" v-if="$store.getters['auth/can']('USER_STOREPERMISSIONS')">
+      <h3 class="card-title">Data Hak ({{ selectedPermissions.length }})</h3>
+      <div
+        class="card-tools"
+        v-if="$store.getters['auth/can']('USER_STOREPERMISSIONS')"
+      >
         <b-button
           size="xs"
           variant="outline-primary"
           :disabled="selectedPermissions.length === 0 || btnLoading"
-          @click.stop="save"                    
+          @click.stop="save"
           v-b-tooltip.hover
           title="Simpan Permission"
           class="mr-1"
@@ -30,10 +30,10 @@
         </b-btn>
         <b-btn
           size="xs"
-          variant="outline-primary"          
+          variant="outline-primary"
           @click="setAllSelected"
           v-b-tooltip.hover
-          title="Pilih semua permission"          
+          title="Pilih semua permission"
         >
           Pilih Semua
         </b-btn>
@@ -64,8 +64,9 @@
     </b-card-body>
     <b-card-body class="p-0">
       <b-alert class="m-3 font-italic" show>
-        Silahkan pilih permission untuk user {{data_user.nama}} dengan cara mengklik baris dalam tabel di bawah ini.
-      </b-alert>        
+        Silahkan pilih permission untuk user {{ data_user.nama }}
+        dengan cara mengklik baris dalam tabel di bawah ini.
+      </b-alert>
       <b-table
         id="datatable"
         primary-key="id"
@@ -93,11 +94,13 @@
         <template v-slot:cell(selected)="{ item, field: { key } }">
           <b-form-checkbox
             v-model="item[key]"
-            v-if="$store.getters['auth/can']('USER_STOREPERMISSIONS') && item.selected2 === null"
+            v-if="
+              $store.getters['auth/can']('USER_STOREPERMISSIONS') && item.selected2 === null
+            "
             switch
           />
           <span v-else>
-            N.A
+            <b-icon icon="check-square" variant="success"></b-icon>
           </span>
         </template>
         <template #cell(aksi)="{ item }">
@@ -107,22 +110,24 @@
             size="xs"
             @click.stop="revokePermission(item)"
             :disabled="btnLoading"
-            v-if="$store.getters['auth/can']('USER_REVOKEPERMISSIONS') && item.selected == 'true'"
+            v-if="
+              $store.getters['auth/can']('USER_REVOKEPERMISSIONS') && item.selected == 'true'
+            "
           >
             <b-icon icon="trash" class="p-0 m-0"></b-icon>
             <b-tooltip
               :target="'btDelete' + item.userid"
               variant="danger"
-              v-if="$store.getters['auth/can']('USER_REVOKEPERMISSIONS') && item.selected == 'true'"
+              v-if="
+                $store.getters['auth/can']('USER_REVOKEPERMISSIONS') && item.selected == 'true'
+              "
             >
               Hapus Permission Pengguna
             </b-tooltip>
           </b-button>
-          <span v-else>
-            N.A
-          </span>  
+          <span v-else>N.A</span>
         </template>
-      </b-table>      
+      </b-table>
     </b-card-body>
     <template #footer>
       <b-pagination
@@ -130,13 +135,13 @@
         :per-page="perPage"
         v-model="currentPage"
         :total-rows="totalRows"
-        class="pagination-sm m-0 float-right"  
+        class="pagination-sm m-0 float-right"
         responsive
         pills
       >
       </b-pagination>
     </template>
-  </b-card>  
+  </b-card>
 </template>
 <script>
   export default {
@@ -145,12 +150,12 @@
       urlfront: {
         type: String,
         default: null,
-      }, 
+      },
       urlbackend: {
         type: String,
         default: null,
       },
-      user_id: {  
+      user_id: {
         required: true,
       },
     },
@@ -161,29 +166,29 @@
       datatableLoading: false,
       btnLoading: false,
       data_user: {},
-      //setting table 
-      fields: [        
+      //setting table
+      fields: [
         {
           key: 'name',
           label: 'Nama Permission',
           sortable: true,
-        },  
+        },
         {
           key: 'guard_name',
           label: 'Guard',
         },
         {
           key: 'selected',
-          label: 'Pilihan',    
+          label: 'Pilihan',
           thStyle: 'width: 100px',
-        },  
+        },
         {
           label: 'Aksi',
           key: 'aksi',
           thStyle: 'width: 100px',
         },
       ],
-      totalRows: 1,  
+      totalRows: 1,
       perPage: 10,
       currentPage: 1,
       sortBy: 'name',
@@ -217,8 +222,8 @@
         }
       },
       rowClicked(item) {
-        if (typeof item !== 'undefined' && item !== null) {   
-          if (item.selected2 == null) {   
+        if (typeof item !== 'undefined' && item !== null) {
+          if (item.selected2 == null) {
             if (item.selected) {
               this.$set(item, 'selected', false)
             } else {
@@ -227,44 +232,44 @@
           }
         }
       },
-      onFiltered(filteredItems) {  
+      onFiltered(filteredItems) {
         this.totalRows = filteredItems.length
         this.currentPage = 1
       },
       async initialize() {
-        this.datatableLoading = true        
+        this.datatableLoading = true
         var url = '/system/users/' + this.user_id + '/rolepermission'
 
         //load data role beserta permissions-nya
         await this.$ajax.get(url, {
-          headers: {
-            Authorization: this.$store.getters['auth/Token'],
-          }
-        })
-        .then(({ data }) => {
-          this.data_user = data.user
-          this.datatable = data.permissions
-          this.totalRows = this.datatable.length
-          this.datatableLoading = false     
-        })
-        .catch(() => {
-          this.datatableLoading = false
-        })
+            headers: {
+              Authorization: this.$store.getters['auth/Token'],
+            },
+          })
+          .then(({ data }) => {
+            this.data_user = data.user
+            this.datatable = data.permissions
+            this.totalRows = this.datatable.length
+            this.datatableLoading = false
+          })
+          .catch(() => {
+            this.datatableLoading = false
+          })
       },
-      async save() {  
+      async save() {
         if (this.selectedPermissions.length > 0) {
           this.btnLoading = true
           await this.$ajax
             .post(
-              "/system/users/storeuserpermissions",
+              '/system/users/storeuserpermissions',
               {
                 userid: this.user_id,
-                chkpermission: this.selectedPermissions
+                chkpermission: this.selectedPermissions,
               },
               {
                 headers: {
                   Authorization: this.$store.getters['auth/Token'],
-                }
+                },
               }
             )
             .then(() => {
@@ -275,18 +280,24 @@
               this.btnLoading = false
             })
         } else {
-          this.$bvToast.toast('Simpan permission dari user ' + this.data_user.nama + ' gagal karena jumlah permissionnya 0' , {
-            title: 'Pesan Sistem',
-            variant: 'warning',
-            autoHideDelay: 5000,
-            appendToast: false
-          })
+          this.$bvToast.toast(
+            'Simpan permission dari user ' +
+              this.data_user.nama +
+              ' gagal karena jumlah permissionnya 0',
+            {
+              title: 'Pesan Sistem',
+              variant: 'warning',
+              autoHideDelay: 5000,
+              appendToast: false,
+            }
+          )
         }
       },
       async revokePermission(item) {
         this.btnLoading = true
         await this.$ajax
-          .post('/system/users/revokeuserpermissions',
+          .post(
+            '/system/users/revokeuserpermissions',
             {
               user_id: this.user_id,
               name: item.name,
@@ -294,21 +305,21 @@
             {
               headers: {
                 Authorization: this.$store.getters['auth/Token'],
-              }
+              },
             }
-        )
-        .then(() => {
-          this.$router.go()
-        })
-        .catch(() => {
-          this.btnLoading = false
-        })
+          )
+          .then(() => {
+            this.$router.go()
+          })
+          .catch(() => {
+            this.btnLoading = false
+          })
       },
     },
     computed: {
       selectedPermissions() {
-        return this.datatable.filter(item => item.selected)
-      }
+        return this.datatable.filter((item) => item.selected)
+      },
     },
   }
 </script>

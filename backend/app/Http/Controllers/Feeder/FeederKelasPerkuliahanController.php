@@ -67,7 +67,7 @@ class FeederKelasPerkuliahanController extends Controller
       ->orderBy('A.hari', 'ASC')
       ->orderBy('nmatkul', 'ASC');
 
-      $data = $data->paginate(10);
+      $data = $data->paginate($perPage);
       
       $data->transform(function ($item, $key) {
         $kmatkul = $item->kmatkul;

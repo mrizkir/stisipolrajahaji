@@ -11,16 +11,28 @@ class KHSController extends Controller
   {
     $this->hasPermissionTo('AKADEMIK-NILAI-KHS_BROWSE');
 
-    $ta = 2021;
-    $idsmt = 1;
-    $kjur = 1;
+    $rule=[      
+			'perPage'=>'required|numeric',      
+			'currentPage'=>'required|numeric',      
+			'sortBy'=>'required',
+			'sortDesc'=>'required',
+			'nama_prodi'=>'required',
+			'prodi_id'=>'required|exists:program_studi,kjur',
+			'semester_akademik'=>'required|in:1,2,3',
+			'tahun_akademik'=>'required|numeric',
+		];
     
-    $sortdesc = $request->filled('sortdesc') ? $request->query('sortdesc', false) : false;
-		$orderby = $sortdesc == 'true' ? 'desc' : 'asc';
-		$sortby = $request->filled('sortby') ? $request->query('sortby', 'vdm.nama_mhs') : 'vdm.nama_mhs';
+		$this->validate($request, $rule);
 
-    $str = "SELECT  FROM krs k,v_datamhs vdm WHERE k.nim=vdm.nim AND tahun='$ta' AND idsmt='$idsmt' AND kjur=$kjur $str_tahun_masuk $str_dosen_wali";
-
+    $perPage = $request->input('perPage');
+    $currentPage = $request->input('currentPage');
+    $sortBy = $request->input('sortBy');
+    $sortDesc = $request->input('sortDesc');
+    $prodi_id = $request->input('prodi_id');
+    $nama_prodi = $request->input('nama_prodi');
+    $semester_akademik = $request->input('semester_akademik');
+    $tahun_akademik = $request->input('tahun_akademik');
+    
     $data = \DB::table('krs AS k')
     ->select(\DB::raw('
       k.idkrs,
@@ -41,19 +53,36 @@ class KHSController extends Controller
     ->join('v_datamhs AS vdm', 'k.nim', 'vdm.nim');
     
     
-    if ($request->filled('search')) {
-			$search = $request->query('search');
+    if ($request->has('search')) {
+			$search = $request->input('search');
 			$data = $data->whereRaw("vdm.nim LIKE '%$search%'")
+			->orWhereRaw("vdm.nirm LIKE '%$search%'")			
 			->orWhereRaw("vdm.nama_mhs LIKE '%$search%'");			
 		}
     else
     {
-      $data->where('k.tahun', $ta)
-        ->where('k.idsmt', $idsmt)
-        ->where('k.kjur', $kjur);    
+      $data->where('k.tahun', $tahun_akademik)
+        ->where('k.idsmt', $semester_akademik)
+        ->where('vdm.kjur', $prodi_id);    
     }
 
-    $data->orderBy($sortby, $orderby);
+    if($request->has('tahun_masuk'))
+    {
+      $data->where('vdm.tahun_masuk', $request->input('tahun_masuk'));
+    }
+
+    if($request->has('iddosen_wali'))
+    {
+      $data->where('vdm.iddosen_wali', $request->input('iddosen_wali'));
+    }
+    
+    if ($this->hasRole('mahasiswa'))
+    {
+      $data->where('vdm.nim', $this->getUsername());
+    }
+    $data->orderBy($sortBy, $sortDesc);   
+
+    $data = $data->paginate($perPage);
 
     return Response()->json([
 			'status'=>1,

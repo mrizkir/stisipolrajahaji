@@ -54,7 +54,10 @@ const routes = [
       bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
-    component: () => import('../views/pages/admin/dmaster/kategorikegiatandosen/KategoriKegiatanDosen-Index.vue'),
+    component: () =>
+      import(
+        '../views/pages/admin/dmaster/kategorikegiatandosen/KategoriKegiatanDosen-Index.vue'
+      ),
   },
   {
     path: '/dmaster/dosen/kategorikegiatan/create',
@@ -113,7 +116,10 @@ const routes = [
       bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
-    component: () => import('../views/pages/admin/feeder/perkuliahan/Feeder-Matakuliah-Index.vue'),
+    component: () =>
+      import(
+        '../views/pages/admin/feeder/perkuliahan/Feeder-Matakuliah-Index.vue'
+      ),
   },
 
   {
@@ -124,7 +130,10 @@ const routes = [
       bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
-    component: () => import('../views/pages/admin/feeder/perkuliahan/Feeder-Kelas-Perkuliahan-Index.vue'),
+    component: () =>
+      import(
+        '../views/pages/admin/feeder/perkuliahan/Feeder-Kelas-Perkuliahan-Index.vue'
+      ),
   },
 
   //feeder - perkuliahan - aktivitas kuliah mahasiswa
@@ -136,7 +145,8 @@ const routes = [
       bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
-    component: () => import('../views/pages/admin/feeder/perkuliahan/Feeder-TRAKM-Index.vue'),
+    component: () =>
+      import('../views/pages/admin/feeder/perkuliahan/Feeder-TRAKM-Index.vue'),
   },
   //akademik
   {
@@ -158,7 +168,10 @@ const routes = [
       bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
-    component: () => import('../views/pages/admin/akademik/perkuliahan/ReportStatusMahasiswa.vue'),
+    component: () =>
+      import(
+        '../views/pages/admin/akademik/perkuliahan/ReportStatusMahasiswa.vue'
+      ),
   },
   //kepegawaian
   {
@@ -169,8 +182,7 @@ const routes = [
       bodyClass: 'sidebar-mini layout-fixed',
       requiresAuth: true,
     },
-    component: () =>
-      import('../views/pages/admin/kepegawaian/Kepegawaian.vue'),
+    component: () => import('../views/pages/admin/kepegawaian/Kepegawaian.vue'),
   },
   //kemahasiswaan
   {
@@ -484,7 +496,7 @@ const routes = [
       import(
         '../views/pages/admin/pengguna/pengguna-dosen/Pengguna-Dosen-Index.vue'
       ),
-  },  
+  },
   {
     path: '/sistem-pengguna/dosen/:user_id/edit',
     name: 'PenggunaDosenEdit',
@@ -536,6 +548,19 @@ const routes = [
     component: () =>
       import(
         '../views/pages/admin/pengguna/pengguna-mahasiswa/Pengguna-Mahasiswa-Create.vue'
+      ),
+  },
+  {
+    path: '/sistem-pengguna/mahasiswa/:user_id/detail',
+    name: 'PenggunaDosenDetail',
+    meta: {
+      title: 'PENGGUNA - DOSEN',
+      bodyClass: 'sidebar-mini layout-fixed',
+      requiresAuth: true,
+    },
+    component: () =>
+      import(
+        '../views/pages/admin/pengguna/pengguna-mahasiswa/Pengguna-Mahasiswa-Detail.vue'
       ),
   },
   // misc
