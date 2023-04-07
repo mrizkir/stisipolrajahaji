@@ -119,12 +119,18 @@ class UIController extends Controller {
       } 
       elseif ($this->hasRole('mahasiswa'))
       {
-        $formulir=\App\Models\SPMB\FormulirPendaftaranModel::find($this->getUserid());
+        $formulir = \DB::table('formulir_pendaftaran AS A')
+        ->select(\DB::raw('
+          A.*
+        '))
+        ->join('v_datamhs AS B', 'A.no_formulir', 'B.no_formulir')
+        ->where('B.nim', $this->getUsername())
+        ->first();        
 
         $daftar_ta=TAModel::select(\DB::raw('tahun AS value,tahun_akademik AS text'))
-                ->where('tahun','>=',$formulir->ta)
-                ->orderBy('tahun','asc')
-                ->get();
+          ->where('tahun','>=',$formulir->ta)
+          ->orderBy('tahun','asc')
+          ->get();
         
         $kjur=$formulir->kjur1;        
         $daftar_prodi=$this->getDaftarProdi($kjur); 

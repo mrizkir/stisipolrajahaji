@@ -81,6 +81,10 @@ class UsersMahasiswaController extends UsersController
 	{
 		$this->hasPermissionTo('SYSTEM-USERS-MAHASISWA_STORE');
 
+		$this->validate($request, [
+      'jumlah_mahasiswa'=>'required|numeric|gte:1',      
+    ]);
+
 		$role = Role::findByName('mahasiswa');
 		$daftar_permission = $role->permissions->pluck('name')->toArray();
 
@@ -88,14 +92,15 @@ class UsersMahasiswaController extends UsersController
 		->select(\DB::raw('
 			`nim`,
 			`nama_mhs`,
-			`email`
+			`email`,
+			`kjur`
 		'))
 		->whereNotIn('nim', function($query) {
 			$query->select('username')->from('user');
 		})
 		->where('k_status', 'A')
 		->orderBy('nama_mhs','ASC')
-		->chunk(50, function ($mahasiswa) use ($daftar_permission) {
+		->chunk($request->input('jumlah_mahasiswa'), function ($mahasiswa) use ($daftar_permission) {
 			$now = \Carbon\Carbon::now()->toDateTimeString(); 
 			
 			$data = HelperAuth::createHashPassword(1234);
@@ -112,12 +117,12 @@ class UsersMahasiswaController extends UsersController
 					'email'=>$v->email,
 					'page'=>'mh',
 					'group_id'=>0,
-					'kjur'=>0,
+					'kjur'=>$v->kjur,
 					'active'=>1,
 					'isdeleted'=>1,
 					'theme'=>'cube',
 					'default_role'=>'mahasiswa',
-					'foto'=>'resources/userimages/no_photo.png',
+					'foto'=>'storage/images/users/no_photo.png',
 					'logintime'=>$now,				
 					'date_added'=>$now, 				
 				]);     

@@ -50,6 +50,18 @@
                       </b-card>
                     </b-col>
                   </b-row>
+                  <b-form-group label="Salin mahasiswa sebanyak:" label-for="txtNama">
+                    <b-form-input
+                      id="txtJumlahMahasiswa"
+                      v-model="v$.formdata.jumlah_mahasiswa.$model"
+                      placeholder="Masukan Jumlah Mahasiswa"
+                      :state="validateState('jumlah_mahasiswa')"
+                      aria-describedby="frmdata-jumlah-mahasiswa"
+                    />
+                    <b-form-invalid-feedback id="frmdata-jumlah-mahasiswa">
+                      Jumlah mahasiswa yang disalin tidak boleh kosong, silahkan diisi !!!.
+                    </b-form-invalid-feedback>
+                  </b-form-group>
                 </b-card-body>
                 <template #footer>
                   <b-button
@@ -70,6 +82,7 @@
 </template>
 <script>
   import useVuelidate from '@vuelidate/core'
+  import { required } from '@vuelidate/validators'
   import PenggunaSistemLayout from '@/views/layouts/PenggunaSistemLayout'
   export default {
     name: 'PenggunaMahasiswaCreate',
@@ -83,12 +96,18 @@
     },
     data: () => ({
       btnLoading: false,
-      formdata: {},
+      formdata: {
+        jumlah_mahasiswa: 50,
+      },
       jumlah_mahasiswa: 0,
     }),
     validations() {
       return {
-        formdata: {},
+        formdata: {
+          jumlah_mahasiswa: {
+            required,
+          },
+        },
       }
     },
     methods: {
@@ -113,7 +132,9 @@
           this.$ajax
             .post(
               '/system/usersmahasiswa/store',
-              {},
+              {
+                jumlah_mahasiswa: this.formdata.jumlah_mahasiswa,
+              },
               {
                 headers: {
                   Authorization: this.$store.getters['auth/Token'],

@@ -177,7 +177,9 @@
                       "
                       switch
                     />
-                    <span v-else>N.A</span>
+                    <span v-else>
+                      <b-icon icon="check-square" variant="success"></b-icon>
+                    </span>
                   </template>
                   <template #cell(aksi)="{ item }">
                     <b-button

@@ -207,6 +207,12 @@
           thStyle: 'width: 50px',
         },
         {
+          key: 'userid',
+          label: 'ID',
+          sortable: false,
+          thStyle: 'width: 80px',
+        },
+        {
           key: 'username',
           label: 'Username',
           sortable: true,

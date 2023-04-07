@@ -87,7 +87,7 @@ class UsersDosenController extends UsersController
 				'isdeleted'=>1,
 				'theme'=>'cube',
 				'default_role'=>'dosen',
-				'foto'=>'resources/userimages/no_photo.png',
+				'foto'=>'storage/images/users/no_photo.png',
 				'logintime'=>$now,				
 				'date_added'=>$now, 				
 			]);       

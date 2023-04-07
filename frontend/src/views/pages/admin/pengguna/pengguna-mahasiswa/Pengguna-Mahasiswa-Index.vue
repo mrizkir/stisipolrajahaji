@@ -104,10 +104,14 @@
                       :id="'btDetail' + item.userid"
                       variant="outline-primary p-1 mr-1"
                       size="xs"
-                      :to="'/sistem-pengguna/mahasiswa/' + item.userid + '/detail'"
+                      :to="
+                        '/sistem-pengguna/mahasiswa/' + item.userid + '/detail'
+                      "
                       :disabled="btnLoading"
                       v-if="
-                        $store.getters['auth/can']('SYSTEM-USERS-MAHASISWA_SHOW')
+                        $store.getters['auth/can'](
+                          'SYSTEM-USERS-MAHASISWA_SHOW'
+                        )
                       "
                     >
                       <b-icon icon="eye" class="p-0 m-0"></b-icon>
@@ -116,10 +120,14 @@
                       :id="'btEdit' + item.userid"
                       variant="outline-primary p-1 mr-1"
                       size="xs"
-                      :to="'/sistem-pengguna/mahasiswa/' + item.userid + '/edit'"
+                      :to="
+                        '/sistem-pengguna/mahasiswa/' + item.userid + '/edit'
+                      "
                       :disabled="btnLoading"
                       v-if="
-                        $store.getters['auth/can']('SYSTEM-USERS-MAHASISWA_UPDATE')
+                        $store.getters['auth/can'](
+                          'SYSTEM-USERS-MAHASISWA_UPDATE'
+                        )
                       "
                     >
                       <b-icon icon="pencil-square" class="p-0 m-0"></b-icon>
@@ -137,7 +145,9 @@
                       @click.stop="showModalDelete(item)"
                       :disabled="btnLoading"
                       v-if="
-                        $store.getters['auth/can']('SYSTEM-USERS-MAHASISWA_DESTROY')
+                        $store.getters['auth/can'](
+                          'SYSTEM-USERS-MAHASISWA_DESTROY'
+                        )
                       "
                     >
                       <b-icon icon="trash" class="p-0 m-0"></b-icon>
@@ -219,6 +229,12 @@
           label: 'No.',
           key: 'no',
           thStyle: 'width: 50px',
+        },
+        {
+          key: 'userid',
+          label: 'ID',
+          sortable: false,
+          thStyle: 'width: 80px',
         },
         {
           key: 'username',
