@@ -52,7 +52,7 @@ class AuthController extends Controller
 					
 					if (is_null($data_user))
 					{
-						throw new Exception ("Gagal. Data Mahasiswa dengan username $result->username tidak ditemuka.");
+						throw new Exception ("Gagal. Data Mahasiswa dengan username $result->username tidak ditemukan.");
 					}
 					
 					if ($result->k_status == 'A' || $result->k_status == 'C' || $result->k_status == 'N') {                                        			
