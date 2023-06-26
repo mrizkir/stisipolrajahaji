@@ -42,11 +42,11 @@ class ReportTRAKMModel extends ReportModel
 		]);
 
 		$row=2;
-		$sheet->mergeCells("A$row:K$row");				                
+		$sheet->mergeCells("A$row:L$row");				                
 		$sheet->setCellValue("A$row","LAPORAN AKTIVITMAS KULIAH MAHASISWA");
 
 		$row+=1;
-		$sheet->mergeCells("A$row:K$row");		
+		$sheet->mergeCells("A$row:L$row");		
 		$sheet->setCellValue("A$row","PROGRAM STUDI $nama_prodi TAHUN AKADEMIK $tahun_akademik SEMESTER $nama_semester"); 
 		
 		$styleArray=array( 
@@ -69,6 +69,7 @@ class ReportTRAKMModel extends ReportModel
 		$sheet->getColumnDimension('I')->setWidth(14);        
 		$sheet->getColumnDimension('J')->setWidth(14);        
 		$sheet->getColumnDimension('K')->setWidth(20);        
+		$sheet->getColumnDimension('L')->setWidth(20);        
 		
 		$row+=2;        
 		$sheet->setCellValue("A$row",'NO');        
@@ -82,6 +83,7 @@ class ReportTRAKMModel extends ReportModel
 		$sheet->setCellValue("I$row",'IPS');    
 		$sheet->setCellValue("J$row",'IPK');    
 		$sheet->setCellValue("K$row",'SPP');    
+		$sheet->setCellValue("L$row",'PEMBIAYAAN');    
 		
 
 		$styleArray=array(
@@ -90,8 +92,8 @@ class ReportTRAKMModel extends ReportModel
 								'vertical'=>Alignment::HORIZONTAL_CENTER),
 			'borders' => array('allBorders' => array('borderStyle' =>Border::BORDER_THIN))
 		);
-		$sheet->getStyle("A$row:K$row")->applyFromArray($styleArray);
-		$sheet->getStyle("A$row:K$row")->getAlignment()->setWrapText(true);
+		$sheet->getStyle("A$row:L$row")->applyFromArray($styleArray);
+		$sheet->getStyle("A$row:L$row")->getAlignment()->setWrapText(true);
 
 		$data = \DB::table('v_datamhs AS A')
       ->select(\DB::raw('
@@ -106,7 +108,8 @@ class ReportTRAKMModel extends ReportModel
         0 AS skskum,
         0 AS ips,
         0 AS ipk,
-        0 AS spp
+        0 AS spp,
+				A.jenis_pembiayaan
       '))
       ->join('dulang AS B', 'B.nim', 'A.nim')
       ->leftJoin('status_mhs AS C', 'B.k_status', 'C.k_status')
@@ -159,6 +162,7 @@ class ReportTRAKMModel extends ReportModel
       $sheet->setCellValue("I$row", $ips);
       $sheet->setCellValue("J$row", $ipk);
       $sheet->setCellValueExplicit("K$row", $spp, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+			$sheet->setCellValue("L$row", $helper_nilai->getJenisPembiayaan($v->jenis_pembiayaan));
 			$row += 1;			
       $total_ipk += $v->ipk;
 		  $total_ips += $v->ips;		
@@ -170,8 +174,8 @@ class ReportTRAKMModel extends ReportModel
 								'vertical'=>Alignment::HORIZONTAL_CENTER),
 			'borders' => array('allBorders' => array('borderStyle' =>Border::BORDER_THIN))
 		);   																					 
-		$sheet->getStyle("A$row_awal:K$row")->applyFromArray($styleArray);
-		$sheet->getStyle("A$row_awal:K$row")->getAlignment()->setWrapText(true);
+		$sheet->getStyle("A$row_awal:L$row")->applyFromArray($styleArray);
+		$sheet->getStyle("A$row_awal:L$row")->getAlignment()->setWrapText(true);
 
 		$styleArray=array(								
 			'alignment' => array('horizontal'=>Alignment::HORIZONTAL_LEFT)

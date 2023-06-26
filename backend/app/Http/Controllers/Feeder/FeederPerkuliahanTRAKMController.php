@@ -50,7 +50,9 @@ class FeederPerkuliahanTRAKMController extends Controller
         0 AS sks,
         0 AS ips,
         0 AS ipk,
-        0 AS spp
+        0 AS spp,
+        A.jenis_pembiayaan,
+        "" AS nama_pembiayaan
       '))
       ->join('dulang AS B', 'B.nim', 'A.nim')      
       ->where('B.idsmt', $semester_akademik)
@@ -67,7 +69,6 @@ class FeederPerkuliahanTRAKMController extends Controller
         $helper->setDataMHS([
           'nim' => $item->nim
         ]);
-
         
         $helper->getKHS($tahun_akademik, $semester_akademik);
         $item->ips = $helper->getIPS();
@@ -86,6 +87,7 @@ class FeederPerkuliahanTRAKMController extends Controller
         $spp = $helper->getTotalBiayaMhsPeriodePembayaran('lama');
         $item->spp = $helper->formatUang($spp);
       
+        $item->nama_pembiayaan = $helper->getJenisPembiayaan($item->jenis_pembiayaan);
         return $item;
       });
 

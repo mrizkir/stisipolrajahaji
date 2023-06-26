@@ -225,6 +225,11 @@
           label: 'SPP',
           thStyle: 'width: 100px',
         },
+        {
+          key: 'nama_pembiayaan',
+          label: 'PEMBIAYAAN',
+          thStyle: 'width: 100px',
+        },
       ],
       sortBy: 'nama_mhs',
       sortDesc: false,
