@@ -5,20 +5,28 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
 
-class DaftarMahasiswaController extends Controller {      
+class MahasiswaController extends Controller {      
   /**
    * Show the form for creating a new resource.
    *
    * @return \Illuminate\Http\Response
    */
-  public function all()
+  public function status(Request $request, $id)
   { 
-    $daftar_mahasiswa = \DB::table('v_datamhs')->get();    
+    $mahasiswa = \DB::table('v_datamhs')
+    ->select(\DB::raw('
+      nim,
+      nama_mhs,
+      k_status AS status,
+      photo_profile
+    '))
+    ->where('nim', $id)
+    ->first();    
 
     return Response()->json([
       'status'=>'00',
       'message'=>"data mahasiswa berhasil diperoleh",
-      'daftar_mahasiswa'=>$daftar_mahasiswa
+      'result'=>$mahasiswa,
     ], 200); 
   }     
 }
