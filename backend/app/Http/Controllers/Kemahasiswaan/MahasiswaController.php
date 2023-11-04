@@ -13,13 +13,14 @@ class MahasiswaController extends Controller {
    */
   public function status(Request $request, $id)
   { 
-    $mahasiswa = \DB::table('v_datamhs')
+    $mahasiswa = \DB::table('v_datamhs AS vdm')
     ->select(\DB::raw('
       nim,
       nama_mhs,
-      k_status AS status,
+      sm.n_status AS status,
       photo_profile
     '))
+    ->join('status_mhs AS sm', 'vdm.k_status', 'sm.k_status')
     ->where('nim', $id)
     ->first();    
 
