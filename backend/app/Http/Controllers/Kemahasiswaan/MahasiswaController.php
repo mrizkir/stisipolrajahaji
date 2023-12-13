@@ -17,6 +17,7 @@ class MahasiswaController extends Controller {
     ->select(\DB::raw('
       nim,
       nama_mhs,
+      nama_ps,
       sm.n_status AS status,
       photo_profile
     '))
