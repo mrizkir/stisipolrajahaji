@@ -299,7 +299,8 @@ class BRKTransaksiController extends Controller {
 							->update([
 								'no_faktur'=>$no_ref,
 								'tanggal' => $tanggal_terima,
-								'commited'=> 1
+								'tanggal_commit' => \Helper::tanggal('Y-m-d H:i:s'),
+								'commited'=> 1,
 							]);
 						
 						
@@ -561,7 +562,8 @@ class BRKTransaksiController extends Controller {
 							->where('no_transaksi', $no_transaksi)
 							->update([
 								'no_faktur'=>$no_ref,
-								'commited'=> 1
+								'commited'=> 1,
+								'tanggal_commit' => \Helper::tanggal('Y-m-d H:i:s'),
 							]);
 
 							$datadulang = \DB::table('dulang')
