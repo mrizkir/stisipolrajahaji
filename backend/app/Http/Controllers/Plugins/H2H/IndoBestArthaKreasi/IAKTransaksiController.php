@@ -239,7 +239,7 @@ class IAKTransaksiController extends Controller {
 							->update([
 								'no_faktur'=>$no_ref,
 								'commited'=> 1,
-								'tanggal_commit' => \Helper::tanggal('Y-m-d H:i:s'),
+								'tanggal_commit' => HelperKeuangan::tanggal('Y-m-d H:i:s'),
 							]);
 						
 						
@@ -493,7 +493,7 @@ class IAKTransaksiController extends Controller {
 							->update([
 								'no_faktur'=>$no_ref,
 								'commited'=> 1,
-								'tanggal_commit' => \Helper::tanggal('Y-m-d H:i:s'),
+								'tanggal_commit' => HelperKeuangan::tanggal('Y-m-d H:i:s'),
 							]);
 
 							$datadulang = \DB::table('dulang')
